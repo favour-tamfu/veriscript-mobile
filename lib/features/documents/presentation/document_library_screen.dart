@@ -51,14 +51,14 @@ class DocumentLibraryScreen extends ConsumerWidget {
 
           return ListView.separated(
             itemCount: documents.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final document = documents[index];
               return _DocumentTile(document: document);
             },
           );
         },
-        error: (error, _) => Center(child: Text(error.toString())),
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
@@ -68,7 +68,7 @@ class DocumentLibraryScreen extends ConsumerWidget {
 class _DocumentTile extends StatelessWidget {
   const _DocumentTile({required this.document});
 
-  final DocumentRecord document;
+  final Document document;
 
   @override
   Widget build(BuildContext context) {
@@ -103,15 +103,17 @@ class _DocumentTile extends StatelessWidget {
               children: [
                 if (document.sourcePath != null)
                   OutlinedButton.icon(
-                    onPressed: () => Share.shareXFiles([
-                      XFile(document.sourcePath!),
-                    ]),
+                    onPressed: () => SharePlus.instance.share(
+                      ShareParams(files: [XFile(document.sourcePath!)]),
+                    ),
                     icon: const Icon(Icons.share_rounded),
                     label: const Text('Share source'),
                   ),
                 if (document.remoteUrl != null)
                   OutlinedButton.icon(
-                    onPressed: () => Share.share(document.remoteUrl!),
+                    onPressed: () => SharePlus.instance.share(
+                      ShareParams(text: document.remoteUrl!),
+                    ),
                     icon: const Icon(Icons.link_rounded),
                     label: const Text('Share result link'),
                   ),

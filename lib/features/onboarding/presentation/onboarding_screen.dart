@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/l10n/app_strings.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_shell.dart';
+import '../../../l10n/app_localizations.dart';
+import '../application/onboarding_controller.dart';
 import '../../auth/presentation/auth_screen.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends ConsumerWidget {
   const OnboardingScreen({super.key});
 
   static const routeName = 'onboarding';
   static const routePath = '/onboarding';
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppStrings.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return AppShell(
+      footer: FilledButton(
+        onPressed: () async {
+          await ref.read(onboardingControllerProvider.notifier).markComplete();
+          if (context.mounted) {
+            context.go(AuthScreen.routePath);
+          }
+        },
+        child: Text(l10n.getStarted),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +46,7 @@ class OnboardingScreen extends StatelessWidget {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.tealMint.withOpacity(0.14),
+                    color: AppColors.tealMint.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: const Icon(
@@ -62,11 +73,11 @@ class OnboardingScreen extends StatelessWidget {
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: const [
-                    _FeatureChip(label: 'Plagiarism'),
-                    _FeatureChip(label: 'OCR'),
-                    _FeatureChip(label: 'Translate'),
-                    _FeatureChip(label: 'Offline'),
+                  children: [
+                    _FeatureChip(label: l10n.featurePlagiarism),
+                    _FeatureChip(label: l10n.featureOcr),
+                    _FeatureChip(label: l10n.featureTranslate),
+                    _FeatureChip(label: l10n.featureOffline),
                   ],
                 ),
               ],
@@ -74,10 +85,6 @@ class OnboardingScreen extends StatelessWidget {
           ),
           const Spacer(),
         ],
-      ),
-      footer: FilledButton(
-        onPressed: () => context.go(AuthScreen.routePath),
-        child: Text(l10n.getStarted),
       ),
     );
   }

@@ -85,6 +85,7 @@ class _ConverterScreenState extends ConsumerState<ConverterScreen> {
             onPressed: actionState.isLoading
                 ? null
                 : () async {
+                    final messenger = ScaffoldMessenger.of(context);
                     final message = await ref
                         .read(converterControllerProvider.notifier)
                         .pickAndConvert(_targetFormat);
@@ -92,9 +93,7 @@ class _ConverterScreenState extends ConsumerState<ConverterScreen> {
                       return;
                     }
 
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(message)));
+                    messenger.showSnackBar(SnackBar(content: Text(message)));
                   },
             icon: actionState.isLoading
                 ? const SizedBox(

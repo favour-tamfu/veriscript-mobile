@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:purchases_flutter/models/customer_info_wrapper.dart';
-import 'package:purchases_flutter/models/offerings_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/providers/app_providers.dart';
@@ -104,7 +102,7 @@ class PurchaseController extends AsyncNotifier<void> {
         return 'No matching package was found.';
       }
 
-      await Purchases.purchasePackage(package);
+      await Purchases.purchase(PurchaseParams.package(package));
       ref.invalidate(paywallStateProvider);
       state = const AsyncData(null);
       return null;

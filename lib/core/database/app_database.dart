@@ -39,7 +39,7 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  Stream<List<DocumentRecord>> watchRecentDocuments({int limit = 5}) {
+  Stream<List<Document>> watchRecentDocuments({int limit = 5}) {
     final query = select(documents)
       ..orderBy([
         (tbl) => OrderingTerm(
@@ -52,7 +52,7 @@ class AppDatabase extends _$AppDatabase {
     return query.watch();
   }
 
-  Stream<List<DocumentRecord>> watchAllDocuments() {
+  Stream<List<Document>> watchAllDocuments() {
     final query = select(documents)
       ..orderBy([
         (tbl) => OrderingTerm(

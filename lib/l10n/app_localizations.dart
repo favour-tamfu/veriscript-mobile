@@ -122,11 +122,23 @@ abstract class AppLocalizations {
   /// **'Sign in to continue'**
   String get authTitle;
 
+  /// No description provided for @authCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your VeriScript account'**
+  String get authCreateTitle;
+
   /// No description provided for @authBody.
   ///
   /// In en, this message translates to:
   /// **'Use your email to access your scans, conversions, and synced document history.'**
   String get authBody;
+
+  /// No description provided for @authCreateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with email sign-in and sync your document tools across devices.'**
+  String get authCreateBody;
 
   /// No description provided for @signIn.
   ///
@@ -134,17 +146,71 @@ abstract class AppLocalizations {
   /// **'Sign in'**
   String get signIn;
 
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
   /// No description provided for @createAccount.
   ///
   /// In en, this message translates to:
   /// **'Create account'**
   String get createAccount;
 
+  /// No description provided for @switchToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get switchToSignIn;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPassword;
+
+  /// No description provided for @authEmailError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get authEmailError;
+
+  /// No description provided for @authPasswordError.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 6 characters.'**
+  String get authPasswordError;
+
+  /// No description provided for @authResetNeedsEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email first to request a reset.'**
+  String get authResetNeedsEmail;
+
+  /// No description provided for @authResetSent.
+  ///
+  /// In en, this message translates to:
+  /// **'If the account exists, a reset link has been sent.'**
+  String get authResetSent;
+
   /// No description provided for @authHint.
   ///
   /// In en, this message translates to:
   /// **'Supabase authentication and password reset can plug into this screen next.'**
   String get authHint;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get emailAddress;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
 
   /// No description provided for @homeGreeting.
   ///
@@ -157,6 +223,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your integrity and productivity tools are ready.'**
   String get homeSubtitle;
+
+  /// No description provided for @homeSubtitleWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {email}. Your integrity and productivity tools are ready.'**
+  String homeSubtitleWithEmail(Object email);
+
+  /// No description provided for @featurePlagiarism.
+  ///
+  /// In en, this message translates to:
+  /// **'Plagiarism'**
+  String get featurePlagiarism;
+
+  /// No description provided for @featureOcr.
+  ///
+  /// In en, this message translates to:
+  /// **'OCR'**
+  String get featureOcr;
+
+  /// No description provided for @featureTranslate.
+  ///
+  /// In en, this message translates to:
+  /// **'Translate'**
+  String get featureTranslate;
+
+  /// No description provided for @featureOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get featureOffline;
+
+  /// No description provided for @openConverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Converter'**
+  String get openConverter;
+
+  /// No description provided for @openLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Library'**
+  String get openLibrary;
+
+  /// No description provided for @openPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Plans'**
+  String get openPlans;
+
+  /// No description provided for @toolPlagiarismTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plagiarism check'**
+  String get toolPlagiarismTitle;
+
+  /// No description provided for @toolPlagiarismBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare drafts before submission.'**
+  String get toolPlagiarismBody;
+
+  /// No description provided for @toolConversionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'File conversion'**
+  String get toolConversionTitle;
+
+  /// No description provided for @toolConversionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert PDF, DOCX, and TXT with low-data feedback.'**
+  String get toolConversionBody;
+
+  /// No description provided for @toolTranslationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation'**
+  String get toolTranslationTitle;
+
+  /// No description provided for @toolTranslationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'English and French workflows with 100+ target languages.'**
+  String get toolTranslationBody;
+
+  /// No description provided for @toolOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline vault'**
+  String get toolOfflineTitle;
+
+  /// No description provided for @toolOfflineBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep recent documents available without a connection.'**
+  String get toolOfflineBody;
+
+  /// No description provided for @recentDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent documents'**
+  String get recentDocuments;
+
+  /// No description provided for @converterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'File converter'**
+  String get converterTitle;
+
+  /// No description provided for @converterBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Queue files for conversion and keep the request history offline.'**
+  String get converterBody;
+
+  /// No description provided for @converterSetupNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Set CONVERTER_ENDPOINT in .env.local to send files to your conversion backend.'**
+  String get converterSetupNotice;
+
+  /// No description provided for @converterTargetFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Target format'**
+  String get converterTargetFormat;
+
+  /// No description provided for @converterPickFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a file to convert'**
+  String get converterPickFile;
+
+  /// No description provided for @libraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline document library'**
+  String get libraryTitle;
+
+  /// No description provided for @libraryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved conversions and sync metadata stay available even when the network is weak.'**
+  String get libraryBody;
+
+  /// No description provided for @libraryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents have been saved yet.'**
+  String get libraryEmpty;
+
+  /// No description provided for @paywallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'VeriScript Plus'**
+  String get paywallTitle;
+
+  /// No description provided for @paywallBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock higher limits for conversion, OCR, translation, and offline access.'**
+  String get paywallBody;
+
+  /// No description provided for @paywallNoPackages.
+  ///
+  /// In en, this message translates to:
+  /// **'No live packages are available yet. Add offerings in RevenueCat to enable purchases.'**
+  String get paywallNoPackages;
+
+  /// No description provided for @paywallUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Plus'**
+  String get paywallUnlock;
+
+  /// No description provided for @paywallRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get paywallRestore;
 }
 
 class _AppLocalizationsDelegate

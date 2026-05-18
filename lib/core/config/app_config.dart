@@ -11,9 +11,19 @@ class AppConfig {
   });
 
   factory AppConfig.fromEnvironment() {
-    return const AppConfig(
-      supabaseUrl: String.fromEnvironment('SUPABASE_URL'),
-      supabaseAnonKey: String.fromEnvironment('SUPABASE_ANON_KEY'),
+    final supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+    final nextSupabaseUrl = String.fromEnvironment('NEXT_PUBLIC_SUPABASE_URL');
+    final supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+    final nextSupabaseAnonKey =
+        String.fromEnvironment('NEXT_PUBLIC_SUPABASE_ANON_KEY');
+
+    return AppConfig(
+      supabaseUrl:
+          supabaseUrl.isNotEmpty ? supabaseUrl : nextSupabaseUrl,
+      supabaseAnonKey:
+          supabaseAnonKey.isNotEmpty
+              ? supabaseAnonKey
+              : nextSupabaseAnonKey,
       revenueCatAndroidKey: String.fromEnvironment('REVENUECAT_ANDROID_KEY'),
       revenueCatAppleKey: String.fromEnvironment('REVENUECAT_APPLE_KEY'),
       sentryDsn: String.fromEnvironment('SENTRY_DSN'),
