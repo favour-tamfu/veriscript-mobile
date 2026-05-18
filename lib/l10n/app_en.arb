@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "onboardingTitle": "Document tools built for real campus workflows",
+  "onboardingBody": "Check originality, scan pages, convert files, and keep key documents offline without wasting mobile data.",
+  "getStarted": "Get started",
+  "authTitle": "Sign in to continue",
+  "authBody": "Use your email to access your scans, conversions, and synced document history.",
+  "signIn": "Sign in",
+  "createAccount": "Create account",
+  "authHint": "Supabase authentication and password reset can plug into this screen next.",
+  "homeGreeting": "Welcome back",
+  "homeSubtitle": "Your integrity and productivity tools are ready."
+}

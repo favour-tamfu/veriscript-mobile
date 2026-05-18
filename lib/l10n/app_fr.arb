@@ -1,0 +1,13 @@
+{
+  "@@locale": "fr",
+  "onboardingTitle": "Des outils documentaires adaptes aux usages reels des etudiants",
+  "onboardingBody": "Verifiez l'originalite, numerisez des pages, convertissez des fichiers et gardez vos documents importants hors ligne sans gaspiller vos donnees mobiles.",
+  "getStarted": "Commencer",
+  "authTitle": "Connectez-vous pour continuer",
+  "authBody": "Utilisez votre e-mail pour acceder a vos analyses, conversions et documents synchronises.",
+  "signIn": "Se connecter",
+  "createAccount": "Creer un compte",
+  "authHint": "L'authentification Supabase et la reinitialisation du mot de passe peuvent etre branchees ici ensuite.",
+  "homeGreeting": "Heureux de vous revoir",
+  "homeSubtitle": "Vos outils d'integrite et de productivite sont prets."
+}
