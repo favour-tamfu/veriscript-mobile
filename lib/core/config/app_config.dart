@@ -1,5 +1,11 @@
 import 'package:flutter/foundation.dart';
 
+const _defaultSupabaseUrl = 'https://wzplvgcqopecyhaikqwn.supabase.co';
+const _defaultSupabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cGx2Z2Nxb3BlY3loYWlrcXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMDY2NjYsImV4cCI6MjA5NDY4MjY2Nn0.ES60IfA2O8PckJ44vb53j-VIrkjyp4f4zy_O1yVsLA8';
+const _defaultConverterEndpoint =
+    'https://wzplvgcqopecyhaikqwn.functions.supabase.co/convert-document';
+
 class AppConfig {
   const AppConfig({
     required this.supabaseUrl,
@@ -18,16 +24,21 @@ class AppConfig {
         String.fromEnvironment('NEXT_PUBLIC_SUPABASE_ANON_KEY');
 
     return AppConfig(
-      supabaseUrl:
-          supabaseUrl.isNotEmpty ? supabaseUrl : nextSupabaseUrl,
+      supabaseUrl: supabaseUrl.isNotEmpty
+          ? supabaseUrl
+          : (nextSupabaseUrl.isNotEmpty ? nextSupabaseUrl : _defaultSupabaseUrl),
       supabaseAnonKey:
           supabaseAnonKey.isNotEmpty
               ? supabaseAnonKey
-              : nextSupabaseAnonKey,
+              : (nextSupabaseAnonKey.isNotEmpty
+                    ? nextSupabaseAnonKey
+                    : _defaultSupabaseAnonKey),
       revenueCatAndroidKey: String.fromEnvironment('REVENUECAT_ANDROID_KEY'),
       revenueCatAppleKey: String.fromEnvironment('REVENUECAT_APPLE_KEY'),
       sentryDsn: String.fromEnvironment('SENTRY_DSN'),
-      converterEndpoint: String.fromEnvironment('CONVERTER_ENDPOINT'),
+      converterEndpoint: String.fromEnvironment('CONVERTER_ENDPOINT').isNotEmpty
+          ? String.fromEnvironment('CONVERTER_ENDPOINT')
+          : _defaultConverterEndpoint,
     );
   }
 

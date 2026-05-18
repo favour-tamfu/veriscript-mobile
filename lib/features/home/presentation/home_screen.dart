@@ -50,17 +50,17 @@ class HomeScreen extends ConsumerWidget {
             runSpacing: 10,
             children: [
               FilledButton.tonalIcon(
-                onPressed: () => context.go(ConverterScreen.routePath),
+                onPressed: () => context.push(ConverterScreen.routePath),
                 icon: const Icon(Icons.sync_alt_rounded),
                 label: Text(l10n.openConverter),
               ),
               FilledButton.tonalIcon(
-                onPressed: () => context.go(DocumentLibraryScreen.routePath),
+                onPressed: () => context.push(DocumentLibraryScreen.routePath),
                 icon: const Icon(Icons.folder_open_rounded),
                 label: Text(l10n.openLibrary),
               ),
               FilledButton.tonalIcon(
-                onPressed: () => context.go(PaywallScreen.routePath),
+                onPressed: () => context.push(PaywallScreen.routePath),
                 icon: const Icon(Icons.workspace_premium_rounded),
                 label: Text(l10n.openPlans),
               ),

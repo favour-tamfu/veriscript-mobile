@@ -26,8 +26,6 @@ abstract final class AppBootstrap {
         url: config.supabaseUrl,
         anonKey: config.supabaseAnonKey,
       );
-    } else {
-      notes.add('Supabase credentials missing. Falling back to local auth.');
     }
 
     final revenueCatKey = config.activeRevenueCatKey;
@@ -36,12 +34,6 @@ abstract final class AppBootstrap {
       await Purchases.configure(PurchasesConfiguration(revenueCatKey));
     } else {
       notes.add('RevenueCat key missing. Paywall will stay in preview mode.');
-    }
-
-    if (!config.hasConverterEndpoint) {
-      notes.add(
-        'Converter endpoint missing. Conversion requests will be stored locally until a backend is configured.',
-      );
     }
 
     return AppBootstrapResult(config: config, notes: notes);
