@@ -67,6 +67,7 @@ class SupabaseAuthRepository implements AuthRepository {
     required String password,
   }) async {
     await _client.auth.signUp(email: email, password: password);
+    await _signInWithRetry(email: email, password: password);
   }
 
   @override
@@ -89,6 +90,23 @@ class SupabaseAuthRepository implements AuthRepository {
       email: user.email!,
       isLocalSession: false,
     );
+  }
+
+  Future<void> _signInWithRetry({
+    required String email,
+    required String password,
+  }) async {
+    for (var attempt = 0; attempt < 3; attempt++) {
+      try {
+        await _client.auth.signInWithPassword(email: email, password: password);
+        return;
+      } on AuthException {
+        if (attempt == 2) {
+          rethrow;
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 350));
+      }
+    }
   }
 }
 
