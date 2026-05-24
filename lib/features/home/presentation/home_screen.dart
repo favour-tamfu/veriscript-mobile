@@ -1,310 +1,289 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/database/app_database.dart';
-import '../../../core/providers/app_providers.dart';
+import '../../../core/providers/connectivity_provider.dart';
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_shell.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../auth/application/auth_controller.dart';
-import '../../converter/presentation/converter_screen.dart';
-import '../../documents/application/document_providers.dart';
-import '../../documents/presentation/document_library_screen.dart';
-import '../../subscription/presentation/paywall_screen.dart';
+import '../../../core/widgets/vs_empty_state.dart';
+import '../../../core/widgets/vs_offline_banner.dart';
+import '../data/quota_repository.dart';
+import 'quota_bar_widget.dart';
+import 'tool_card_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  static const routeName = 'home';
-  static const routePath = '/home';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-    final authUser = ref.watch(authSessionProvider).value;
-    final recentDocuments = ref.watch(recentDocumentsProvider);
-    final bootstrapNotes = ref.watch(bootstrapNotesProvider);
+    final isFrench = Localizations.localeOf(context).languageCode == 'fr';
+    final user = Supabase.instance.client.auth.currentUser;
+    final displayName = _displayNameFor(user);
+    final greeting = _timeGreeting(isFrench, DateTime.now());
+    final quotaAsync = ref.watch(quotaProvider);
+    final isOffline = ref.watch(isOfflineProvider);
+    final documents = const <_RecentDocument>[];
 
-    return AppShell(
-      header: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.homeGreeting,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            authUser == null
-                ? l10n.homeSubtitle
-                : l10n.homeSubtitleWithEmail(authUser.email),
-            style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.slate),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              FilledButton.tonalIcon(
-                onPressed: () => context.push(ConverterScreen.routePath),
-                icon: const Icon(Icons.sync_alt_rounded),
-                label: Text(l10n.openConverter),
-              ),
-              FilledButton.tonalIcon(
-                onPressed: () => context.push(DocumentLibraryScreen.routePath),
-                icon: const Icon(Icons.folder_open_rounded),
-                label: Text(l10n.openLibrary),
-              ),
-              FilledButton.tonalIcon(
-                onPressed: () => context.push(PaywallScreen.routePath),
-                icon: const Icon(Icons.workspace_premium_rounded),
-                label: Text(l10n.openPlans),
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: AppColors.vsPrimary,
+            foregroundColor: Colors.white,
+            pinned: true,
+            expandedHeight: 220,
+            title: const Text('VeriScript'),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications_outlined),
               ),
             ],
-          ),
-        ],
-      ),
-      child: ListView(
-        children: [
-          const _QuotaCard(),
-          const SizedBox(height: 18),
-          if (bootstrapNotes.isNotEmpty) ...[
-            _SetupNotes(notes: bootstrapNotes),
-            const SizedBox(height: 18),
-          ],
-          _ToolCard(
-            icon: Icons.find_in_page_outlined,
-            title: l10n.toolPlagiarismTitle,
-            subtitle: l10n.toolPlagiarismBody,
-          ),
-          const SizedBox(height: 12),
-          _ToolCard(
-            icon: Icons.sync_alt_rounded,
-            title: l10n.toolConversionTitle,
-            subtitle: l10n.toolConversionBody,
-          ),
-          const SizedBox(height: 12),
-          _ToolCard(
-            icon: Icons.translate_rounded,
-            title: l10n.toolTranslationTitle,
-            subtitle: l10n.toolTranslationBody,
-          ),
-          const SizedBox(height: 12),
-          _ToolCard(
-            icon: Icons.offline_pin_rounded,
-            title: l10n.toolOfflineTitle,
-            subtitle: l10n.toolOfflineBody,
-          ),
-          const SizedBox(height: 18),
-          Text(
-            l10n.recentDocuments,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 12),
-          recentDocuments.when(
-            data: (items) {
-              if (items.isEmpty) {
-                return Text(
-                  l10n.libraryEmpty,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.slate,
-                  ),
-                );
-              }
-
-              return Column(
-                children: items
-                    .map(
-                      (item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: _RecentDocumentCard(document: item),
+            flexibleSpace: FlexibleSpaceBar(
+              background: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 96, 24, 24),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$greeting, $displayName',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
-                    )
-                    .cast<Widget>()
-                    .toList(),
-              );
-            },
-            error: (error, stackTrace) => Text(error.toString()),
-            loading: () => const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () async {
-              await ref.read(authActionControllerProvider.notifier).signOut();
-            },
-            icon: const Icon(Icons.logout_rounded),
-            label: Text(l10n.signOut),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SetupNotes extends StatelessWidget {
-  const _SetupNotes({required this.notes});
-
-  final List<String> notes;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF6E5),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: notes.map((note) => Text('- $note')).toList(),
-      ),
-    );
-  }
-}
-
-class _QuotaCard extends StatelessWidget {
-  const _QuotaCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: AppColors.deepNavy,
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Free plan',
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '3 scans left this month',
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white70),
-          ),
-          const SizedBox(height: 20),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: const LinearProgressIndicator(
-              value: 0.6,
-              minHeight: 10,
-              backgroundColor: Color(0x3355FFFF),
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.amberGold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RecentDocumentCard extends StatelessWidget {
-  const _RecentDocumentCard({required this.document});
-
-  final Document document;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              document.name,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${document.kind} • ${document.status}',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.slate),
-            ),
-            if (document.details != null) ...[
-              const SizedBox(height: 8),
-              Text(document.details!),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ToolCard extends StatelessWidget {
-  const _ToolCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Row(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: AppColors.tealMint.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(16),
+                      const SizedBox(height: 8),
+                      Text(
+                        isFrench
+                            ? 'Que souhaitez-vous faire aujourd\'hui?'
+                            : 'What would you like to do today?',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.vsAccent,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Icon(icon, color: AppColors.tealMint),
             ),
-            const SizedBox(width: 16),
-            Expanded(
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                  if (isOffline) const VsOfflineBanner(),
+                  QuotaBarWidget(
+                    quotaAsync: quotaAsync,
+                    isFrench: isFrench,
+                    onUpgrade: () => context.push(AppRoutes.settings),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.slate,
+                  const SizedBox(height: 16),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.95,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    children: [
+                      ToolCardWidget(
+                        icon: Icons.document_scanner_rounded,
+                        title: isFrench
+                            ? 'Vérif. de plagiat'
+                            : 'Plagiarism Check',
+                        description: isFrench
+                            ? 'Analysez le contenu copié'
+                            : 'Scan for copied content',
+                        onTap: () => context.push(AppRoutes.scanner),
+                      ),
+                      ToolCardWidget(
+                        icon: Icons.swap_horiz_rounded,
+                        title: isFrench ? 'Convertisseur' : 'File Converter',
+                        description: 'PDF, DOCX, TXT',
+                        onTap: () => context.push(AppRoutes.converter),
+                      ),
+                      ToolCardWidget(
+                        icon: Icons.camera_alt_rounded,
+                        title: isFrench ? 'Numériseur OCR' : 'OCR Scanner',
+                        description: isFrench
+                            ? 'Numérisez des docs physiques'
+                            : 'Scan physical docs',
+                        onTap: () => context.push(AppRoutes.ocr),
+                      ),
+                      ToolCardWidget(
+                        icon: Icons.translate_rounded,
+                        title: isFrench ? 'Traducteur' : 'Translator',
+                        description: isFrench ? '100+ langues' : '100+ languages',
+                        onTap: () => context.push(AppRoutes.translator),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          isFrench ? 'Documents récents' : 'Recent Documents',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => context.push(AppRoutes.history),
+                        child: Text(isFrench ? 'Voir tout' : 'See all'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    height: 120,
+                    child: documents.isEmpty
+                        ? VsEmptyState(
+                            lottieAsset: 'assets/animations/empty.json',
+                            title: isFrench ? 'Aucun document' : 'No documents yet',
+                            subtitle: isFrench
+                                ? 'Importez votre premier document!'
+                                : 'Upload your first document!',
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: documents.length,
+                            itemBuilder: (context, index) {
+                              final document = documents[index];
+                              return Container(
+                                width: 160,
+                                margin: const EdgeInsets.only(right: 12),
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          _iconForType(document.type),
+                                          color: AppColors.vsAccent,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          document.name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          DateFormat.yMMMd().format(document.createdAt),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(color: AppColors.vsGray),
+                                        ),
+                                        const Spacer(),
+                                        Chip(label: Text(document.type.toUpperCase())),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  const SizedBox(height: 24),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        left: BorderSide(color: AppColors.vsAccent, width: 4),
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          isFrench
+                              ? 'Partagez VeriScript avec votre classe'
+                              : 'Share VeriScript with your class',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            final message = isFrench
+                                ? 'Découvrez VeriScript — détection de plagiat + conversion de fichiers pour les étudiants au Cameroun! Télécharger: https://play.google.com/store/apps/details?id=com.veriscipt.mobile'
+                                : 'Check out VeriScript — plagiarism detection + file conversion for students in Cameroon! Download: https://play.google.com/store/apps/details?id=com.veriscipt.mobile';
+                            Share.share(message);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF25D366),
+                            foregroundColor: Colors.white,
+                          ),
+                          icon: const Icon(Icons.share),
+                          label: Text(
+                            isFrench
+                                ? 'Partager sur WhatsApp'
+                                : 'Share on WhatsApp',
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class _RecentDocument {
+  const _RecentDocument({
+    required this.name,
+    required this.type,
+    required this.createdAt,
+  });
+
+  final String name;
+  final String type;
+  final DateTime createdAt;
+}
+
+String _displayNameFor(User? user) {
+  final metadataName = user?.userMetadata?['display_name']?.toString();
+  if (metadataName != null && metadataName.trim().isNotEmpty) {
+    return metadataName.split(' ').first;
+  }
+
+  final email = user?.email ?? 'Friend';
+  return email.split('@').first;
+}
+
+String _timeGreeting(bool isFrench, DateTime now) {
+  if (now.hour < 12) {
+    return isFrench ? 'Bonjour' : 'Good morning';
+  }
+  if (now.hour < 18) {
+    return isFrench ? 'Bon après-midi' : 'Good afternoon';
+  }
+  return isFrench ? 'Bonsoir' : 'Good evening';
+}
+
+IconData _iconForType(String type) {
+  switch (type.toLowerCase()) {
+    case 'pdf':
+      return Icons.picture_as_pdf;
+    case 'docx':
+      return Icons.description;
+    default:
+      return Icons.article;
   }
 }
