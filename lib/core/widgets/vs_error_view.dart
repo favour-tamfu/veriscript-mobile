@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'vs_button.dart';
+
 class VsErrorView extends StatelessWidget {
   const VsErrorView({
     super.key,
@@ -12,7 +14,28 @@ class VsErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement
-    return const SizedBox.shrink();
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 64,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
+          VsButton.primary(
+            label: 'Try again',
+            onPressed: onRetry,
+          ),
+        ],
+      ),
+    );
   }
 }

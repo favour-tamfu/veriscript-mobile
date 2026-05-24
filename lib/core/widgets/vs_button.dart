@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
+
 class VsButton extends StatelessWidget {
   const VsButton._({
     super.key,
@@ -63,8 +65,62 @@ class VsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement
-    return const SizedBox.shrink();
+    switch (variant) {
+      case _VsButtonVariant.primary:
+        return SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: isLoading ? null : onPressed,
+            child: isLoading
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.vsDark,
+                    ),
+                  )
+                : _buttonChild(),
+          ),
+        );
+      case _VsButtonVariant.secondary:
+        return SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: isLoading ? null : onPressed,
+            child: isLoading
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Text(label),
+          ),
+        );
+      case _VsButtonVariant.text:
+        return TextButton(
+          onPressed: onPressed,
+          child: Text(
+            label,
+            style: const TextStyle(color: AppColors.vsAccent),
+          ),
+        );
+    }
+  }
+
+  Widget _buttonChild() {
+    if (icon == null) {
+      return Text(label);
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon),
+        const SizedBox(width: 8),
+        Text(label),
+      ],
+    );
   }
 }
 
