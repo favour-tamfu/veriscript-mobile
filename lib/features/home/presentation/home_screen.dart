@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../core/local_db/app_database.dart';
 import '../../../core/providers/connectivity_provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
@@ -13,6 +14,15 @@ import '../../../core/widgets/vs_offline_banner.dart';
 import '../data/quota_repository.dart';
 import 'quota_bar_widget.dart';
 import 'tool_card_widget.dart';
+
+final recentDocumentsProvider = FutureProvider<List<DocumentsTableData>>((ref) async {
+  final userId = Supabase.instance.client.auth.currentUser?.id;
+  if (userId == null) {
+    return const <DocumentsTableData>[];
+  }
+
+  return ref.watch(documentsDaoProvider).getRecentDocuments(userId);
+});
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -25,7 +35,7 @@ class HomeScreen extends ConsumerWidget {
     final greeting = _timeGreeting(isFrench, DateTime.now());
     final quotaAsync = ref.watch(quotaProvider);
     final isOffline = ref.watch(isOfflineProvider);
-    final documents = const <_RecentDocument>[];
+    final documentsAsync = ref.watch(recentDocumentsProvider);
 
     return Scaffold(
       body: CustomScrollView(
@@ -144,55 +154,64 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 12),
                   SizedBox(
                     height: 120,
-                    child: documents.isEmpty
-                        ? VsEmptyState(
+                    child: documentsAsync.when(
+                      data: (documents) {
+                        if (documents.isEmpty) {
+                          return VsEmptyState(
                             lottieAsset: 'assets/animations/empty.json',
                             title: isFrench ? 'Aucun document' : 'No documents yet',
                             subtitle: isFrench
                                 ? 'Importez votre premier document!'
                                 : 'Upload your first document!',
-                          )
-                        : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: documents.length,
-                            itemBuilder: (context, index) {
-                              final document = documents[index];
-                              return Container(
-                                width: 160,
-                                margin: const EdgeInsets.only(right: 12),
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          _iconForType(document.type),
-                                          color: AppColors.vsAccent,
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          document.name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          DateFormat.yMMMd().format(document.createdAt),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.copyWith(color: AppColors.vsGray),
-                                        ),
-                                        const Spacer(),
-                                        Chip(label: Text(document.type.toUpperCase())),
-                                      ],
-                                    ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: documents.length,
+                          itemBuilder: (context, index) {
+                            final document = documents[index];
+                            return Container(
+                              width: 160,
+                              margin: const EdgeInsets.only(right: 12),
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        _iconForType(document.type),
+                                        color: AppColors.vsAccent,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        document.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        DateFormat.yMMMd().format(document.createdAt),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(color: AppColors.vsGray),
+                                      ),
+                                      const Spacer(),
+                                      Chip(label: Text(document.type.toUpperCase())),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      error: (_, __) => const SizedBox.shrink(),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Container(
@@ -243,18 +262,6 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _RecentDocument {
-  const _RecentDocument({
-    required this.name,
-    required this.type,
-    required this.createdAt,
-  });
-
-  final String name;
-  final String type;
-  final DateTime createdAt;
 }
 
 String _displayNameFor(User? user) {
