@@ -1,0 +1,3 @@
+class QuotaRepository {
+  // TODO: implement
+}

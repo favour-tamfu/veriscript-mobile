@@ -1,0 +1,3 @@
+class EdgeFunctionCaller {
+  // TODO: implement
+}

@@ -1,0 +1,3 @@
+class ConversionJobsTable {
+  // TODO: implement
+}

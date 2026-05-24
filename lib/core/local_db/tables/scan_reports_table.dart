@@ -1,0 +1,3 @@
+class ScanReportsTable {
+  // TODO: implement
+}

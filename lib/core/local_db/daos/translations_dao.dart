@@ -1,0 +1,3 @@
+class TranslationsDao {
+  // TODO: implement
+}

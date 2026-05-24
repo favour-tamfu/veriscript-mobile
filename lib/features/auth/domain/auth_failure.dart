@@ -1,0 +1,3 @@
+class AuthFailure {
+  // TODO: implement
+}

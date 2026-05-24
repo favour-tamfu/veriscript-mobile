@@ -1,0 +1,3 @@
+class TranslationsTable {
+  // TODO: implement
+}

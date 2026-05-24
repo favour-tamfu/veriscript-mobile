@@ -1,0 +1,3 @@
+class DocumentsDao {
+  // TODO: implement
+}

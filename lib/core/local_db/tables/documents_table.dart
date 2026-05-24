@@ -1,0 +1,3 @@
+class DocumentsTable {
+  // TODO: implement
+}
