@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
-import 'core/bootstrap/app_bootstrap.dart';
-import 'core/providers/app_providers.dart';
 
 Future<void> main() async {
-  final bootstrap = await AppBootstrap.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(
-    ProviderScope(
-      overrides: [
-        appConfigProvider.overrideWithValue(bootstrap.config),
-        bootstrapNotesProvider.overrideWithValue(bootstrap.notes),
-      ],
-      child: const VeriScriptApp(),
-    ),
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = const String.fromEnvironment('SENTRY_DSN');
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () async {
+      await Supabase.initialize(
+        url: const String.fromEnvironment('SUPABASE_URL'),
+        anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
+      );
+      runApp(const ProviderScope(child: VeriScriptApp()));
+    },
   );
 }
