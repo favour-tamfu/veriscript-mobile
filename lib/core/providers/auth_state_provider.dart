@@ -1,5 +1,8 @@
-class AuthStateProvider {
-  AuthStateProvider._();
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-  // TODO: implement
-}
+import '../supabase/supabase_providers.dart';
+
+final authStateProvider = StreamProvider<AuthState>((ref) {
+  return ref.watch(supabaseClientProvider).auth.onAuthStateChange;
+});
