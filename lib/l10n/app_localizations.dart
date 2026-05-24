@@ -98,311 +98,467 @@ abstract class AppLocalizations {
     Locale('fr')
   ];
 
-  /// No description provided for @onboardingTitle.
+  /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'Document tools built for real campus workflows'**
-  String get onboardingTitle;
+  /// **'VeriScript'**
+  String get appName;
 
-  /// No description provided for @onboardingBody.
+  /// No description provided for @splashTagline.
   ///
   /// In en, this message translates to:
-  /// **'Check originality, scan pages, convert files, and keep key documents offline without wasting mobile data.'**
-  String get onboardingBody;
+  /// **'Document Integrity Suite'**
+  String get splashTagline;
 
-  /// No description provided for @getStarted.
+  /// No description provided for @onboardingTitle1.
   ///
   /// In en, this message translates to:
-  /// **'Get started'**
-  String get getStarted;
+  /// **'Check for Plagiarism Instantly'**
+  String get onboardingTitle1;
 
-  /// No description provided for @authTitle.
+  /// No description provided for @onboardingBody1.
   ///
   /// In en, this message translates to:
-  /// **'Sign in to continue'**
-  String get authTitle;
+  /// **'Scan any document against billions of sources. Get detailed reports in seconds.'**
+  String get onboardingBody1;
 
-  /// No description provided for @authCreateTitle.
+  /// No description provided for @onboardingTitle2.
   ///
   /// In en, this message translates to:
-  /// **'Create your VeriScript account'**
-  String get authCreateTitle;
+  /// **'Convert, Translate & Scan'**
+  String get onboardingTitle2;
 
-  /// No description provided for @authBody.
+  /// No description provided for @onboardingBody2.
   ///
   /// In en, this message translates to:
-  /// **'Use your email to access your scans, conversions, and synced document history.'**
-  String get authBody;
+  /// **'PDF to Word, 100+ language translation, and OCR scanning — all in one app.'**
+  String get onboardingBody2;
 
-  /// No description provided for @authCreateBody.
+  /// No description provided for @onboardingTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Start with email sign-in and sync your document tools across devices.'**
-  String get authCreateBody;
+  /// **'Built for Students in Cameroon'**
+  String get onboardingTitle3;
 
-  /// No description provided for @signIn.
+  /// No description provided for @onboardingBody3.
   ///
   /// In en, this message translates to:
-  /// **'Sign in'**
-  String get signIn;
+  /// **'Join thousands of students at universities across Cameroon. Start free today.'**
+  String get onboardingBody3;
 
-  /// No description provided for @signOut.
+  /// No description provided for @onboardingCta.
   ///
   /// In en, this message translates to:
-  /// **'Sign out'**
-  String get signOut;
+  /// **'Get Started Free'**
+  String get onboardingCta;
 
-  /// No description provided for @createAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Create account'**
-  String get createAccount;
-
-  /// No description provided for @switchToSignIn.
+  /// No description provided for @onboardingSignIn.
   ///
   /// In en, this message translates to:
   /// **'Already have an account? Sign in'**
-  String get switchToSignIn;
+  String get onboardingSignIn;
 
-  /// No description provided for @resetPassword.
+  /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Reset password'**
-  String get resetPassword;
+  /// **'Welcome Back'**
+  String get loginTitle;
 
-  /// No description provided for @authEmailError.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email address.'**
-  String get authEmailError;
-
-  /// No description provided for @authPasswordError.
-  ///
-  /// In en, this message translates to:
-  /// **'Use at least 6 characters.'**
-  String get authPasswordError;
-
-  /// No description provided for @authResetNeedsEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email first to request a reset.'**
-  String get authResetNeedsEmail;
-
-  /// No description provided for @authResetSent.
-  ///
-  /// In en, this message translates to:
-  /// **'If the account exists, a reset link has been sent.'**
-  String get authResetSent;
-
-  /// No description provided for @authHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Supabase authentication and password reset can plug into this screen next.'**
-  String get authHint;
-
-  /// No description provided for @emailAddress.
+  /// No description provided for @loginEmail.
   ///
   /// In en, this message translates to:
   /// **'Email address'**
-  String get emailAddress;
+  String get loginEmail;
 
-  /// No description provided for @password.
+  /// No description provided for @loginPassword.
   ///
   /// In en, this message translates to:
   /// **'Password'**
-  String get password;
+  String get loginPassword;
 
-  /// No description provided for @homeGreeting.
+  /// No description provided for @loginButton.
   ///
   /// In en, this message translates to:
-  /// **'Welcome back'**
-  String get homeGreeting;
+  /// **'Sign In'**
+  String get loginButton;
+
+  /// No description provided for @loginForgot.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgot;
+
+  /// No description provided for @loginNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get loginNoAccount;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerTitle;
+
+  /// No description provided for @registerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get registerName;
+
+  /// No description provided for @registerEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get registerEmail;
+
+  /// No description provided for @registerPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get registerPassword;
+
+  /// No description provided for @registerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get registerConfirm;
+
+  /// No description provided for @registerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerButton;
+
+  /// No description provided for @registerTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the Terms of Service'**
+  String get registerTerms;
+
+  /// No description provided for @registerSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email to confirm your account'**
+  String get registerSuccess;
+
+  /// No description provided for @forgotTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get forgotTitle;
+
+  /// No description provided for @forgotEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get forgotEmail;
+
+  /// No description provided for @forgotButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get forgotButton;
+
+  /// No description provided for @forgotSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email for a reset link'**
+  String get forgotSuccess;
+
+  /// No description provided for @homeGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get homeGreetingMorning;
+
+  /// No description provided for @homeGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get homeGreetingAfternoon;
+
+  /// No description provided for @homeGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get homeGreetingEvening;
 
   /// No description provided for @homeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Your integrity and productivity tools are ready.'**
+  /// **'What would you like to do today?'**
   String get homeSubtitle;
 
-  /// No description provided for @homeSubtitleWithEmail.
+  /// No description provided for @homeToolScanner.
   ///
   /// In en, this message translates to:
-  /// **'Signed in as {email}. Your integrity and productivity tools are ready.'**
-  String homeSubtitleWithEmail(Object email);
+  /// **'Plagiarism Check'**
+  String get homeToolScanner;
 
-  /// No description provided for @featurePlagiarism.
+  /// No description provided for @homeToolScannerDesc.
   ///
   /// In en, this message translates to:
-  /// **'Plagiarism'**
-  String get featurePlagiarism;
+  /// **'Scan for copied content'**
+  String get homeToolScannerDesc;
 
-  /// No description provided for @featureOcr.
+  /// No description provided for @homeToolConverter.
   ///
   /// In en, this message translates to:
-  /// **'OCR'**
-  String get featureOcr;
+  /// **'File Converter'**
+  String get homeToolConverter;
 
-  /// No description provided for @featureTranslate.
+  /// No description provided for @homeToolConverterDesc.
   ///
   /// In en, this message translates to:
-  /// **'Translate'**
-  String get featureTranslate;
+  /// **'PDF, DOCX, TXT'**
+  String get homeToolConverterDesc;
 
-  /// No description provided for @featureOffline.
+  /// No description provided for @homeToolOcr.
   ///
   /// In en, this message translates to:
-  /// **'Offline'**
-  String get featureOffline;
+  /// **'OCR Scanner'**
+  String get homeToolOcr;
 
-  /// No description provided for @openConverter.
+  /// No description provided for @homeToolOcrDesc.
   ///
   /// In en, this message translates to:
-  /// **'Converter'**
-  String get openConverter;
+  /// **'Scan physical docs'**
+  String get homeToolOcrDesc;
 
-  /// No description provided for @openLibrary.
+  /// No description provided for @homeToolTranslator.
   ///
   /// In en, this message translates to:
-  /// **'Library'**
-  String get openLibrary;
+  /// **'Translator'**
+  String get homeToolTranslator;
 
-  /// No description provided for @openPlans.
+  /// No description provided for @homeToolTranslatorDesc.
   ///
   /// In en, this message translates to:
-  /// **'Plans'**
-  String get openPlans;
+  /// **'100+ languages'**
+  String get homeToolTranslatorDesc;
 
-  /// No description provided for @toolPlagiarismTitle.
+  /// No description provided for @homeRecentDocs.
   ///
   /// In en, this message translates to:
-  /// **'Plagiarism check'**
-  String get toolPlagiarismTitle;
+  /// **'Recent Documents'**
+  String get homeRecentDocs;
 
-  /// No description provided for @toolPlagiarismBody.
+  /// No description provided for @homeSeeAll.
   ///
   /// In en, this message translates to:
-  /// **'Compare drafts before submission.'**
-  String get toolPlagiarismBody;
+  /// **'See all'**
+  String get homeSeeAll;
 
-  /// No description provided for @toolConversionTitle.
+  /// No description provided for @homeEmptyDocs.
   ///
   /// In en, this message translates to:
-  /// **'File conversion'**
-  String get toolConversionTitle;
+  /// **'No documents yet'**
+  String get homeEmptyDocs;
 
-  /// No description provided for @toolConversionBody.
+  /// No description provided for @homeEmptyDocsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert PDF, DOCX, and TXT with low-data feedback.'**
-  String get toolConversionBody;
+  /// **'Upload your first document!'**
+  String get homeEmptyDocsSubtitle;
 
-  /// No description provided for @toolTranslationTitle.
+  /// No description provided for @homeUploadFirst.
   ///
   /// In en, this message translates to:
-  /// **'Translation'**
-  String get toolTranslationTitle;
+  /// **'Upload Document'**
+  String get homeUploadFirst;
 
-  /// No description provided for @toolTranslationBody.
+  /// No description provided for @homeShareLabel.
   ///
   /// In en, this message translates to:
-  /// **'English and French workflows with 100+ target languages.'**
-  String get toolTranslationBody;
+  /// **'Share VeriScript with your class'**
+  String get homeShareLabel;
 
-  /// No description provided for @toolOfflineTitle.
+  /// No description provided for @homeShareButton.
   ///
   /// In en, this message translates to:
-  /// **'Offline vault'**
-  String get toolOfflineTitle;
+  /// **'Share on WhatsApp'**
+  String get homeShareButton;
 
-  /// No description provided for @toolOfflineBody.
+  /// No description provided for @homeShareText.
   ///
   /// In en, this message translates to:
-  /// **'Keep recent documents available without a connection.'**
-  String get toolOfflineBody;
+  /// **'Check out VeriScript — plagiarism detection + file conversion for students in Cameroon! Download: https://play.google.com/store/apps/details?id=com.veriscipt.mobile'**
+  String get homeShareText;
 
-  /// No description provided for @recentDocuments.
+  /// No description provided for @homeMonthlyUsage.
   ///
   /// In en, this message translates to:
-  /// **'Recent documents'**
-  String get recentDocuments;
+  /// **'Monthly Usage'**
+  String get homeMonthlyUsage;
+
+  /// No description provided for @homeFreePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan'**
+  String get homeFreePlan;
+
+  /// No description provided for @homeUpgradeNudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade — unlimited access'**
+  String get homeUpgradeNudge;
 
   /// No description provided for @converterTitle.
   ///
   /// In en, this message translates to:
-  /// **'File converter'**
+  /// **'File Converter'**
   String get converterTitle;
 
-  /// No description provided for @converterBody.
+  /// No description provided for @converterSelectFile.
   ///
   /// In en, this message translates to:
-  /// **'Queue files for conversion and keep the request history offline.'**
-  String get converterBody;
+  /// **'Tap to select a file'**
+  String get converterSelectFile;
 
-  /// No description provided for @converterSetupNotice.
+  /// No description provided for @converterFileTypes.
   ///
   /// In en, this message translates to:
-  /// **'Set CONVERTER_ENDPOINT in .env.local to send files to your conversion backend.'**
-  String get converterSetupNotice;
+  /// **'PDF, DOCX, TXT · Max 10MB'**
+  String get converterFileTypes;
 
-  /// No description provided for @converterTargetFormat.
+  /// No description provided for @converterLargeFile.
   ///
   /// In en, this message translates to:
-  /// **'Target format'**
-  String get converterTargetFormat;
+  /// **'Large file — this may use significant mobile data'**
+  String get converterLargeFile;
 
-  /// No description provided for @converterPickFile.
+  /// No description provided for @converterConvertTo.
   ///
   /// In en, this message translates to:
-  /// **'Pick a file to convert'**
-  String get converterPickFile;
+  /// **'Convert to:'**
+  String get converterConvertTo;
 
-  /// No description provided for @libraryTitle.
+  /// No description provided for @converterChooseDifferent.
   ///
   /// In en, this message translates to:
-  /// **'Offline document library'**
-  String get libraryTitle;
+  /// **'Choose different file'**
+  String get converterChooseDifferent;
 
-  /// No description provided for @libraryBody.
+  /// No description provided for @converterButton.
   ///
   /// In en, this message translates to:
-  /// **'Saved conversions and sync metadata stay available even when the network is weak.'**
-  String get libraryBody;
+  /// **'Convert Now'**
+  String get converterButton;
 
-  /// No description provided for @libraryEmpty.
+  /// No description provided for @converterFreeRemaining.
   ///
   /// In en, this message translates to:
-  /// **'No documents have been saved yet.'**
-  String get libraryEmpty;
+  /// **'{used} of {max} free conversions remaining this month'**
+  String converterFreeRemaining(int used, int max);
 
-  /// No description provided for @paywallTitle.
+  /// No description provided for @converterUploading.
   ///
   /// In en, this message translates to:
-  /// **'VeriScript Plus'**
-  String get paywallTitle;
+  /// **'Uploading your file...'**
+  String get converterUploading;
 
-  /// No description provided for @paywallBody.
+  /// No description provided for @converterConverting.
   ///
   /// In en, this message translates to:
-  /// **'Unlock higher limits for conversion, OCR, translation, and offline access.'**
-  String get paywallBody;
+  /// **'Converting your document...'**
+  String get converterConverting;
 
-  /// No description provided for @paywallNoPackages.
+  /// No description provided for @converterDone.
   ///
   /// In en, this message translates to:
-  /// **'No live packages are available yet. Add offerings in RevenueCat to enable purchases.'**
-  String get paywallNoPackages;
+  /// **'Conversion complete!'**
+  String get converterDone;
 
-  /// No description provided for @paywallUnlock.
+  /// No description provided for @converterDownload.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Plus'**
-  String get paywallUnlock;
+  /// **'Download File'**
+  String get converterDownload;
 
-  /// No description provided for @paywallRestore.
+  /// No description provided for @converterAnother.
   ///
   /// In en, this message translates to:
-  /// **'Restore purchases'**
-  String get paywallRestore;
+  /// **'Convert Another'**
+  String get converterAnother;
+
+  /// No description provided for @errorNetworkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection'**
+  String get errorNetworkTitle;
+
+  /// No description provided for @errorNetworkBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your internet and try again.'**
+  String get errorNetworkBody;
+
+  /// No description provided for @errorGenericTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorGenericTitle;
+
+  /// No description provided for @errorRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get errorRetry;
+
+  /// No description provided for @offlineBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline — showing cached data'**
+  String get offlineBanner;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language / Langue'**
+  String get settingsLanguage;
+
+  /// No description provided for @stubComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming in Phase 2'**
+  String get stubComingSoon;
+
+  /// No description provided for @authErrorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password'**
+  String get authErrorInvalidCredentials;
+
+  /// No description provided for @authErrorEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists with this email'**
+  String get authErrorEmailInUse;
+
+  /// No description provided for @authErrorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get authErrorWeakPassword;
+
+  /// No description provided for @authErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Check your internet.'**
+  String get authErrorNetwork;
+
+  /// No description provided for @authErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get authErrorUnknown;
 }
 
 class _AppLocalizationsDelegate
