@@ -12,9 +12,11 @@ import '../../features/converter/presentation/converter_screen.dart';
 import '../../features/history/presentation/history_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
+import '../../features/ocr/presentation/ocr_screen.dart';
 import '../../features/scanner/presentation/scanner_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
+import '../../features/translator/presentation/translator_screen.dart';
 import 'app_routes.dart';
 import 'auth_guard.dart';
 
@@ -49,6 +51,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.forgotPassword,
         builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.ocr,
+        builder: (context, state) => const OcrScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.translator,
+        builder: (context, state) => const TranslatorScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
