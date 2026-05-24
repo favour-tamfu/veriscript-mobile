@@ -1,60 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_shell.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
-  static const routeName = 'splash';
-  static const routePath = '/';
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _redirectAfterDelay();
+  }
+
+  Future<void> _redirectAfterDelay() async {
+    await Future<void>.delayed(const Duration(milliseconds: 2800));
+    if (!mounted) {
+      return;
+    }
+
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      context.go(AppRoutes.home);
+      return;
+    }
+
+    final preferences = await SharedPreferences.getInstance();
+    final onboardingDone = preferences.getBool('onboarding_done') ?? false;
+
+    if (!mounted) {
+      return;
+    }
+
+    if (!onboardingDone) {
+      context.go(AppRoutes.onboarding);
+      return;
+    }
+
+    context.go(AppRoutes.login);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context);
+    final tagline = locale.languageCode == 'fr'
+        ? 'Suite d\'intégrité documentaire'
+        : 'Document Integrity Suite';
 
-    return AppShell(
-      child: Center(
+    return Scaffold(
+      backgroundColor: AppColors.vsBackground,
+      body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 88,
-              height: 88,
-              decoration: BoxDecoration(
-                color: AppColors.deepNavy,
-                borderRadius: BorderRadius.circular(28),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x221A3C5E),
-                    blurRadius: 24,
-                    offset: Offset(0, 12),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.verified_rounded,
-                color: Colors.white,
-                size: 42,
-              ),
+            Lottie.asset(
+              'assets/animations/splash.json',
+              width: 200,
+              height: 200,
+              repeat: false,
             ),
             const SizedBox(height: 24),
             Text(
               'VeriScript',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: AppColors.vsPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              width: 60,
+              height: 3,
+              color: AppColors.vsAccent,
             ),
             const SizedBox(height: 8),
             Text(
-              'Integrity tools for low-data, multilingual workflows.',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.slate,
-              ),
+              tagline,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.vsGray,
+                    fontStyle: FontStyle.italic,
+                  ),
             ),
-            const SizedBox(height: 28),
-            const CircularProgressIndicator(),
           ],
         ),
       ),
