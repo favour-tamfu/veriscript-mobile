@@ -10,7 +10,8 @@
       "Bash(flutter run *)",
       "Bash(flutter devices *)",
       "Bash(git checkout *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   },
   "outputStyle": "Proactive"
