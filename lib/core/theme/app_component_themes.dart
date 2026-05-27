@@ -57,7 +57,7 @@ class AppComponentThemes {
 
   static NavigationBarThemeData get navigationBar {
     return NavigationBarThemeData(
-      indicatorColor: AppColors.vsAccent.withOpacity(0.2),
+      indicatorColor: AppColors.vsAccent.withValues(alpha: 0.2),
       backgroundColor: AppColors.vsSurface,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         final color = states.contains(WidgetState.selected)

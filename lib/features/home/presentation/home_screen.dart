@@ -238,7 +238,7 @@ class HomeScreen extends ConsumerWidget {
                             final message = isFrench
                                 ? 'Découvrez VeriScript — détection de plagiat + conversion de fichiers pour les étudiants au Cameroun! Télécharger: https://play.google.com/store/apps/details?id=com.veriscipt.mobile'
                                 : 'Check out VeriScript — plagiarism detection + file conversion for students in Cameroon! Download: https://play.google.com/store/apps/details?id=com.veriscipt.mobile';
-                            Share.share(message);
+                            SharePlus.instance.share(ShareParams(text: message));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF25D366),

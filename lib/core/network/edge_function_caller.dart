@@ -17,7 +17,9 @@ class EdgeFunctionCaller {
       final response = await _client.functions.invoke(functionName, body: body);
       return response.data;
     } on FunctionException catch (error) {
-      throw EdgeFunctionException(error.details?.toString() ?? error.reasonPhrase);
+      throw EdgeFunctionException(
+        error.details?.toString() ?? error.reasonPhrase ?? 'Edge function failed.',
+      );
     } catch (error) {
       throw EdgeFunctionException(error.toString());
     }

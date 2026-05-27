@@ -51,12 +51,20 @@ class NetworkError extends AuthFailure {
 }
 
 class Unknown extends AuthFailure {
-  const Unknown();
+  const Unknown({
+    this.overrideEn,
+    this.overrideFr,
+  });
+
+  final String? overrideEn;
+  final String? overrideFr;
 
   @override
   String message(Locale locale) {
-    return locale.languageCode == 'fr'
-        ? 'Quelque chose s\'est mal passé. Veuillez réessayer.'
-        : 'Something went wrong. Please try again.';
+    if (locale.languageCode == 'fr') {
+      return overrideFr ?? 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+    }
+
+    return overrideEn ?? 'Something went wrong. Please try again.';
   }
 }

@@ -27,7 +27,11 @@ class ConversionRepository {
 
     final fileName = p.basename(file.path);
     final storagePath = '$userId/$fileName';
-    await _storage.from('documents').upload(storagePath, file, upsert: true);
+    await _storage.from('documents').upload(
+          storagePath,
+          file,
+          fileOptions: const FileOptions(upsert: true),
+        );
     return storagePath;
   }
 

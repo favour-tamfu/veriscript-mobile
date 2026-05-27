@@ -70,9 +70,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final isFrench = Localizations.localeOf(context).languageCode == 'fr';
-    final page = _pages[_currentIndex];
-    final title = _resolveCopy(page.titleKey, isFrench);
-    final body = _resolveCopy(page.bodyKey, isFrench);
 
     return Scaffold(
       backgroundColor: AppColors.vsBackground,

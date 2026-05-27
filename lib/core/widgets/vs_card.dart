@@ -30,7 +30,7 @@ class VsCard extends StatelessWidget {
           : InkWell(
               onTap: onTap,
               borderRadius: BorderRadius.circular(16),
-              splashColor: AppColors.vsAccent.withOpacity(0.1),
+              splashColor: AppColors.vsAccent.withValues(alpha: 0.1),
               child: content,
             ),
     );

@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_error_view.dart';
 import '../presentation/converter_notifier.dart';
@@ -47,7 +43,9 @@ class ConverterScreen extends ConsumerWidget {
               return;
             }
 
-            if (await file.length() > 5 * 1024 * 1024) {
+            final isLargeFile = await file.length() > 5 * 1024 * 1024;
+            if (!context.mounted) return;
+            if (isLargeFile) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(

@@ -5,7 +5,12 @@
       "Bash(flutter build *)",
       "Bash(Select-String \"purchases_flutter\")",
       "PowerShell(Test-Path *)",
-      "PowerShell(Get-ChildItem *)"
+      "PowerShell(Get-ChildItem *)",
+      "Bash(flutter analyze *)",
+      "Bash(flutter run *)",
+      "Bash(flutter devices *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)"
     ]
   },
   "outputStyle": "Proactive"

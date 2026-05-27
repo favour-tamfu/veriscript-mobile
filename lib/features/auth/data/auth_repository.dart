@@ -22,8 +22,11 @@ class AuthRepository {
       throw _mapAuthException(error);
     } on SocketException {
       throw const NetworkError();
-    } catch (_) {
-      throw const Unknown();
+    } catch (error) {
+      throw Unknown(
+        overrideEn: error.toString(),
+        overrideFr: error.toString(),
+      );
     }
   }
 
@@ -33,26 +36,23 @@ class AuthRepository {
     String displayName,
   ) async {
     try {
-      final response = await _client.auth.signUp(
+      await _client.auth.signUp(
         email: email,
         password: password,
-        data: <String, dynamic>{'display_name': displayName},
-      );
-
-      final userId = response.user?.id;
-      if (userId != null) {
-        await _client.from('profiles').upsert(<String, dynamic>{
-          'id': userId,
-          'email': email,
+        data: <String, dynamic>{
           'display_name': displayName,
-        });
-      }
+          'full_name': displayName,
+        },
+      );
     } on AuthException catch (error) {
       throw _mapAuthException(error);
     } on SocketException {
       throw const NetworkError();
-    } catch (_) {
-      throw const Unknown();
+    } catch (error) {
+      throw Unknown(
+        overrideEn: error.toString(),
+        overrideFr: error.toString(),
+      );
     }
   }
 
@@ -61,8 +61,11 @@ class AuthRepository {
       await _client.auth.signOut();
     } on SocketException {
       throw const NetworkError();
-    } catch (_) {
-      throw const Unknown();
+    } catch (error) {
+      throw Unknown(
+        overrideEn: error.toString(),
+        overrideFr: error.toString(),
+      );
     }
   }
 
@@ -73,8 +76,11 @@ class AuthRepository {
       throw _mapAuthException(error);
     } on SocketException {
       throw const NetworkError();
-    } catch (_) {
-      throw const Unknown();
+    } catch (error) {
+      throw Unknown(
+        overrideEn: error.toString(),
+        overrideFr: error.toString(),
+      );
     }
   }
 
@@ -100,6 +106,9 @@ class AuthRepository {
       return const NetworkError();
     }
 
-    return const Unknown();
+    return Unknown(
+      overrideEn: error.message,
+      overrideFr: error.message,
+    );
   }
 }
