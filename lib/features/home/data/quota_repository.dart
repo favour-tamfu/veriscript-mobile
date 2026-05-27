@@ -15,6 +15,7 @@ class UsageQuota {
     required this.ocrUsed,
     required this.charsTranslated,
     required this.periodStart,
+    this.bonusScans = 0,
   });
 
   final int scansUsed;
@@ -22,6 +23,7 @@ class UsageQuota {
   final int ocrUsed;
   final int charsTranslated;
   final DateTime periodStart;
+  final int bonusScans;
 }
 
 class QuotaRepository {
@@ -40,6 +42,11 @@ class QuotaRepository {
           .select()
           .eq('user_id', userId)
           .maybeSingle();
+      final profile = await _client
+          .from('profiles')
+          .select('bonus_scans')
+          .eq('id', userId)
+          .maybeSingle();
 
       if (data == null) {
         return _fallbackQuota();
@@ -54,6 +61,7 @@ class QuotaRepository {
               data['period_start']?.toString() ?? '',
             ) ??
             DateTime(DateTime.now().year, DateTime.now().month, 1),
+        bonusScans: (profile?['bonus_scans'] as num?)?.toInt() ?? 0,
       );
     } catch (_) {
       return _fallbackQuota();

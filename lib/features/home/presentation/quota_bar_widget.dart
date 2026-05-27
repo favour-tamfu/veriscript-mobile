@@ -100,6 +100,34 @@ class QuotaBarWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                 ],
+                if (quota.bonusScans > 0) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.vsWarning.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.vsWarning.withValues(alpha: 0.4)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.stars_rounded,
+                            size: 16, color: AppColors.vsWarning),
+                        const SizedBox(width: 6),
+                        Text(
+                          isFrench
+                              ? '${quota.bonusScans} scans bonus disponibles'
+                              : '${quota.bonusScans} bonus scans available',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: AppColors.vsWarning,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 if (isAtLimit)
                   TextButton(
                     onPressed: onUpgrade,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../domain/auth_failure.dart';
+import '../../referral/data/referral_repository.dart';
 import 'auth_notifier.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -20,6 +22,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
+  final _referralController = TextEditingController();
 
   bool _acceptTerms = false;
   bool _obscurePassword = true;
@@ -31,6 +34,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmController.dispose();
+    _referralController.dispose();
     super.dispose();
   }
 
@@ -45,6 +49,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             _passwordController.text,
             _nameController.text.trim(),
           );
+
+      // Apply referral code if provided
+      final referralCode = _referralController.text.trim();
+      if (referralCode.isNotEmpty) {
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId != null) {
+          await ref
+              .read(referralRepositoryProvider)
+              .applyReferralCode(referralCode, userId)
+              .catchError((_) => false);
+        }
+      }
+
       if (!mounted) {
         return;
       }
@@ -213,6 +230,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 }
                                 return null;
                               },
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _referralController,
+                              textCapitalization: TextCapitalization.characters,
+                              decoration: InputDecoration(
+                                labelText: isFrench
+                                    ? 'Code de parrainage (optionnel)'
+                                    : 'Referral code (optional)',
+                                hintText: isFrench
+                                    ? 'Entrez le code d\'un ami'
+                                    : 'Enter a friend\'s referral code',
+                                prefixIcon: const Icon(Icons.card_giftcard_rounded),
+                              ),
                             ),
                             const SizedBox(height: 12),
                             CheckboxListTile(

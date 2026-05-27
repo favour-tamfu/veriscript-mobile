@@ -4,53 +4,57 @@ part of 'app_database.dart';
 
 // ignore_for_file: type=lint
 class $DocumentsTableTable extends DocumentsTable
-    with TableInfo<$DocumentsTableTable, DocumentsTableData> {
+    with drift.TableInfo<$DocumentsTableTable, DocumentsTableData> {
   @override
-  final GeneratedDatabase attachedDatabase;
+  final drift.GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DocumentsTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const drift.VerificationMeta _idMeta =
+      const drift.VerificationMeta('id');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> id = drift.GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  static const drift.VerificationMeta _userIdMeta =
+      const drift.VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final drift.GeneratedColumn<String> userId =
+      drift.GeneratedColumn<String>('user_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _nameMeta =
+      const drift.VerificationMeta('name');
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> name = drift.GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  static const drift.VerificationMeta _typeMeta =
+      const drift.VerificationMeta('type');
   @override
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> type = drift.GeneratedColumn<String>(
       'type', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _storagePathMeta =
-      const VerificationMeta('storagePath');
+  static const drift.VerificationMeta _storagePathMeta =
+      const drift.VerificationMeta('storagePath');
   @override
-  late final GeneratedColumn<String> storagePath = GeneratedColumn<String>(
-      'storage_path', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _sizeBytesMeta =
-      const VerificationMeta('sizeBytes');
+  late final drift.GeneratedColumn<String> storagePath =
+      drift.GeneratedColumn<String>('storage_path', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _sizeBytesMeta =
+      const drift.VerificationMeta('sizeBytes');
   @override
-  late final GeneratedColumn<int> sizeBytes = GeneratedColumn<int>(
+  late final drift.GeneratedColumn<int> sizeBytes = drift.GeneratedColumn<int>(
       'size_bytes', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
+  static const drift.VerificationMeta _createdAtMeta =
+      const drift.VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
+  late final drift.GeneratedColumn<DateTime> createdAt =
+      drift.GeneratedColumn<DateTime>('created_at', aliasedName, false,
+          type: DriftSqlType.dateTime,
+          requiredDuringInsert: false,
+          defaultValue: drift.currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns =>
+  List<drift.GeneratedColumn> get $columns =>
       [id, userId, name, type, storagePath, sizeBytes, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -58,9 +62,10 @@ class $DocumentsTableTable extends DocumentsTable
   String get actualTableName => $name;
   static const String $name = 'documents_table';
   @override
-  VerificationContext validateIntegrity(Insertable<DocumentsTableData> instance,
+  drift.VerificationContext validateIntegrity(
+      drift.Insertable<DocumentsTableData> instance,
       {bool isInserting = false}) {
-    final context = VerificationContext();
+    final context = drift.VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
@@ -105,7 +110,7 @@ class $DocumentsTableTable extends DocumentsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<drift.GeneratedColumn> get $primaryKey => {id};
   @override
   DocumentsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -133,8 +138,8 @@ class $DocumentsTableTable extends DocumentsTable
   }
 }
 
-class DocumentsTableData extends DataClass
-    implements Insertable<DocumentsTableData> {
+class DocumentsTableData extends drift.DataClass
+    implements drift.Insertable<DocumentsTableData> {
   final String id;
   final String userId;
   final String name;
@@ -151,37 +156,37 @@ class DocumentsTableData extends DataClass
       this.sizeBytes,
       required this.createdAt});
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['user_id'] = Variable<String>(userId);
-    map['name'] = Variable<String>(name);
-    map['type'] = Variable<String>(type);
-    map['storage_path'] = Variable<String>(storagePath);
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    map['id'] = drift.Variable<String>(id);
+    map['user_id'] = drift.Variable<String>(userId);
+    map['name'] = drift.Variable<String>(name);
+    map['type'] = drift.Variable<String>(type);
+    map['storage_path'] = drift.Variable<String>(storagePath);
     if (!nullToAbsent || sizeBytes != null) {
-      map['size_bytes'] = Variable<int>(sizeBytes);
+      map['size_bytes'] = drift.Variable<int>(sizeBytes);
     }
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = drift.Variable<DateTime>(createdAt);
     return map;
   }
 
   DocumentsTableCompanion toCompanion(bool nullToAbsent) {
     return DocumentsTableCompanion(
-      id: Value(id),
-      userId: Value(userId),
-      name: Value(name),
-      type: Value(type),
-      storagePath: Value(storagePath),
+      id: drift.Value(id),
+      userId: drift.Value(userId),
+      name: drift.Value(name),
+      type: drift.Value(type),
+      storagePath: drift.Value(storagePath),
       sizeBytes: sizeBytes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(sizeBytes),
-      createdAt: Value(createdAt),
+          ? const drift.Value.absent()
+          : drift.Value(sizeBytes),
+      createdAt: drift.Value(createdAt),
     );
   }
 
   factory DocumentsTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return DocumentsTableData(
       id: serializer.fromJson<String>(json['id']),
       userId: serializer.fromJson<String>(json['userId']),
@@ -194,7 +199,7 @@ class DocumentsTableData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'userId': serializer.toJson<String>(userId),
@@ -212,7 +217,7 @@ class DocumentsTableData extends DataClass
           String? name,
           String? type,
           String? storagePath,
-          Value<int?> sizeBytes = const Value.absent(),
+          drift.Value<int?> sizeBytes = const drift.Value.absent(),
           DateTime? createdAt}) =>
       DocumentsTableData(
         id: id ?? this.id,
@@ -266,24 +271,25 @@ class DocumentsTableData extends DataClass
           other.createdAt == this.createdAt);
 }
 
-class DocumentsTableCompanion extends UpdateCompanion<DocumentsTableData> {
-  final Value<String> id;
-  final Value<String> userId;
-  final Value<String> name;
-  final Value<String> type;
-  final Value<String> storagePath;
-  final Value<int?> sizeBytes;
-  final Value<DateTime> createdAt;
-  final Value<int> rowid;
+class DocumentsTableCompanion
+    extends drift.UpdateCompanion<DocumentsTableData> {
+  final drift.Value<String> id;
+  final drift.Value<String> userId;
+  final drift.Value<String> name;
+  final drift.Value<String> type;
+  final drift.Value<String> storagePath;
+  final drift.Value<int?> sizeBytes;
+  final drift.Value<DateTime> createdAt;
+  final drift.Value<int> rowid;
   const DocumentsTableCompanion({
-    this.id = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.name = const Value.absent(),
-    this.type = const Value.absent(),
-    this.storagePath = const Value.absent(),
-    this.sizeBytes = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.id = const drift.Value.absent(),
+    this.userId = const drift.Value.absent(),
+    this.name = const drift.Value.absent(),
+    this.type = const drift.Value.absent(),
+    this.storagePath = const drift.Value.absent(),
+    this.sizeBytes = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
   });
   DocumentsTableCompanion.insert({
     required String id,
@@ -291,25 +297,25 @@ class DocumentsTableCompanion extends UpdateCompanion<DocumentsTableData> {
     required String name,
     required String type,
     required String storagePath,
-    this.sizeBytes = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        userId = Value(userId),
-        name = Value(name),
-        type = Value(type),
-        storagePath = Value(storagePath);
-  static Insertable<DocumentsTableData> custom({
-    Expression<String>? id,
-    Expression<String>? userId,
-    Expression<String>? name,
-    Expression<String>? type,
-    Expression<String>? storagePath,
-    Expression<int>? sizeBytes,
-    Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
+    this.sizeBytes = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
+  })  : id = drift.Value(id),
+        userId = drift.Value(userId),
+        name = drift.Value(name),
+        type = drift.Value(type),
+        storagePath = drift.Value(storagePath);
+  static drift.Insertable<DocumentsTableData> custom({
+    drift.Expression<String>? id,
+    drift.Expression<String>? userId,
+    drift.Expression<String>? name,
+    drift.Expression<String>? type,
+    drift.Expression<String>? storagePath,
+    drift.Expression<int>? sizeBytes,
+    drift.Expression<DateTime>? createdAt,
+    drift.Expression<int>? rowid,
   }) {
-    return RawValuesInsertable({
+    return drift.RawValuesInsertable({
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (name != null) 'name': name,
@@ -322,14 +328,14 @@ class DocumentsTableCompanion extends UpdateCompanion<DocumentsTableData> {
   }
 
   DocumentsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? userId,
-      Value<String>? name,
-      Value<String>? type,
-      Value<String>? storagePath,
-      Value<int?>? sizeBytes,
-      Value<DateTime>? createdAt,
-      Value<int>? rowid}) {
+      {drift.Value<String>? id,
+      drift.Value<String>? userId,
+      drift.Value<String>? name,
+      drift.Value<String>? type,
+      drift.Value<String>? storagePath,
+      drift.Value<int?>? sizeBytes,
+      drift.Value<DateTime>? createdAt,
+      drift.Value<int>? rowid}) {
     return DocumentsTableCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
@@ -343,31 +349,31 @@ class DocumentsTableCompanion extends UpdateCompanion<DocumentsTableData> {
   }
 
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = drift.Variable<String>(id.value);
     }
     if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
+      map['user_id'] = drift.Variable<String>(userId.value);
     }
     if (name.present) {
-      map['name'] = Variable<String>(name.value);
+      map['name'] = drift.Variable<String>(name.value);
     }
     if (type.present) {
-      map['type'] = Variable<String>(type.value);
+      map['type'] = drift.Variable<String>(type.value);
     }
     if (storagePath.present) {
-      map['storage_path'] = Variable<String>(storagePath.value);
+      map['storage_path'] = drift.Variable<String>(storagePath.value);
     }
     if (sizeBytes.present) {
-      map['size_bytes'] = Variable<int>(sizeBytes.value);
+      map['size_bytes'] = drift.Variable<int>(sizeBytes.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = drift.Variable<DateTime>(createdAt.value);
     }
     if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+      map['rowid'] = drift.Variable<int>(rowid.value);
     }
     return map;
   }
@@ -389,58 +395,61 @@ class DocumentsTableCompanion extends UpdateCompanion<DocumentsTableData> {
 }
 
 class $ScanReportsTableTable extends ScanReportsTable
-    with TableInfo<$ScanReportsTableTable, ScanReportsTableData> {
+    with drift.TableInfo<$ScanReportsTableTable, ScanReportsTableData> {
   @override
-  final GeneratedDatabase attachedDatabase;
+  final drift.GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ScanReportsTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const drift.VerificationMeta _idMeta =
+      const drift.VerificationMeta('id');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> id = drift.GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _documentIdMeta =
-      const VerificationMeta('documentId');
+  static const drift.VerificationMeta _documentIdMeta =
+      const drift.VerificationMeta('documentId');
   @override
-  late final GeneratedColumn<String> documentId = GeneratedColumn<String>(
-      'document_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  late final drift.GeneratedColumn<String> documentId =
+      drift.GeneratedColumn<String>('document_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _userIdMeta =
+      const drift.VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _similarityPctMeta =
-      const VerificationMeta('similarityPct');
+  late final drift.GeneratedColumn<String> userId =
+      drift.GeneratedColumn<String>('user_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _similarityPctMeta =
+      const drift.VerificationMeta('similarityPct');
   @override
-  late final GeneratedColumn<double> similarityPct = GeneratedColumn<double>(
-      'similarity_pct', aliasedName, true,
-      type: DriftSqlType.double, requiredDuringInsert: false);
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  late final drift.GeneratedColumn<double> similarityPct =
+      drift.GeneratedColumn<double>('similarity_pct', aliasedName, true,
+          type: DriftSqlType.double, requiredDuringInsert: false);
+  static const drift.VerificationMeta _statusMeta =
+      const drift.VerificationMeta('status');
   @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-      'status', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _sourcesJsonMeta =
-      const VerificationMeta('sourcesJson');
+  late final drift.GeneratedColumn<String> status =
+      drift.GeneratedColumn<String>('status', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _sourcesJsonMeta =
+      const drift.VerificationMeta('sourcesJson');
   @override
-  late final GeneratedColumn<String> sourcesJson = GeneratedColumn<String>(
-      'sources_json', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _reportPdfUrlMeta =
-      const VerificationMeta('reportPdfUrl');
+  late final drift.GeneratedColumn<String> sourcesJson =
+      drift.GeneratedColumn<String>('sources_json', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const drift.VerificationMeta _reportPdfUrlMeta =
+      const drift.VerificationMeta('reportPdfUrl');
   @override
-  late final GeneratedColumn<String> reportPdfUrl = GeneratedColumn<String>(
-      'report_pdf_url', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
+  late final drift.GeneratedColumn<String> reportPdfUrl =
+      drift.GeneratedColumn<String>('report_pdf_url', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const drift.VerificationMeta _createdAtMeta =
+      const drift.VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  late final drift.GeneratedColumn<DateTime> createdAt =
+      drift.GeneratedColumn<DateTime>('created_at', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [
+  List<drift.GeneratedColumn> get $columns => [
         id,
         documentId,
         userId,
@@ -456,10 +465,10 @@ class $ScanReportsTableTable extends ScanReportsTable
   String get actualTableName => $name;
   static const String $name = 'scan_reports_table';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<ScanReportsTableData> instance,
+  drift.VerificationContext validateIntegrity(
+      drift.Insertable<ScanReportsTableData> instance,
       {bool isInserting = false}) {
-    final context = VerificationContext();
+    final context = drift.VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
@@ -514,7 +523,7 @@ class $ScanReportsTableTable extends ScanReportsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<drift.GeneratedColumn> get $primaryKey => {id};
   @override
   ScanReportsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -544,8 +553,8 @@ class $ScanReportsTableTable extends ScanReportsTable
   }
 }
 
-class ScanReportsTableData extends DataClass
-    implements Insertable<ScanReportsTableData> {
+class ScanReportsTableData extends drift.DataClass
+    implements drift.Insertable<ScanReportsTableData> {
   final String id;
   final String documentId;
   final String userId;
@@ -564,47 +573,47 @@ class ScanReportsTableData extends DataClass
       this.reportPdfUrl,
       required this.createdAt});
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['document_id'] = Variable<String>(documentId);
-    map['user_id'] = Variable<String>(userId);
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    map['id'] = drift.Variable<String>(id);
+    map['document_id'] = drift.Variable<String>(documentId);
+    map['user_id'] = drift.Variable<String>(userId);
     if (!nullToAbsent || similarityPct != null) {
-      map['similarity_pct'] = Variable<double>(similarityPct);
+      map['similarity_pct'] = drift.Variable<double>(similarityPct);
     }
-    map['status'] = Variable<String>(status);
+    map['status'] = drift.Variable<String>(status);
     if (!nullToAbsent || sourcesJson != null) {
-      map['sources_json'] = Variable<String>(sourcesJson);
+      map['sources_json'] = drift.Variable<String>(sourcesJson);
     }
     if (!nullToAbsent || reportPdfUrl != null) {
-      map['report_pdf_url'] = Variable<String>(reportPdfUrl);
+      map['report_pdf_url'] = drift.Variable<String>(reportPdfUrl);
     }
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = drift.Variable<DateTime>(createdAt);
     return map;
   }
 
   ScanReportsTableCompanion toCompanion(bool nullToAbsent) {
     return ScanReportsTableCompanion(
-      id: Value(id),
-      documentId: Value(documentId),
-      userId: Value(userId),
+      id: drift.Value(id),
+      documentId: drift.Value(documentId),
+      userId: drift.Value(userId),
       similarityPct: similarityPct == null && nullToAbsent
-          ? const Value.absent()
-          : Value(similarityPct),
-      status: Value(status),
+          ? const drift.Value.absent()
+          : drift.Value(similarityPct),
+      status: drift.Value(status),
       sourcesJson: sourcesJson == null && nullToAbsent
-          ? const Value.absent()
-          : Value(sourcesJson),
+          ? const drift.Value.absent()
+          : drift.Value(sourcesJson),
       reportPdfUrl: reportPdfUrl == null && nullToAbsent
-          ? const Value.absent()
-          : Value(reportPdfUrl),
-      createdAt: Value(createdAt),
+          ? const drift.Value.absent()
+          : drift.Value(reportPdfUrl),
+      createdAt: drift.Value(createdAt),
     );
   }
 
   factory ScanReportsTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return ScanReportsTableData(
       id: serializer.fromJson<String>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
@@ -618,7 +627,7 @@ class ScanReportsTableData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'documentId': serializer.toJson<String>(documentId),
@@ -635,10 +644,10 @@ class ScanReportsTableData extends DataClass
           {String? id,
           String? documentId,
           String? userId,
-          Value<double?> similarityPct = const Value.absent(),
+          drift.Value<double?> similarityPct = const drift.Value.absent(),
           String? status,
-          Value<String?> sourcesJson = const Value.absent(),
-          Value<String?> reportPdfUrl = const Value.absent(),
+          drift.Value<String?> sourcesJson = const drift.Value.absent(),
+          drift.Value<String?> reportPdfUrl = const drift.Value.absent(),
           DateTime? createdAt}) =>
       ScanReportsTableData(
         id: id ?? this.id,
@@ -703,54 +712,55 @@ class ScanReportsTableData extends DataClass
           other.createdAt == this.createdAt);
 }
 
-class ScanReportsTableCompanion extends UpdateCompanion<ScanReportsTableData> {
-  final Value<String> id;
-  final Value<String> documentId;
-  final Value<String> userId;
-  final Value<double?> similarityPct;
-  final Value<String> status;
-  final Value<String?> sourcesJson;
-  final Value<String?> reportPdfUrl;
-  final Value<DateTime> createdAt;
-  final Value<int> rowid;
+class ScanReportsTableCompanion
+    extends drift.UpdateCompanion<ScanReportsTableData> {
+  final drift.Value<String> id;
+  final drift.Value<String> documentId;
+  final drift.Value<String> userId;
+  final drift.Value<double?> similarityPct;
+  final drift.Value<String> status;
+  final drift.Value<String?> sourcesJson;
+  final drift.Value<String?> reportPdfUrl;
+  final drift.Value<DateTime> createdAt;
+  final drift.Value<int> rowid;
   const ScanReportsTableCompanion({
-    this.id = const Value.absent(),
-    this.documentId = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.similarityPct = const Value.absent(),
-    this.status = const Value.absent(),
-    this.sourcesJson = const Value.absent(),
-    this.reportPdfUrl = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.id = const drift.Value.absent(),
+    this.documentId = const drift.Value.absent(),
+    this.userId = const drift.Value.absent(),
+    this.similarityPct = const drift.Value.absent(),
+    this.status = const drift.Value.absent(),
+    this.sourcesJson = const drift.Value.absent(),
+    this.reportPdfUrl = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
   });
   ScanReportsTableCompanion.insert({
     required String id,
     required String documentId,
     required String userId,
-    this.similarityPct = const Value.absent(),
+    this.similarityPct = const drift.Value.absent(),
     required String status,
-    this.sourcesJson = const Value.absent(),
-    this.reportPdfUrl = const Value.absent(),
+    this.sourcesJson = const drift.Value.absent(),
+    this.reportPdfUrl = const drift.Value.absent(),
     required DateTime createdAt,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        documentId = Value(documentId),
-        userId = Value(userId),
-        status = Value(status),
-        createdAt = Value(createdAt);
-  static Insertable<ScanReportsTableData> custom({
-    Expression<String>? id,
-    Expression<String>? documentId,
-    Expression<String>? userId,
-    Expression<double>? similarityPct,
-    Expression<String>? status,
-    Expression<String>? sourcesJson,
-    Expression<String>? reportPdfUrl,
-    Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
+    this.rowid = const drift.Value.absent(),
+  })  : id = drift.Value(id),
+        documentId = drift.Value(documentId),
+        userId = drift.Value(userId),
+        status = drift.Value(status),
+        createdAt = drift.Value(createdAt);
+  static drift.Insertable<ScanReportsTableData> custom({
+    drift.Expression<String>? id,
+    drift.Expression<String>? documentId,
+    drift.Expression<String>? userId,
+    drift.Expression<double>? similarityPct,
+    drift.Expression<String>? status,
+    drift.Expression<String>? sourcesJson,
+    drift.Expression<String>? reportPdfUrl,
+    drift.Expression<DateTime>? createdAt,
+    drift.Expression<int>? rowid,
   }) {
-    return RawValuesInsertable({
+    return drift.RawValuesInsertable({
       if (id != null) 'id': id,
       if (documentId != null) 'document_id': documentId,
       if (userId != null) 'user_id': userId,
@@ -764,15 +774,15 @@ class ScanReportsTableCompanion extends UpdateCompanion<ScanReportsTableData> {
   }
 
   ScanReportsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? documentId,
-      Value<String>? userId,
-      Value<double?>? similarityPct,
-      Value<String>? status,
-      Value<String?>? sourcesJson,
-      Value<String?>? reportPdfUrl,
-      Value<DateTime>? createdAt,
-      Value<int>? rowid}) {
+      {drift.Value<String>? id,
+      drift.Value<String>? documentId,
+      drift.Value<String>? userId,
+      drift.Value<double?>? similarityPct,
+      drift.Value<String>? status,
+      drift.Value<String?>? sourcesJson,
+      drift.Value<String?>? reportPdfUrl,
+      drift.Value<DateTime>? createdAt,
+      drift.Value<int>? rowid}) {
     return ScanReportsTableCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
@@ -787,34 +797,34 @@ class ScanReportsTableCompanion extends UpdateCompanion<ScanReportsTableData> {
   }
 
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = drift.Variable<String>(id.value);
     }
     if (documentId.present) {
-      map['document_id'] = Variable<String>(documentId.value);
+      map['document_id'] = drift.Variable<String>(documentId.value);
     }
     if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
+      map['user_id'] = drift.Variable<String>(userId.value);
     }
     if (similarityPct.present) {
-      map['similarity_pct'] = Variable<double>(similarityPct.value);
+      map['similarity_pct'] = drift.Variable<double>(similarityPct.value);
     }
     if (status.present) {
-      map['status'] = Variable<String>(status.value);
+      map['status'] = drift.Variable<String>(status.value);
     }
     if (sourcesJson.present) {
-      map['sources_json'] = Variable<String>(sourcesJson.value);
+      map['sources_json'] = drift.Variable<String>(sourcesJson.value);
     }
     if (reportPdfUrl.present) {
-      map['report_pdf_url'] = Variable<String>(reportPdfUrl.value);
+      map['report_pdf_url'] = drift.Variable<String>(reportPdfUrl.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = drift.Variable<DateTime>(createdAt.value);
     }
     if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+      map['rowid'] = drift.Variable<int>(rowid.value);
     }
     return map;
   }
@@ -837,59 +847,61 @@ class ScanReportsTableCompanion extends UpdateCompanion<ScanReportsTableData> {
 }
 
 class $TranslationsTableTable extends TranslationsTable
-    with TableInfo<$TranslationsTableTable, TranslationsTableData> {
+    with drift.TableInfo<$TranslationsTableTable, TranslationsTableData> {
   @override
-  final GeneratedDatabase attachedDatabase;
+  final drift.GeneratedDatabase attachedDatabase;
   final String? _alias;
   $TranslationsTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const drift.VerificationMeta _idMeta =
+      const drift.VerificationMeta('id');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> id = drift.GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  static const drift.VerificationMeta _userIdMeta =
+      const drift.VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _documentIdMeta =
-      const VerificationMeta('documentId');
+  late final drift.GeneratedColumn<String> userId =
+      drift.GeneratedColumn<String>('user_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _documentIdMeta =
+      const drift.VerificationMeta('documentId');
   @override
-  late final GeneratedColumn<String> documentId = GeneratedColumn<String>(
-      'document_id', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _sourceLangMeta =
-      const VerificationMeta('sourceLang');
+  late final drift.GeneratedColumn<String> documentId =
+      drift.GeneratedColumn<String>('document_id', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const drift.VerificationMeta _sourceLangMeta =
+      const drift.VerificationMeta('sourceLang');
   @override
-  late final GeneratedColumn<String> sourceLang = GeneratedColumn<String>(
-      'source_lang', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _targetLangMeta =
-      const VerificationMeta('targetLang');
+  late final drift.GeneratedColumn<String> sourceLang =
+      drift.GeneratedColumn<String>('source_lang', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _targetLangMeta =
+      const drift.VerificationMeta('targetLang');
   @override
-  late final GeneratedColumn<String> targetLang = GeneratedColumn<String>(
-      'target_lang', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _inputTextMeta =
-      const VerificationMeta('inputText');
+  late final drift.GeneratedColumn<String> targetLang =
+      drift.GeneratedColumn<String>('target_lang', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _inputTextMeta =
+      const drift.VerificationMeta('inputText');
   @override
-  late final GeneratedColumn<String> inputText = GeneratedColumn<String>(
-      'input_text', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _outputTextMeta =
-      const VerificationMeta('outputText');
+  late final drift.GeneratedColumn<String> inputText =
+      drift.GeneratedColumn<String>('input_text', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _outputTextMeta =
+      const drift.VerificationMeta('outputText');
   @override
-  late final GeneratedColumn<String> outputText = GeneratedColumn<String>(
-      'output_text', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
+  late final drift.GeneratedColumn<String> outputText =
+      drift.GeneratedColumn<String>('output_text', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _createdAtMeta =
+      const drift.VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  late final drift.GeneratedColumn<DateTime> createdAt =
+      drift.GeneratedColumn<DateTime>('created_at', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [
+  List<drift.GeneratedColumn> get $columns => [
         id,
         userId,
         documentId,
@@ -905,10 +917,10 @@ class $TranslationsTableTable extends TranslationsTable
   String get actualTableName => $name;
   static const String $name = 'translations_table';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<TranslationsTableData> instance,
+  drift.VerificationContext validateIntegrity(
+      drift.Insertable<TranslationsTableData> instance,
       {bool isInserting = false}) {
-    final context = VerificationContext();
+    final context = drift.VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
@@ -967,7 +979,7 @@ class $TranslationsTableTable extends TranslationsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<drift.GeneratedColumn> get $primaryKey => {id};
   @override
   TranslationsTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -997,8 +1009,8 @@ class $TranslationsTableTable extends TranslationsTable
   }
 }
 
-class TranslationsTableData extends DataClass
-    implements Insertable<TranslationsTableData> {
+class TranslationsTableData extends drift.DataClass
+    implements drift.Insertable<TranslationsTableData> {
   final String id;
   final String userId;
   final String? documentId;
@@ -1017,39 +1029,39 @@ class TranslationsTableData extends DataClass
       required this.outputText,
       required this.createdAt});
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['user_id'] = Variable<String>(userId);
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    map['id'] = drift.Variable<String>(id);
+    map['user_id'] = drift.Variable<String>(userId);
     if (!nullToAbsent || documentId != null) {
-      map['document_id'] = Variable<String>(documentId);
+      map['document_id'] = drift.Variable<String>(documentId);
     }
-    map['source_lang'] = Variable<String>(sourceLang);
-    map['target_lang'] = Variable<String>(targetLang);
-    map['input_text'] = Variable<String>(inputText);
-    map['output_text'] = Variable<String>(outputText);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['source_lang'] = drift.Variable<String>(sourceLang);
+    map['target_lang'] = drift.Variable<String>(targetLang);
+    map['input_text'] = drift.Variable<String>(inputText);
+    map['output_text'] = drift.Variable<String>(outputText);
+    map['created_at'] = drift.Variable<DateTime>(createdAt);
     return map;
   }
 
   TranslationsTableCompanion toCompanion(bool nullToAbsent) {
     return TranslationsTableCompanion(
-      id: Value(id),
-      userId: Value(userId),
+      id: drift.Value(id),
+      userId: drift.Value(userId),
       documentId: documentId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(documentId),
-      sourceLang: Value(sourceLang),
-      targetLang: Value(targetLang),
-      inputText: Value(inputText),
-      outputText: Value(outputText),
-      createdAt: Value(createdAt),
+          ? const drift.Value.absent()
+          : drift.Value(documentId),
+      sourceLang: drift.Value(sourceLang),
+      targetLang: drift.Value(targetLang),
+      inputText: drift.Value(inputText),
+      outputText: drift.Value(outputText),
+      createdAt: drift.Value(createdAt),
     );
   }
 
   factory TranslationsTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return TranslationsTableData(
       id: serializer.fromJson<String>(json['id']),
       userId: serializer.fromJson<String>(json['userId']),
@@ -1063,7 +1075,7 @@ class TranslationsTableData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'userId': serializer.toJson<String>(userId),
@@ -1079,7 +1091,7 @@ class TranslationsTableData extends DataClass
   TranslationsTableData copyWith(
           {String? id,
           String? userId,
-          Value<String?> documentId = const Value.absent(),
+          drift.Value<String?> documentId = const drift.Value.absent(),
           String? sourceLang,
           String? targetLang,
           String? inputText,
@@ -1145,56 +1157,56 @@ class TranslationsTableData extends DataClass
 }
 
 class TranslationsTableCompanion
-    extends UpdateCompanion<TranslationsTableData> {
-  final Value<String> id;
-  final Value<String> userId;
-  final Value<String?> documentId;
-  final Value<String> sourceLang;
-  final Value<String> targetLang;
-  final Value<String> inputText;
-  final Value<String> outputText;
-  final Value<DateTime> createdAt;
-  final Value<int> rowid;
+    extends drift.UpdateCompanion<TranslationsTableData> {
+  final drift.Value<String> id;
+  final drift.Value<String> userId;
+  final drift.Value<String?> documentId;
+  final drift.Value<String> sourceLang;
+  final drift.Value<String> targetLang;
+  final drift.Value<String> inputText;
+  final drift.Value<String> outputText;
+  final drift.Value<DateTime> createdAt;
+  final drift.Value<int> rowid;
   const TranslationsTableCompanion({
-    this.id = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.documentId = const Value.absent(),
-    this.sourceLang = const Value.absent(),
-    this.targetLang = const Value.absent(),
-    this.inputText = const Value.absent(),
-    this.outputText = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.id = const drift.Value.absent(),
+    this.userId = const drift.Value.absent(),
+    this.documentId = const drift.Value.absent(),
+    this.sourceLang = const drift.Value.absent(),
+    this.targetLang = const drift.Value.absent(),
+    this.inputText = const drift.Value.absent(),
+    this.outputText = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
   });
   TranslationsTableCompanion.insert({
     required String id,
     required String userId,
-    this.documentId = const Value.absent(),
+    this.documentId = const drift.Value.absent(),
     required String sourceLang,
     required String targetLang,
     required String inputText,
     required String outputText,
     required DateTime createdAt,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        userId = Value(userId),
-        sourceLang = Value(sourceLang),
-        targetLang = Value(targetLang),
-        inputText = Value(inputText),
-        outputText = Value(outputText),
-        createdAt = Value(createdAt);
-  static Insertable<TranslationsTableData> custom({
-    Expression<String>? id,
-    Expression<String>? userId,
-    Expression<String>? documentId,
-    Expression<String>? sourceLang,
-    Expression<String>? targetLang,
-    Expression<String>? inputText,
-    Expression<String>? outputText,
-    Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
+    this.rowid = const drift.Value.absent(),
+  })  : id = drift.Value(id),
+        userId = drift.Value(userId),
+        sourceLang = drift.Value(sourceLang),
+        targetLang = drift.Value(targetLang),
+        inputText = drift.Value(inputText),
+        outputText = drift.Value(outputText),
+        createdAt = drift.Value(createdAt);
+  static drift.Insertable<TranslationsTableData> custom({
+    drift.Expression<String>? id,
+    drift.Expression<String>? userId,
+    drift.Expression<String>? documentId,
+    drift.Expression<String>? sourceLang,
+    drift.Expression<String>? targetLang,
+    drift.Expression<String>? inputText,
+    drift.Expression<String>? outputText,
+    drift.Expression<DateTime>? createdAt,
+    drift.Expression<int>? rowid,
   }) {
-    return RawValuesInsertable({
+    return drift.RawValuesInsertable({
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (documentId != null) 'document_id': documentId,
@@ -1208,15 +1220,15 @@ class TranslationsTableCompanion
   }
 
   TranslationsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? userId,
-      Value<String?>? documentId,
-      Value<String>? sourceLang,
-      Value<String>? targetLang,
-      Value<String>? inputText,
-      Value<String>? outputText,
-      Value<DateTime>? createdAt,
-      Value<int>? rowid}) {
+      {drift.Value<String>? id,
+      drift.Value<String>? userId,
+      drift.Value<String?>? documentId,
+      drift.Value<String>? sourceLang,
+      drift.Value<String>? targetLang,
+      drift.Value<String>? inputText,
+      drift.Value<String>? outputText,
+      drift.Value<DateTime>? createdAt,
+      drift.Value<int>? rowid}) {
     return TranslationsTableCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
@@ -1231,34 +1243,34 @@ class TranslationsTableCompanion
   }
 
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = drift.Variable<String>(id.value);
     }
     if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
+      map['user_id'] = drift.Variable<String>(userId.value);
     }
     if (documentId.present) {
-      map['document_id'] = Variable<String>(documentId.value);
+      map['document_id'] = drift.Variable<String>(documentId.value);
     }
     if (sourceLang.present) {
-      map['source_lang'] = Variable<String>(sourceLang.value);
+      map['source_lang'] = drift.Variable<String>(sourceLang.value);
     }
     if (targetLang.present) {
-      map['target_lang'] = Variable<String>(targetLang.value);
+      map['target_lang'] = drift.Variable<String>(targetLang.value);
     }
     if (inputText.present) {
-      map['input_text'] = Variable<String>(inputText.value);
+      map['input_text'] = drift.Variable<String>(inputText.value);
     }
     if (outputText.present) {
-      map['output_text'] = Variable<String>(outputText.value);
+      map['output_text'] = drift.Variable<String>(outputText.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = drift.Variable<DateTime>(createdAt.value);
     }
     if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+      map['rowid'] = drift.Variable<int>(rowid.value);
     }
     return map;
   }
@@ -1281,58 +1293,61 @@ class TranslationsTableCompanion
 }
 
 class $ConversionJobsTableTable extends ConversionJobsTable
-    with TableInfo<$ConversionJobsTableTable, ConversionJobsTableData> {
+    with drift.TableInfo<$ConversionJobsTableTable, ConversionJobsTableData> {
   @override
-  final GeneratedDatabase attachedDatabase;
+  final drift.GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ConversionJobsTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  static const drift.VerificationMeta _idMeta =
+      const drift.VerificationMeta('id');
   @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+  late final drift.GeneratedColumn<String> id = drift.GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _documentIdMeta =
-      const VerificationMeta('documentId');
+  static const drift.VerificationMeta _documentIdMeta =
+      const drift.VerificationMeta('documentId');
   @override
-  late final GeneratedColumn<String> documentId = GeneratedColumn<String>(
-      'document_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  late final drift.GeneratedColumn<String> documentId =
+      drift.GeneratedColumn<String>('document_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _userIdMeta =
+      const drift.VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _fromFormatMeta =
-      const VerificationMeta('fromFormat');
+  late final drift.GeneratedColumn<String> userId =
+      drift.GeneratedColumn<String>('user_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _fromFormatMeta =
+      const drift.VerificationMeta('fromFormat');
   @override
-  late final GeneratedColumn<String> fromFormat = GeneratedColumn<String>(
-      'from_format', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _toFormatMeta =
-      const VerificationMeta('toFormat');
+  late final drift.GeneratedColumn<String> fromFormat =
+      drift.GeneratedColumn<String>('from_format', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _toFormatMeta =
+      const drift.VerificationMeta('toFormat');
   @override
-  late final GeneratedColumn<String> toFormat = GeneratedColumn<String>(
-      'to_format', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  late final drift.GeneratedColumn<String> toFormat =
+      drift.GeneratedColumn<String>('to_format', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _statusMeta =
+      const drift.VerificationMeta('status');
   @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-      'status', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _outputPathMeta =
-      const VerificationMeta('outputPath');
+  late final drift.GeneratedColumn<String> status =
+      drift.GeneratedColumn<String>('status', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _outputPathMeta =
+      const drift.VerificationMeta('outputPath');
   @override
-  late final GeneratedColumn<String> outputPath = GeneratedColumn<String>(
-      'output_path', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
+  late final drift.GeneratedColumn<String> outputPath =
+      drift.GeneratedColumn<String>('output_path', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const drift.VerificationMeta _createdAtMeta =
+      const drift.VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  late final drift.GeneratedColumn<DateTime> createdAt =
+      drift.GeneratedColumn<DateTime>('created_at', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [
+  List<drift.GeneratedColumn> get $columns => [
         id,
         documentId,
         userId,
@@ -1348,10 +1363,10 @@ class $ConversionJobsTableTable extends ConversionJobsTable
   String get actualTableName => $name;
   static const String $name = 'conversion_jobs_table';
   @override
-  VerificationContext validateIntegrity(
-      Insertable<ConversionJobsTableData> instance,
+  drift.VerificationContext validateIntegrity(
+      drift.Insertable<ConversionJobsTableData> instance,
       {bool isInserting = false}) {
-    final context = VerificationContext();
+    final context = drift.VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
@@ -1408,7 +1423,7 @@ class $ConversionJobsTableTable extends ConversionJobsTable
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<drift.GeneratedColumn> get $primaryKey => {id};
   @override
   ConversionJobsTableData map(Map<String, dynamic> data,
       {String? tablePrefix}) {
@@ -1439,8 +1454,8 @@ class $ConversionJobsTableTable extends ConversionJobsTable
   }
 }
 
-class ConversionJobsTableData extends DataClass
-    implements Insertable<ConversionJobsTableData> {
+class ConversionJobsTableData extends drift.DataClass
+    implements drift.Insertable<ConversionJobsTableData> {
   final String id;
   final String documentId;
   final String userId;
@@ -1459,39 +1474,39 @@ class ConversionJobsTableData extends DataClass
       this.outputPath,
       required this.createdAt});
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['document_id'] = Variable<String>(documentId);
-    map['user_id'] = Variable<String>(userId);
-    map['from_format'] = Variable<String>(fromFormat);
-    map['to_format'] = Variable<String>(toFormat);
-    map['status'] = Variable<String>(status);
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    map['id'] = drift.Variable<String>(id);
+    map['document_id'] = drift.Variable<String>(documentId);
+    map['user_id'] = drift.Variable<String>(userId);
+    map['from_format'] = drift.Variable<String>(fromFormat);
+    map['to_format'] = drift.Variable<String>(toFormat);
+    map['status'] = drift.Variable<String>(status);
     if (!nullToAbsent || outputPath != null) {
-      map['output_path'] = Variable<String>(outputPath);
+      map['output_path'] = drift.Variable<String>(outputPath);
     }
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = drift.Variable<DateTime>(createdAt);
     return map;
   }
 
   ConversionJobsTableCompanion toCompanion(bool nullToAbsent) {
     return ConversionJobsTableCompanion(
-      id: Value(id),
-      documentId: Value(documentId),
-      userId: Value(userId),
-      fromFormat: Value(fromFormat),
-      toFormat: Value(toFormat),
-      status: Value(status),
+      id: drift.Value(id),
+      documentId: drift.Value(documentId),
+      userId: drift.Value(userId),
+      fromFormat: drift.Value(fromFormat),
+      toFormat: drift.Value(toFormat),
+      status: drift.Value(status),
       outputPath: outputPath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(outputPath),
-      createdAt: Value(createdAt),
+          ? const drift.Value.absent()
+          : drift.Value(outputPath),
+      createdAt: drift.Value(createdAt),
     );
   }
 
   factory ConversionJobsTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return ConversionJobsTableData(
       id: serializer.fromJson<String>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
@@ -1505,7 +1520,7 @@ class ConversionJobsTableData extends DataClass
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'documentId': serializer.toJson<String>(documentId),
@@ -1525,7 +1540,7 @@ class ConversionJobsTableData extends DataClass
           String? fromFormat,
           String? toFormat,
           String? status,
-          Value<String?> outputPath = const Value.absent(),
+          drift.Value<String?> outputPath = const drift.Value.absent(),
           DateTime? createdAt}) =>
       ConversionJobsTableData(
         id: id ?? this.id,
@@ -1586,26 +1601,26 @@ class ConversionJobsTableData extends DataClass
 }
 
 class ConversionJobsTableCompanion
-    extends UpdateCompanion<ConversionJobsTableData> {
-  final Value<String> id;
-  final Value<String> documentId;
-  final Value<String> userId;
-  final Value<String> fromFormat;
-  final Value<String> toFormat;
-  final Value<String> status;
-  final Value<String?> outputPath;
-  final Value<DateTime> createdAt;
-  final Value<int> rowid;
+    extends drift.UpdateCompanion<ConversionJobsTableData> {
+  final drift.Value<String> id;
+  final drift.Value<String> documentId;
+  final drift.Value<String> userId;
+  final drift.Value<String> fromFormat;
+  final drift.Value<String> toFormat;
+  final drift.Value<String> status;
+  final drift.Value<String?> outputPath;
+  final drift.Value<DateTime> createdAt;
+  final drift.Value<int> rowid;
   const ConversionJobsTableCompanion({
-    this.id = const Value.absent(),
-    this.documentId = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.fromFormat = const Value.absent(),
-    this.toFormat = const Value.absent(),
-    this.status = const Value.absent(),
-    this.outputPath = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.id = const drift.Value.absent(),
+    this.documentId = const drift.Value.absent(),
+    this.userId = const drift.Value.absent(),
+    this.fromFormat = const drift.Value.absent(),
+    this.toFormat = const drift.Value.absent(),
+    this.status = const drift.Value.absent(),
+    this.outputPath = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
   });
   ConversionJobsTableCompanion.insert({
     required String id,
@@ -1614,28 +1629,28 @@ class ConversionJobsTableCompanion
     required String fromFormat,
     required String toFormat,
     required String status,
-    this.outputPath = const Value.absent(),
+    this.outputPath = const drift.Value.absent(),
     required DateTime createdAt,
-    this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        documentId = Value(documentId),
-        userId = Value(userId),
-        fromFormat = Value(fromFormat),
-        toFormat = Value(toFormat),
-        status = Value(status),
-        createdAt = Value(createdAt);
-  static Insertable<ConversionJobsTableData> custom({
-    Expression<String>? id,
-    Expression<String>? documentId,
-    Expression<String>? userId,
-    Expression<String>? fromFormat,
-    Expression<String>? toFormat,
-    Expression<String>? status,
-    Expression<String>? outputPath,
-    Expression<DateTime>? createdAt,
-    Expression<int>? rowid,
+    this.rowid = const drift.Value.absent(),
+  })  : id = drift.Value(id),
+        documentId = drift.Value(documentId),
+        userId = drift.Value(userId),
+        fromFormat = drift.Value(fromFormat),
+        toFormat = drift.Value(toFormat),
+        status = drift.Value(status),
+        createdAt = drift.Value(createdAt);
+  static drift.Insertable<ConversionJobsTableData> custom({
+    drift.Expression<String>? id,
+    drift.Expression<String>? documentId,
+    drift.Expression<String>? userId,
+    drift.Expression<String>? fromFormat,
+    drift.Expression<String>? toFormat,
+    drift.Expression<String>? status,
+    drift.Expression<String>? outputPath,
+    drift.Expression<DateTime>? createdAt,
+    drift.Expression<int>? rowid,
   }) {
-    return RawValuesInsertable({
+    return drift.RawValuesInsertable({
       if (id != null) 'id': id,
       if (documentId != null) 'document_id': documentId,
       if (userId != null) 'user_id': userId,
@@ -1649,15 +1664,15 @@ class ConversionJobsTableCompanion
   }
 
   ConversionJobsTableCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? documentId,
-      Value<String>? userId,
-      Value<String>? fromFormat,
-      Value<String>? toFormat,
-      Value<String>? status,
-      Value<String?>? outputPath,
-      Value<DateTime>? createdAt,
-      Value<int>? rowid}) {
+      {drift.Value<String>? id,
+      drift.Value<String>? documentId,
+      drift.Value<String>? userId,
+      drift.Value<String>? fromFormat,
+      drift.Value<String>? toFormat,
+      drift.Value<String>? status,
+      drift.Value<String?>? outputPath,
+      drift.Value<DateTime>? createdAt,
+      drift.Value<int>? rowid}) {
     return ConversionJobsTableCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
@@ -1672,34 +1687,34 @@ class ConversionJobsTableCompanion
   }
 
   @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
     if (id.present) {
-      map['id'] = Variable<String>(id.value);
+      map['id'] = drift.Variable<String>(id.value);
     }
     if (documentId.present) {
-      map['document_id'] = Variable<String>(documentId.value);
+      map['document_id'] = drift.Variable<String>(documentId.value);
     }
     if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
+      map['user_id'] = drift.Variable<String>(userId.value);
     }
     if (fromFormat.present) {
-      map['from_format'] = Variable<String>(fromFormat.value);
+      map['from_format'] = drift.Variable<String>(fromFormat.value);
     }
     if (toFormat.present) {
-      map['to_format'] = Variable<String>(toFormat.value);
+      map['to_format'] = drift.Variable<String>(toFormat.value);
     }
     if (status.present) {
-      map['status'] = Variable<String>(status.value);
+      map['status'] = drift.Variable<String>(status.value);
     }
     if (outputPath.present) {
-      map['output_path'] = Variable<String>(outputPath.value);
+      map['output_path'] = drift.Variable<String>(outputPath.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = drift.Variable<DateTime>(createdAt.value);
     }
     if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+      map['rowid'] = drift.Variable<int>(rowid.value);
     }
     return map;
   }
@@ -1721,7 +1736,358 @@ class ConversionJobsTableCompanion
   }
 }
 
-abstract class _$AppDatabase extends GeneratedDatabase {
+class $SyncQueueTableTable extends SyncQueueTable
+    with drift.TableInfo<$SyncQueueTableTable, SyncQueueTableData> {
+  @override
+  final drift.GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SyncQueueTableTable(this.attachedDatabase, [this._alias]);
+  static const drift.VerificationMeta _idMeta =
+      const drift.VerificationMeta('id');
+  @override
+  late final drift.GeneratedColumn<String> id = drift.GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _actionMeta =
+      const drift.VerificationMeta('action');
+  @override
+  late final drift.GeneratedColumn<String> action =
+      drift.GeneratedColumn<String>('action', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _payloadMeta =
+      const drift.VerificationMeta('payload');
+  @override
+  late final drift.GeneratedColumn<String> payload =
+      drift.GeneratedColumn<String>('payload', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const drift.VerificationMeta _createdAtMeta =
+      const drift.VerificationMeta('createdAt');
+  @override
+  late final drift.GeneratedColumn<DateTime> createdAt =
+      drift.GeneratedColumn<DateTime>('created_at', aliasedName, false,
+          type: DriftSqlType.dateTime,
+          requiredDuringInsert: false,
+          defaultValue: drift.currentDateAndTime);
+  static const drift.VerificationMeta _retryCountMeta =
+      const drift.VerificationMeta('retryCount');
+  @override
+  late final drift.GeneratedColumn<int> retryCount = drift.GeneratedColumn<int>(
+      'retry_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const drift.Constant(0));
+  static const drift.VerificationMeta _statusMeta =
+      const drift.VerificationMeta('status');
+  @override
+  late final drift.GeneratedColumn<String> status =
+      drift.GeneratedColumn<String>('status', aliasedName, false,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          defaultValue: const drift.Constant('pending'));
+  @override
+  List<drift.GeneratedColumn> get $columns =>
+      [id, action, payload, createdAt, retryCount, status];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sync_queue_table';
+  @override
+  drift.VerificationContext validateIntegrity(
+      drift.Insertable<SyncQueueTableData> instance,
+      {bool isInserting = false}) {
+    final context = drift.VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('action')) {
+      context.handle(_actionMeta,
+          action.isAcceptableOrUnknown(data['action']!, _actionMeta));
+    } else if (isInserting) {
+      context.missing(_actionMeta);
+    }
+    if (data.containsKey('payload')) {
+      context.handle(_payloadMeta,
+          payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta));
+    } else if (isInserting) {
+      context.missing(_payloadMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('retry_count')) {
+      context.handle(
+          _retryCountMeta,
+          retryCount.isAcceptableOrUnknown(
+              data['retry_count']!, _retryCountMeta));
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<drift.GeneratedColumn> get $primaryKey => {id};
+  @override
+  SyncQueueTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SyncQueueTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      action: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}action'])!,
+      payload: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}payload'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      retryCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}retry_count'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+    );
+  }
+
+  @override
+  $SyncQueueTableTable createAlias(String alias) {
+    return $SyncQueueTableTable(attachedDatabase, alias);
+  }
+}
+
+class SyncQueueTableData extends drift.DataClass
+    implements drift.Insertable<SyncQueueTableData> {
+  final String id;
+  final String action;
+  final String payload;
+  final DateTime createdAt;
+  final int retryCount;
+  final String status;
+  const SyncQueueTableData(
+      {required this.id,
+      required this.action,
+      required this.payload,
+      required this.createdAt,
+      required this.retryCount,
+      required this.status});
+  @override
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    map['id'] = drift.Variable<String>(id);
+    map['action'] = drift.Variable<String>(action);
+    map['payload'] = drift.Variable<String>(payload);
+    map['created_at'] = drift.Variable<DateTime>(createdAt);
+    map['retry_count'] = drift.Variable<int>(retryCount);
+    map['status'] = drift.Variable<String>(status);
+    return map;
+  }
+
+  SyncQueueTableCompanion toCompanion(bool nullToAbsent) {
+    return SyncQueueTableCompanion(
+      id: drift.Value(id),
+      action: drift.Value(action),
+      payload: drift.Value(payload),
+      createdAt: drift.Value(createdAt),
+      retryCount: drift.Value(retryCount),
+      status: drift.Value(status),
+    );
+  }
+
+  factory SyncQueueTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
+    return SyncQueueTableData(
+      id: serializer.fromJson<String>(json['id']),
+      action: serializer.fromJson<String>(json['action']),
+      payload: serializer.fromJson<String>(json['payload']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
+      status: serializer.fromJson<String>(json['status']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= drift.driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'action': serializer.toJson<String>(action),
+      'payload': serializer.toJson<String>(payload),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'retryCount': serializer.toJson<int>(retryCount),
+      'status': serializer.toJson<String>(status),
+    };
+  }
+
+  SyncQueueTableData copyWith(
+          {String? id,
+          String? action,
+          String? payload,
+          DateTime? createdAt,
+          int? retryCount,
+          String? status}) =>
+      SyncQueueTableData(
+        id: id ?? this.id,
+        action: action ?? this.action,
+        payload: payload ?? this.payload,
+        createdAt: createdAt ?? this.createdAt,
+        retryCount: retryCount ?? this.retryCount,
+        status: status ?? this.status,
+      );
+  SyncQueueTableData copyWithCompanion(SyncQueueTableCompanion data) {
+    return SyncQueueTableData(
+      id: data.id.present ? data.id.value : this.id,
+      action: data.action.present ? data.action.value : this.action,
+      payload: data.payload.present ? data.payload.value : this.payload,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      retryCount:
+          data.retryCount.present ? data.retryCount.value : this.retryCount,
+      status: data.status.present ? data.status.value : this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncQueueTableData(')
+          ..write('id: $id, ')
+          ..write('action: $action, ')
+          ..write('payload: $payload, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('status: $status')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, action, payload, createdAt, retryCount, status);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SyncQueueTableData &&
+          other.id == this.id &&
+          other.action == this.action &&
+          other.payload == this.payload &&
+          other.createdAt == this.createdAt &&
+          other.retryCount == this.retryCount &&
+          other.status == this.status);
+}
+
+class SyncQueueTableCompanion
+    extends drift.UpdateCompanion<SyncQueueTableData> {
+  final drift.Value<String> id;
+  final drift.Value<String> action;
+  final drift.Value<String> payload;
+  final drift.Value<DateTime> createdAt;
+  final drift.Value<int> retryCount;
+  final drift.Value<String> status;
+  final drift.Value<int> rowid;
+  const SyncQueueTableCompanion({
+    this.id = const drift.Value.absent(),
+    this.action = const drift.Value.absent(),
+    this.payload = const drift.Value.absent(),
+    this.createdAt = const drift.Value.absent(),
+    this.retryCount = const drift.Value.absent(),
+    this.status = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
+  });
+  SyncQueueTableCompanion.insert({
+    required String id,
+    required String action,
+    required String payload,
+    this.createdAt = const drift.Value.absent(),
+    this.retryCount = const drift.Value.absent(),
+    this.status = const drift.Value.absent(),
+    this.rowid = const drift.Value.absent(),
+  })  : id = drift.Value(id),
+        action = drift.Value(action),
+        payload = drift.Value(payload);
+  static drift.Insertable<SyncQueueTableData> custom({
+    drift.Expression<String>? id,
+    drift.Expression<String>? action,
+    drift.Expression<String>? payload,
+    drift.Expression<DateTime>? createdAt,
+    drift.Expression<int>? retryCount,
+    drift.Expression<String>? status,
+    drift.Expression<int>? rowid,
+  }) {
+    return drift.RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (action != null) 'action': action,
+      if (payload != null) 'payload': payload,
+      if (createdAt != null) 'created_at': createdAt,
+      if (retryCount != null) 'retry_count': retryCount,
+      if (status != null) 'status': status,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SyncQueueTableCompanion copyWith(
+      {drift.Value<String>? id,
+      drift.Value<String>? action,
+      drift.Value<String>? payload,
+      drift.Value<DateTime>? createdAt,
+      drift.Value<int>? retryCount,
+      drift.Value<String>? status,
+      drift.Value<int>? rowid}) {
+    return SyncQueueTableCompanion(
+      id: id ?? this.id,
+      action: action ?? this.action,
+      payload: payload ?? this.payload,
+      createdAt: createdAt ?? this.createdAt,
+      retryCount: retryCount ?? this.retryCount,
+      status: status ?? this.status,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, drift.Expression> toColumns(bool nullToAbsent) {
+    final map = <String, drift.Expression>{};
+    if (id.present) {
+      map['id'] = drift.Variable<String>(id.value);
+    }
+    if (action.present) {
+      map['action'] = drift.Variable<String>(action.value);
+    }
+    if (payload.present) {
+      map['payload'] = drift.Variable<String>(payload.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = drift.Variable<DateTime>(createdAt.value);
+    }
+    if (retryCount.present) {
+      map['retry_count'] = drift.Variable<int>(retryCount.value);
+    }
+    if (status.present) {
+      map['status'] = drift.Variable<String>(status.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = drift.Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SyncQueueTableCompanion(')
+          ..write('id: $id, ')
+          ..write('action: $action, ')
+          ..write('payload: $payload, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('status: $status, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$AppDatabase extends drift.GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $DocumentsTableTable documentsTable = $DocumentsTableTable(this);
@@ -1731,20 +2097,22 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $TranslationsTableTable(this);
   late final $ConversionJobsTableTable conversionJobsTable =
       $ConversionJobsTableTable(this);
+  late final $SyncQueueTableTable syncQueueTable = $SyncQueueTableTable(this);
   late final DocumentsDao documentsDao = DocumentsDao(this as AppDatabase);
   late final ScanReportsDao scanReportsDao =
       ScanReportsDao(this as AppDatabase);
   late final TranslationsDao translationsDao =
       TranslationsDao(this as AppDatabase);
   @override
-  Iterable<TableInfo<Table, Object?>> get allTables =>
-      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  Iterable<drift.TableInfo<drift.Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<drift.TableInfo<drift.Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [
+  List<drift.DatabaseSchemaEntity> get allSchemaEntities => [
         documentsTable,
         scanReportsTable,
         translationsTable,
-        conversionJobsTable
+        conversionJobsTable,
+        syncQueueTable
       ];
 }
 
@@ -1755,24 +2123,24 @@ typedef $$DocumentsTableTableCreateCompanionBuilder = DocumentsTableCompanion
   required String name,
   required String type,
   required String storagePath,
-  Value<int?> sizeBytes,
-  Value<DateTime> createdAt,
-  Value<int> rowid,
+  drift.Value<int?> sizeBytes,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> rowid,
 });
 typedef $$DocumentsTableTableUpdateCompanionBuilder = DocumentsTableCompanion
     Function({
-  Value<String> id,
-  Value<String> userId,
-  Value<String> name,
-  Value<String> type,
-  Value<String> storagePath,
-  Value<int?> sizeBytes,
-  Value<DateTime> createdAt,
-  Value<int> rowid,
+  drift.Value<String> id,
+  drift.Value<String> userId,
+  drift.Value<String> name,
+  drift.Value<String> type,
+  drift.Value<String> storagePath,
+  drift.Value<int?> sizeBytes,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> rowid,
 });
 
 class $$DocumentsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $DocumentsTableTable> {
+    extends drift.Composer<_$AppDatabase, $DocumentsTableTable> {
   $$DocumentsTableTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1780,30 +2148,33 @@ class $$DocumentsTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get storagePath => $composableBuilder(
-      column: $table.storagePath, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get storagePath => $composableBuilder(
+      column: $table.storagePath,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<int> get sizeBytes => $composableBuilder(
-      column: $table.sizeBytes, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<int> get sizeBytes => $composableBuilder(
+      column: $table.sizeBytes,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnFilters(column));
 }
 
 class $$DocumentsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $DocumentsTableTable> {
+    extends drift.Composer<_$AppDatabase, $DocumentsTableTable> {
   $$DocumentsTableTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1811,30 +2182,34 @@ class $$DocumentsTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get type => $composableBuilder(
-      column: $table.type, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get storagePath => $composableBuilder(
-      column: $table.storagePath, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get storagePath => $composableBuilder(
+      column: $table.storagePath,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<int> get sizeBytes => $composableBuilder(
-      column: $table.sizeBytes, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<int> get sizeBytes => $composableBuilder(
+      column: $table.sizeBytes,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnOrderings(column));
 }
 
 class $$DocumentsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $DocumentsTableTable> {
+    extends drift.Composer<_$AppDatabase, $DocumentsTableTable> {
   $$DocumentsTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1842,29 +2217,29 @@ class $$DocumentsTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
+  drift.GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get userId =>
+  drift.GeneratedColumn<String> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
-  GeneratedColumn<String> get name =>
+  drift.GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get type =>
+  drift.GeneratedColumn<String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
-  GeneratedColumn<String> get storagePath => $composableBuilder(
+  drift.GeneratedColumn<String> get storagePath => $composableBuilder(
       column: $table.storagePath, builder: (column) => column);
 
-  GeneratedColumn<int> get sizeBytes =>
+  drift.GeneratedColumn<int> get sizeBytes =>
       $composableBuilder(column: $table.sizeBytes, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get createdAt =>
+  drift.GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
-class $$DocumentsTableTableTableManager extends RootTableManager<
+class $$DocumentsTableTableTableManager extends drift.RootTableManager<
     _$AppDatabase,
     $DocumentsTableTable,
     DocumentsTableData,
@@ -1875,13 +2250,14 @@ class $$DocumentsTableTableTableManager extends RootTableManager<
     $$DocumentsTableTableUpdateCompanionBuilder,
     (
       DocumentsTableData,
-      BaseReferences<_$AppDatabase, $DocumentsTableTable, DocumentsTableData>
+      drift
+      .BaseReferences<_$AppDatabase, $DocumentsTableTable, DocumentsTableData>
     ),
     DocumentsTableData,
-    PrefetchHooks Function()> {
+    drift.PrefetchHooks Function()> {
   $$DocumentsTableTableTableManager(
       _$AppDatabase db, $DocumentsTableTable table)
-      : super(TableManagerState(
+      : super(drift.TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -1891,14 +2267,14 @@ class $$DocumentsTableTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$DocumentsTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> userId = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> type = const Value.absent(),
-            Value<String> storagePath = const Value.absent(),
-            Value<int?> sizeBytes = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
+            drift.Value<String> id = const drift.Value.absent(),
+            drift.Value<String> userId = const drift.Value.absent(),
+            drift.Value<String> name = const drift.Value.absent(),
+            drift.Value<String> type = const drift.Value.absent(),
+            drift.Value<String> storagePath = const drift.Value.absent(),
+            drift.Value<int?> sizeBytes = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               DocumentsTableCompanion(
             id: id,
@@ -1916,9 +2292,9 @@ class $$DocumentsTableTableTableManager extends RootTableManager<
             required String name,
             required String type,
             required String storagePath,
-            Value<int?> sizeBytes = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
+            drift.Value<int?> sizeBytes = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               DocumentsTableCompanion.insert(
             id: id,
@@ -1931,54 +2307,57 @@ class $$DocumentsTableTableTableManager extends RootTableManager<
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), drift.BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
         ));
 }
 
-typedef $$DocumentsTableTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $DocumentsTableTable,
-    DocumentsTableData,
-    $$DocumentsTableTableFilterComposer,
-    $$DocumentsTableTableOrderingComposer,
-    $$DocumentsTableTableAnnotationComposer,
-    $$DocumentsTableTableCreateCompanionBuilder,
-    $$DocumentsTableTableUpdateCompanionBuilder,
-    (
-      DocumentsTableData,
-      BaseReferences<_$AppDatabase, $DocumentsTableTable, DocumentsTableData>
-    ),
-    DocumentsTableData,
-    PrefetchHooks Function()>;
+typedef $$DocumentsTableTableProcessedTableManager
+    = drift.ProcessedTableManager<
+        _$AppDatabase,
+        $DocumentsTableTable,
+        DocumentsTableData,
+        $$DocumentsTableTableFilterComposer,
+        $$DocumentsTableTableOrderingComposer,
+        $$DocumentsTableTableAnnotationComposer,
+        $$DocumentsTableTableCreateCompanionBuilder,
+        $$DocumentsTableTableUpdateCompanionBuilder,
+        (
+          DocumentsTableData,
+          drift.BaseReferences<_$AppDatabase, $DocumentsTableTable,
+              DocumentsTableData>
+        ),
+        DocumentsTableData,
+        drift.PrefetchHooks Function()>;
 typedef $$ScanReportsTableTableCreateCompanionBuilder
     = ScanReportsTableCompanion Function({
   required String id,
   required String documentId,
   required String userId,
-  Value<double?> similarityPct,
+  drift.Value<double?> similarityPct,
   required String status,
-  Value<String?> sourcesJson,
-  Value<String?> reportPdfUrl,
+  drift.Value<String?> sourcesJson,
+  drift.Value<String?> reportPdfUrl,
   required DateTime createdAt,
-  Value<int> rowid,
+  drift.Value<int> rowid,
 });
 typedef $$ScanReportsTableTableUpdateCompanionBuilder
     = ScanReportsTableCompanion Function({
-  Value<String> id,
-  Value<String> documentId,
-  Value<String> userId,
-  Value<double?> similarityPct,
-  Value<String> status,
-  Value<String?> sourcesJson,
-  Value<String?> reportPdfUrl,
-  Value<DateTime> createdAt,
-  Value<int> rowid,
+  drift.Value<String> id,
+  drift.Value<String> documentId,
+  drift.Value<String> userId,
+  drift.Value<double?> similarityPct,
+  drift.Value<String> status,
+  drift.Value<String?> sourcesJson,
+  drift.Value<String?> reportPdfUrl,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> rowid,
 });
 
 class $$ScanReportsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $ScanReportsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ScanReportsTableTable> {
   $$ScanReportsTableTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1986,33 +2365,38 @@ class $$ScanReportsTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<double> get similarityPct => $composableBuilder(
-      column: $table.similarityPct, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<double> get similarityPct => $composableBuilder(
+      column: $table.similarityPct,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get sourcesJson => $composableBuilder(
-      column: $table.sourcesJson, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get sourcesJson => $composableBuilder(
+      column: $table.sourcesJson,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get reportPdfUrl => $composableBuilder(
-      column: $table.reportPdfUrl, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get reportPdfUrl => $composableBuilder(
+      column: $table.reportPdfUrl,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnFilters(column));
 }
 
 class $$ScanReportsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $ScanReportsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ScanReportsTableTable> {
   $$ScanReportsTableTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -2020,35 +2404,40 @@ class $$ScanReportsTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<double> get similarityPct => $composableBuilder(
+  drift.ColumnOrderings<double> get similarityPct => $composableBuilder(
       column: $table.similarityPct,
-      builder: (column) => ColumnOrderings(column));
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get sourcesJson => $composableBuilder(
-      column: $table.sourcesJson, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get sourcesJson => $composableBuilder(
+      column: $table.sourcesJson,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get reportPdfUrl => $composableBuilder(
+  drift.ColumnOrderings<String> get reportPdfUrl => $composableBuilder(
       column: $table.reportPdfUrl,
-      builder: (column) => ColumnOrderings(column));
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnOrderings(column));
 }
 
 class $$ScanReportsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ScanReportsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ScanReportsTableTable> {
   $$ScanReportsTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -2056,32 +2445,32 @@ class $$ScanReportsTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
+  drift.GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get documentId => $composableBuilder(
+  drift.GeneratedColumn<String> get documentId => $composableBuilder(
       column: $table.documentId, builder: (column) => column);
 
-  GeneratedColumn<String> get userId =>
+  drift.GeneratedColumn<String> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
-  GeneratedColumn<double> get similarityPct => $composableBuilder(
+  drift.GeneratedColumn<double> get similarityPct => $composableBuilder(
       column: $table.similarityPct, builder: (column) => column);
 
-  GeneratedColumn<String> get status =>
+  drift.GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<String> get sourcesJson => $composableBuilder(
+  drift.GeneratedColumn<String> get sourcesJson => $composableBuilder(
       column: $table.sourcesJson, builder: (column) => column);
 
-  GeneratedColumn<String> get reportPdfUrl => $composableBuilder(
+  drift.GeneratedColumn<String> get reportPdfUrl => $composableBuilder(
       column: $table.reportPdfUrl, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get createdAt =>
+  drift.GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
-class $$ScanReportsTableTableTableManager extends RootTableManager<
+class $$ScanReportsTableTableTableManager extends drift.RootTableManager<
     _$AppDatabase,
     $ScanReportsTableTable,
     ScanReportsTableData,
@@ -2092,14 +2481,14 @@ class $$ScanReportsTableTableTableManager extends RootTableManager<
     $$ScanReportsTableTableUpdateCompanionBuilder,
     (
       ScanReportsTableData,
-      BaseReferences<_$AppDatabase, $ScanReportsTableTable,
+      drift.BaseReferences<_$AppDatabase, $ScanReportsTableTable,
           ScanReportsTableData>
     ),
     ScanReportsTableData,
-    PrefetchHooks Function()> {
+    drift.PrefetchHooks Function()> {
   $$ScanReportsTableTableTableManager(
       _$AppDatabase db, $ScanReportsTableTable table)
-      : super(TableManagerState(
+      : super(drift.TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2109,15 +2498,15 @@ class $$ScanReportsTableTableTableManager extends RootTableManager<
           createComputedFieldComposer: () =>
               $$ScanReportsTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> documentId = const Value.absent(),
-            Value<String> userId = const Value.absent(),
-            Value<double?> similarityPct = const Value.absent(),
-            Value<String> status = const Value.absent(),
-            Value<String?> sourcesJson = const Value.absent(),
-            Value<String?> reportPdfUrl = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
+            drift.Value<String> id = const drift.Value.absent(),
+            drift.Value<String> documentId = const drift.Value.absent(),
+            drift.Value<String> userId = const drift.Value.absent(),
+            drift.Value<double?> similarityPct = const drift.Value.absent(),
+            drift.Value<String> status = const drift.Value.absent(),
+            drift.Value<String?> sourcesJson = const drift.Value.absent(),
+            drift.Value<String?> reportPdfUrl = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               ScanReportsTableCompanion(
             id: id,
@@ -2134,12 +2523,12 @@ class $$ScanReportsTableTableTableManager extends RootTableManager<
             required String id,
             required String documentId,
             required String userId,
-            Value<double?> similarityPct = const Value.absent(),
+            drift.Value<double?> similarityPct = const drift.Value.absent(),
             required String status,
-            Value<String?> sourcesJson = const Value.absent(),
-            Value<String?> reportPdfUrl = const Value.absent(),
+            drift.Value<String?> sourcesJson = const drift.Value.absent(),
+            drift.Value<String?> reportPdfUrl = const drift.Value.absent(),
             required DateTime createdAt,
-            Value<int> rowid = const Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               ScanReportsTableCompanion.insert(
             id: id,
@@ -2153,55 +2542,57 @@ class $$ScanReportsTableTableTableManager extends RootTableManager<
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), drift.BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
         ));
 }
 
-typedef $$ScanReportsTableTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $ScanReportsTableTable,
-    ScanReportsTableData,
-    $$ScanReportsTableTableFilterComposer,
-    $$ScanReportsTableTableOrderingComposer,
-    $$ScanReportsTableTableAnnotationComposer,
-    $$ScanReportsTableTableCreateCompanionBuilder,
-    $$ScanReportsTableTableUpdateCompanionBuilder,
-    (
-      ScanReportsTableData,
-      BaseReferences<_$AppDatabase, $ScanReportsTableTable,
-          ScanReportsTableData>
-    ),
-    ScanReportsTableData,
-    PrefetchHooks Function()>;
+typedef $$ScanReportsTableTableProcessedTableManager
+    = drift.ProcessedTableManager<
+        _$AppDatabase,
+        $ScanReportsTableTable,
+        ScanReportsTableData,
+        $$ScanReportsTableTableFilterComposer,
+        $$ScanReportsTableTableOrderingComposer,
+        $$ScanReportsTableTableAnnotationComposer,
+        $$ScanReportsTableTableCreateCompanionBuilder,
+        $$ScanReportsTableTableUpdateCompanionBuilder,
+        (
+          ScanReportsTableData,
+          drift.BaseReferences<_$AppDatabase, $ScanReportsTableTable,
+              ScanReportsTableData>
+        ),
+        ScanReportsTableData,
+        drift.PrefetchHooks Function()>;
 typedef $$TranslationsTableTableCreateCompanionBuilder
     = TranslationsTableCompanion Function({
   required String id,
   required String userId,
-  Value<String?> documentId,
+  drift.Value<String?> documentId,
   required String sourceLang,
   required String targetLang,
   required String inputText,
   required String outputText,
   required DateTime createdAt,
-  Value<int> rowid,
+  drift.Value<int> rowid,
 });
 typedef $$TranslationsTableTableUpdateCompanionBuilder
     = TranslationsTableCompanion Function({
-  Value<String> id,
-  Value<String> userId,
-  Value<String?> documentId,
-  Value<String> sourceLang,
-  Value<String> targetLang,
-  Value<String> inputText,
-  Value<String> outputText,
-  Value<DateTime> createdAt,
-  Value<int> rowid,
+  drift.Value<String> id,
+  drift.Value<String> userId,
+  drift.Value<String?> documentId,
+  drift.Value<String> sourceLang,
+  drift.Value<String> targetLang,
+  drift.Value<String> inputText,
+  drift.Value<String> outputText,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> rowid,
 });
 
 class $$TranslationsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $TranslationsTableTable> {
+    extends drift.Composer<_$AppDatabase, $TranslationsTableTable> {
   $$TranslationsTableTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -2209,33 +2600,39 @@ class $$TranslationsTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get sourceLang => $composableBuilder(
-      column: $table.sourceLang, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get sourceLang => $composableBuilder(
+      column: $table.sourceLang,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get targetLang => $composableBuilder(
-      column: $table.targetLang, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get targetLang => $composableBuilder(
+      column: $table.targetLang,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get inputText => $composableBuilder(
-      column: $table.inputText, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get inputText => $composableBuilder(
+      column: $table.inputText,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get outputText => $composableBuilder(
-      column: $table.outputText, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get outputText => $composableBuilder(
+      column: $table.outputText,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnFilters(column));
 }
 
 class $$TranslationsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $TranslationsTableTable> {
+    extends drift.Composer<_$AppDatabase, $TranslationsTableTable> {
   $$TranslationsTableTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -2243,33 +2640,40 @@ class $$TranslationsTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get sourceLang => $composableBuilder(
-      column: $table.sourceLang, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get sourceLang => $composableBuilder(
+      column: $table.sourceLang,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get targetLang => $composableBuilder(
-      column: $table.targetLang, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get targetLang => $composableBuilder(
+      column: $table.targetLang,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get inputText => $composableBuilder(
-      column: $table.inputText, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get inputText => $composableBuilder(
+      column: $table.inputText,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get outputText => $composableBuilder(
-      column: $table.outputText, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get outputText => $composableBuilder(
+      column: $table.outputText,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnOrderings(column));
 }
 
 class $$TranslationsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $TranslationsTableTable> {
+    extends drift.Composer<_$AppDatabase, $TranslationsTableTable> {
   $$TranslationsTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -2277,32 +2681,32 @@ class $$TranslationsTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
+  drift.GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get userId =>
+  drift.GeneratedColumn<String> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
-  GeneratedColumn<String> get documentId => $composableBuilder(
+  drift.GeneratedColumn<String> get documentId => $composableBuilder(
       column: $table.documentId, builder: (column) => column);
 
-  GeneratedColumn<String> get sourceLang => $composableBuilder(
+  drift.GeneratedColumn<String> get sourceLang => $composableBuilder(
       column: $table.sourceLang, builder: (column) => column);
 
-  GeneratedColumn<String> get targetLang => $composableBuilder(
+  drift.GeneratedColumn<String> get targetLang => $composableBuilder(
       column: $table.targetLang, builder: (column) => column);
 
-  GeneratedColumn<String> get inputText =>
+  drift.GeneratedColumn<String> get inputText =>
       $composableBuilder(column: $table.inputText, builder: (column) => column);
 
-  GeneratedColumn<String> get outputText => $composableBuilder(
+  drift.GeneratedColumn<String> get outputText => $composableBuilder(
       column: $table.outputText, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get createdAt =>
+  drift.GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
-class $$TranslationsTableTableTableManager extends RootTableManager<
+class $$TranslationsTableTableTableManager extends drift.RootTableManager<
     _$AppDatabase,
     $TranslationsTableTable,
     TranslationsTableData,
@@ -2313,14 +2717,14 @@ class $$TranslationsTableTableTableManager extends RootTableManager<
     $$TranslationsTableTableUpdateCompanionBuilder,
     (
       TranslationsTableData,
-      BaseReferences<_$AppDatabase, $TranslationsTableTable,
+      drift.BaseReferences<_$AppDatabase, $TranslationsTableTable,
           TranslationsTableData>
     ),
     TranslationsTableData,
-    PrefetchHooks Function()> {
+    drift.PrefetchHooks Function()> {
   $$TranslationsTableTableTableManager(
       _$AppDatabase db, $TranslationsTableTable table)
-      : super(TableManagerState(
+      : super(drift.TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2331,15 +2735,15 @@ class $$TranslationsTableTableTableManager extends RootTableManager<
               $$TranslationsTableTableAnnotationComposer(
                   $db: db, $table: table),
           updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> userId = const Value.absent(),
-            Value<String?> documentId = const Value.absent(),
-            Value<String> sourceLang = const Value.absent(),
-            Value<String> targetLang = const Value.absent(),
-            Value<String> inputText = const Value.absent(),
-            Value<String> outputText = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
+            drift.Value<String> id = const drift.Value.absent(),
+            drift.Value<String> userId = const drift.Value.absent(),
+            drift.Value<String?> documentId = const drift.Value.absent(),
+            drift.Value<String> sourceLang = const drift.Value.absent(),
+            drift.Value<String> targetLang = const drift.Value.absent(),
+            drift.Value<String> inputText = const drift.Value.absent(),
+            drift.Value<String> outputText = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               TranslationsTableCompanion(
             id: id,
@@ -2355,13 +2759,13 @@ class $$TranslationsTableTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             required String id,
             required String userId,
-            Value<String?> documentId = const Value.absent(),
+            drift.Value<String?> documentId = const drift.Value.absent(),
             required String sourceLang,
             required String targetLang,
             required String inputText,
             required String outputText,
             required DateTime createdAt,
-            Value<int> rowid = const Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               TranslationsTableCompanion.insert(
             id: id,
@@ -2375,28 +2779,30 @@ class $$TranslationsTableTableTableManager extends RootTableManager<
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), drift.BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
         ));
 }
 
-typedef $$TranslationsTableTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $TranslationsTableTable,
-    TranslationsTableData,
-    $$TranslationsTableTableFilterComposer,
-    $$TranslationsTableTableOrderingComposer,
-    $$TranslationsTableTableAnnotationComposer,
-    $$TranslationsTableTableCreateCompanionBuilder,
-    $$TranslationsTableTableUpdateCompanionBuilder,
-    (
-      TranslationsTableData,
-      BaseReferences<_$AppDatabase, $TranslationsTableTable,
-          TranslationsTableData>
-    ),
-    TranslationsTableData,
-    PrefetchHooks Function()>;
+typedef $$TranslationsTableTableProcessedTableManager
+    = drift.ProcessedTableManager<
+        _$AppDatabase,
+        $TranslationsTableTable,
+        TranslationsTableData,
+        $$TranslationsTableTableFilterComposer,
+        $$TranslationsTableTableOrderingComposer,
+        $$TranslationsTableTableAnnotationComposer,
+        $$TranslationsTableTableCreateCompanionBuilder,
+        $$TranslationsTableTableUpdateCompanionBuilder,
+        (
+          TranslationsTableData,
+          drift.BaseReferences<_$AppDatabase, $TranslationsTableTable,
+              TranslationsTableData>
+        ),
+        TranslationsTableData,
+        drift.PrefetchHooks Function()>;
 typedef $$ConversionJobsTableTableCreateCompanionBuilder
     = ConversionJobsTableCompanion Function({
   required String id,
@@ -2405,25 +2811,25 @@ typedef $$ConversionJobsTableTableCreateCompanionBuilder
   required String fromFormat,
   required String toFormat,
   required String status,
-  Value<String?> outputPath,
+  drift.Value<String?> outputPath,
   required DateTime createdAt,
-  Value<int> rowid,
+  drift.Value<int> rowid,
 });
 typedef $$ConversionJobsTableTableUpdateCompanionBuilder
     = ConversionJobsTableCompanion Function({
-  Value<String> id,
-  Value<String> documentId,
-  Value<String> userId,
-  Value<String> fromFormat,
-  Value<String> toFormat,
-  Value<String> status,
-  Value<String?> outputPath,
-  Value<DateTime> createdAt,
-  Value<int> rowid,
+  drift.Value<String> id,
+  drift.Value<String> documentId,
+  drift.Value<String> userId,
+  drift.Value<String> fromFormat,
+  drift.Value<String> toFormat,
+  drift.Value<String> status,
+  drift.Value<String?> outputPath,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> rowid,
 });
 
 class $$ConversionJobsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $ConversionJobsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ConversionJobsTableTable> {
   $$ConversionJobsTableTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -2431,33 +2837,38 @@ class $$ConversionJobsTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get fromFormat => $composableBuilder(
-      column: $table.fromFormat, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get fromFormat => $composableBuilder(
+      column: $table.fromFormat,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get toFormat => $composableBuilder(
-      column: $table.toFormat, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get toFormat => $composableBuilder(
+      column: $table.toFormat,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<String> get outputPath => $composableBuilder(
-      column: $table.outputPath, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<String> get outputPath => $composableBuilder(
+      column: $table.outputPath,
+      builder: (column) => drift.ColumnFilters(column));
 
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  drift.ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnFilters(column));
 }
 
 class $$ConversionJobsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $ConversionJobsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ConversionJobsTableTable> {
   $$ConversionJobsTableTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -2465,33 +2876,40 @@ class $$ConversionJobsTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get documentId => $composableBuilder(
-      column: $table.documentId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get documentId => $composableBuilder(
+      column: $table.documentId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-      column: $table.userId, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get fromFormat => $composableBuilder(
-      column: $table.fromFormat, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get fromFormat => $composableBuilder(
+      column: $table.fromFormat,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get toFormat => $composableBuilder(
-      column: $table.toFormat, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get toFormat => $composableBuilder(
+      column: $table.toFormat,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get status => $composableBuilder(
-      column: $table.status, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<String> get outputPath => $composableBuilder(
-      column: $table.outputPath, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<String> get outputPath => $composableBuilder(
+      column: $table.outputPath,
+      builder: (column) => drift.ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  drift.ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnOrderings(column));
 }
 
 class $$ConversionJobsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ConversionJobsTableTable> {
+    extends drift.Composer<_$AppDatabase, $ConversionJobsTableTable> {
   $$ConversionJobsTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -2499,32 +2917,32 @@ class $$ConversionJobsTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
+  drift.GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get documentId => $composableBuilder(
+  drift.GeneratedColumn<String> get documentId => $composableBuilder(
       column: $table.documentId, builder: (column) => column);
 
-  GeneratedColumn<String> get userId =>
+  drift.GeneratedColumn<String> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
-  GeneratedColumn<String> get fromFormat => $composableBuilder(
+  drift.GeneratedColumn<String> get fromFormat => $composableBuilder(
       column: $table.fromFormat, builder: (column) => column);
 
-  GeneratedColumn<String> get toFormat =>
+  drift.GeneratedColumn<String> get toFormat =>
       $composableBuilder(column: $table.toFormat, builder: (column) => column);
 
-  GeneratedColumn<String> get status =>
+  drift.GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<String> get outputPath => $composableBuilder(
+  drift.GeneratedColumn<String> get outputPath => $composableBuilder(
       column: $table.outputPath, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get createdAt =>
+  drift.GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 }
 
-class $$ConversionJobsTableTableTableManager extends RootTableManager<
+class $$ConversionJobsTableTableTableManager extends drift.RootTableManager<
     _$AppDatabase,
     $ConversionJobsTableTable,
     ConversionJobsTableData,
@@ -2535,14 +2953,14 @@ class $$ConversionJobsTableTableTableManager extends RootTableManager<
     $$ConversionJobsTableTableUpdateCompanionBuilder,
     (
       ConversionJobsTableData,
-      BaseReferences<_$AppDatabase, $ConversionJobsTableTable,
+      drift.BaseReferences<_$AppDatabase, $ConversionJobsTableTable,
           ConversionJobsTableData>
     ),
     ConversionJobsTableData,
-    PrefetchHooks Function()> {
+    drift.PrefetchHooks Function()> {
   $$ConversionJobsTableTableTableManager(
       _$AppDatabase db, $ConversionJobsTableTable table)
-      : super(TableManagerState(
+      : super(drift.TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2554,15 +2972,15 @@ class $$ConversionJobsTableTableTableManager extends RootTableManager<
               $$ConversionJobsTableTableAnnotationComposer(
                   $db: db, $table: table),
           updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<String> documentId = const Value.absent(),
-            Value<String> userId = const Value.absent(),
-            Value<String> fromFormat = const Value.absent(),
-            Value<String> toFormat = const Value.absent(),
-            Value<String> status = const Value.absent(),
-            Value<String?> outputPath = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
+            drift.Value<String> id = const drift.Value.absent(),
+            drift.Value<String> documentId = const drift.Value.absent(),
+            drift.Value<String> userId = const drift.Value.absent(),
+            drift.Value<String> fromFormat = const drift.Value.absent(),
+            drift.Value<String> toFormat = const drift.Value.absent(),
+            drift.Value<String> status = const drift.Value.absent(),
+            drift.Value<String?> outputPath = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               ConversionJobsTableCompanion(
             id: id,
@@ -2582,9 +3000,9 @@ class $$ConversionJobsTableTableTableManager extends RootTableManager<
             required String fromFormat,
             required String toFormat,
             required String status,
-            Value<String?> outputPath = const Value.absent(),
+            drift.Value<String?> outputPath = const drift.Value.absent(),
             required DateTime createdAt,
-            Value<int> rowid = const Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
           }) =>
               ConversionJobsTableCompanion.insert(
             id: id,
@@ -2598,28 +3016,230 @@ class $$ConversionJobsTableTableTableManager extends RootTableManager<
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), drift.BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
         ));
 }
 
-typedef $$ConversionJobsTableTableProcessedTableManager = ProcessedTableManager<
+typedef $$ConversionJobsTableTableProcessedTableManager
+    = drift.ProcessedTableManager<
+        _$AppDatabase,
+        $ConversionJobsTableTable,
+        ConversionJobsTableData,
+        $$ConversionJobsTableTableFilterComposer,
+        $$ConversionJobsTableTableOrderingComposer,
+        $$ConversionJobsTableTableAnnotationComposer,
+        $$ConversionJobsTableTableCreateCompanionBuilder,
+        $$ConversionJobsTableTableUpdateCompanionBuilder,
+        (
+          ConversionJobsTableData,
+          drift.BaseReferences<_$AppDatabase, $ConversionJobsTableTable,
+              ConversionJobsTableData>
+        ),
+        ConversionJobsTableData,
+        drift.PrefetchHooks Function()>;
+typedef $$SyncQueueTableTableCreateCompanionBuilder = SyncQueueTableCompanion
+    Function({
+  required String id,
+  required String action,
+  required String payload,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> retryCount,
+  drift.Value<String> status,
+  drift.Value<int> rowid,
+});
+typedef $$SyncQueueTableTableUpdateCompanionBuilder = SyncQueueTableCompanion
+    Function({
+  drift.Value<String> id,
+  drift.Value<String> action,
+  drift.Value<String> payload,
+  drift.Value<DateTime> createdAt,
+  drift.Value<int> retryCount,
+  drift.Value<String> status,
+  drift.Value<int> rowid,
+});
+
+class $$SyncQueueTableTableFilterComposer
+    extends drift.Composer<_$AppDatabase, $SyncQueueTableTable> {
+  $$SyncQueueTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  drift.ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnFilters(column));
+
+  drift.ColumnFilters<String> get action => $composableBuilder(
+      column: $table.action, builder: (column) => drift.ColumnFilters(column));
+
+  drift.ColumnFilters<String> get payload => $composableBuilder(
+      column: $table.payload, builder: (column) => drift.ColumnFilters(column));
+
+  drift.ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnFilters(column));
+
+  drift.ColumnFilters<int> get retryCount => $composableBuilder(
+      column: $table.retryCount,
+      builder: (column) => drift.ColumnFilters(column));
+
+  drift.ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => drift.ColumnFilters(column));
+}
+
+class $$SyncQueueTableTableOrderingComposer
+    extends drift.Composer<_$AppDatabase, $SyncQueueTableTable> {
+  $$SyncQueueTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  drift.ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => drift.ColumnOrderings(column));
+
+  drift.ColumnOrderings<String> get action => $composableBuilder(
+      column: $table.action,
+      builder: (column) => drift.ColumnOrderings(column));
+
+  drift.ColumnOrderings<String> get payload => $composableBuilder(
+      column: $table.payload,
+      builder: (column) => drift.ColumnOrderings(column));
+
+  drift.ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt,
+      builder: (column) => drift.ColumnOrderings(column));
+
+  drift.ColumnOrderings<int> get retryCount => $composableBuilder(
+      column: $table.retryCount,
+      builder: (column) => drift.ColumnOrderings(column));
+
+  drift.ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status,
+      builder: (column) => drift.ColumnOrderings(column));
+}
+
+class $$SyncQueueTableTableAnnotationComposer
+    extends drift.Composer<_$AppDatabase, $SyncQueueTableTable> {
+  $$SyncQueueTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  drift.GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  drift.GeneratedColumn<String> get action =>
+      $composableBuilder(column: $table.action, builder: (column) => column);
+
+  drift.GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+
+  drift.GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  drift.GeneratedColumn<int> get retryCount => $composableBuilder(
+      column: $table.retryCount, builder: (column) => column);
+
+  drift.GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+}
+
+class $$SyncQueueTableTableTableManager extends drift.RootTableManager<
     _$AppDatabase,
-    $ConversionJobsTableTable,
-    ConversionJobsTableData,
-    $$ConversionJobsTableTableFilterComposer,
-    $$ConversionJobsTableTableOrderingComposer,
-    $$ConversionJobsTableTableAnnotationComposer,
-    $$ConversionJobsTableTableCreateCompanionBuilder,
-    $$ConversionJobsTableTableUpdateCompanionBuilder,
+    $SyncQueueTableTable,
+    SyncQueueTableData,
+    $$SyncQueueTableTableFilterComposer,
+    $$SyncQueueTableTableOrderingComposer,
+    $$SyncQueueTableTableAnnotationComposer,
+    $$SyncQueueTableTableCreateCompanionBuilder,
+    $$SyncQueueTableTableUpdateCompanionBuilder,
     (
-      ConversionJobsTableData,
-      BaseReferences<_$AppDatabase, $ConversionJobsTableTable,
-          ConversionJobsTableData>
+      SyncQueueTableData,
+      drift
+      .BaseReferences<_$AppDatabase, $SyncQueueTableTable, SyncQueueTableData>
     ),
-    ConversionJobsTableData,
-    PrefetchHooks Function()>;
+    SyncQueueTableData,
+    drift.PrefetchHooks Function()> {
+  $$SyncQueueTableTableTableManager(
+      _$AppDatabase db, $SyncQueueTableTable table)
+      : super(drift.TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncQueueTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncQueueTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncQueueTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            drift.Value<String> id = const drift.Value.absent(),
+            drift.Value<String> action = const drift.Value.absent(),
+            drift.Value<String> payload = const drift.Value.absent(),
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> retryCount = const drift.Value.absent(),
+            drift.Value<String> status = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
+          }) =>
+              SyncQueueTableCompanion(
+            id: id,
+            action: action,
+            payload: payload,
+            createdAt: createdAt,
+            retryCount: retryCount,
+            status: status,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String action,
+            required String payload,
+            drift.Value<DateTime> createdAt = const drift.Value.absent(),
+            drift.Value<int> retryCount = const drift.Value.absent(),
+            drift.Value<String> status = const drift.Value.absent(),
+            drift.Value<int> rowid = const drift.Value.absent(),
+          }) =>
+              SyncQueueTableCompanion.insert(
+            id: id,
+            action: action,
+            payload: payload,
+            createdAt: createdAt,
+            retryCount: retryCount,
+            status: status,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), drift.BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$SyncQueueTableTableProcessedTableManager
+    = drift.ProcessedTableManager<
+        _$AppDatabase,
+        $SyncQueueTableTable,
+        SyncQueueTableData,
+        $$SyncQueueTableTableFilterComposer,
+        $$SyncQueueTableTableOrderingComposer,
+        $$SyncQueueTableTableAnnotationComposer,
+        $$SyncQueueTableTableCreateCompanionBuilder,
+        $$SyncQueueTableTableUpdateCompanionBuilder,
+        (
+          SyncQueueTableData,
+          drift.BaseReferences<_$AppDatabase, $SyncQueueTableTable,
+              SyncQueueTableData>
+        ),
+        SyncQueueTableData,
+        drift.PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2632,6 +3252,8 @@ class $AppDatabaseManager {
       $$TranslationsTableTableTableManager(_db, _db.translationsTable);
   $$ConversionJobsTableTableTableManager get conversionJobsTable =>
       $$ConversionJobsTableTableTableManager(_db, _db.conversionJobsTable);
+  $$SyncQueueTableTableTableManager get syncQueueTable =>
+      $$SyncQueueTableTableTableManager(_db, _db.syncQueueTable);
 }
 
 mixin _$DocumentsDaoMixin on DatabaseAccessor<AppDatabase> {
