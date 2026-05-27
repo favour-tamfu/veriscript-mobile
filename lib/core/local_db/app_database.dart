@@ -6,11 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:drift/drift.dart' as drift;
+
 part 'app_database.g.dart';
 part 'tables/documents_table.dart';
 part 'tables/scan_reports_table.dart';
 part 'tables/translations_table.dart';
 part 'tables/conversion_jobs_table.dart';
+part 'tables/sync_queue_table.dart';
 part 'daos/documents_dao.dart';
 part 'daos/scan_reports_dao.dart';
 part 'daos/translations_dao.dart';
@@ -21,6 +24,7 @@ part 'daos/translations_dao.dart';
     ScanReportsTable,
     TranslationsTable,
     ConversionJobsTable,
+    SyncQueueTable,
   ],
   daos: [
     DocumentsDao,
@@ -32,7 +36,17 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(syncQueueTable);
+      }
+    },
+  );
 }
 
 LazyDatabase _openConnection() {

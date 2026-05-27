@@ -8,11 +8,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
+import '../../features/cloud/presentation/drive_screen.dart';
 import '../../features/converter/presentation/converter_screen.dart';
 import '../../features/history/presentation/history_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/ocr/presentation/ocr_screen.dart';
+import '../../features/scanner/presentation/scan_result_screen.dart';
 import '../../features/scanner/presentation/scanner_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
@@ -58,7 +60,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.translator,
-        builder: (context, state) => const TranslatorScreen(),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return TranslatorScreen(initialText: extra?['initialText'] as String?);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.cloudDrive,
+        builder: (context, state) => const DriveScreen(),
+      ),
+      GoRoute(
+        path: '/scanner/result/:reportId',
+        builder: (context, state) => ScanResultScreen(
+          reportId: state.pathParameters['reportId']!,
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

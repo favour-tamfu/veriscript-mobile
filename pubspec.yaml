@@ -66,6 +66,18 @@ dependencies:
   # i18n
   intl: ^0.20.2
 
+  # Phase 2 additions
+  http: ^1.2.0
+  image_picker: ^1.1.0
+  image_cropper: ^12.2.1
+  flutter_markdown: ^0.7.3
+  pdf: ^3.10.8
+  printing: ^5.13.1
+  open_file: ^3.3.2
+  workmanager: ^0.5.2
+  crypto: ^3.0.3
+  permission_handler: ^11.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

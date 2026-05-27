@@ -1,0 +1,221 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/vs_app_bar.dart';
+import '../../../core/widgets/vs_button.dart';
+import '../../../core/widgets/vs_card.dart';
+import '../domain/drive_file.dart';
+import 'drive_notifier.dart';
+
+class DriveScreen extends ConsumerStatefulWidget {
+  const DriveScreen({super.key});
+
+  @override
+  ConsumerState<DriveScreen> createState() => _DriveScreenState();
+}
+
+class _DriveScreenState extends ConsumerState<DriveScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final state = ref.read(driveNotifierProvider);
+      if (state.isSignedIn && state.files.isEmpty) {
+        ref.read(driveNotifierProvider.notifier).loadFiles();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isFrench = Localizations.localeOf(context).languageCode == 'fr';
+    final state = ref.watch(driveNotifierProvider);
+    final notifier = ref.read(driveNotifierProvider.notifier);
+
+    return Scaffold(
+      appBar: VsAppBar(
+        title: state.userEmail != null ? 'Google Drive · ${state.userEmail}' : 'Google Drive',
+        actions: state.isSignedIn
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  tooltip: isFrench ? 'Déconnecter Drive' : 'Disconnect Drive',
+                  onPressed: notifier.signOut,
+                ),
+              ]
+            : null,
+      ),
+      body: state.isSignedIn
+          ? _buildFileList(context, state, notifier, isFrench)
+          : _buildSignIn(context, notifier, isFrench),
+    );
+  }
+
+  Widget _buildSignIn(BuildContext context, DriveNotifier notifier, bool isFrench) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.cloud_off, size: 80, color: AppColors.vsGray),
+            const SizedBox(height: 24),
+            Text(
+              isFrench ? 'Connecter Google Drive' : 'Connect Google Drive',
+              style: Theme.of(context).textTheme.headlineSmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              isFrench
+                  ? 'Importez et exportez des documents directement depuis votre Drive'
+                  : 'Import and export documents directly from your Drive',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.vsGray),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            VsButton.primary(
+              label: isFrench ? 'Connecter avec Google' : 'Connect with Google',
+              onPressed: notifier.signIn,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFileList(
+    BuildContext context,
+    DriveState state,
+    DriveNotifier notifier,
+    bool isFrench,
+  ) {
+    if (state.isLoading && state.files.isEmpty) {
+      return _buildShimmer();
+    }
+
+    if (state.files.isEmpty) {
+      return Center(
+        child: Text(
+          isFrench
+              ? 'Aucun fichier supporté trouvé dans Drive'
+              : 'No supported files found in Drive',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.vsGray),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => notifier.loadFiles(),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: state.files.length + (state.isLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == state.files.length) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(color: AppColors.vsAccent),
+              ),
+            );
+          }
+
+          final file = state.files[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: VsCard(
+              child: Row(
+                children: [
+                  Icon(_fileIcon(file.mimeType), color: AppColors.vsAccent, size: 36),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          file.name,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          _fileDetails(file, isFrench),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.vsGray,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.file_download, color: AppColors.vsAccent),
+                    tooltip: isFrench ? 'Importer' : 'Import',
+                    onPressed: () => _importFile(context, file, notifier, isFrench),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 8,
+      itemBuilder: (_, __) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Shimmer.fromColors(
+          baseColor: AppColors.vsLightGray,
+          highlightColor: AppColors.vsSurface,
+          child: Container(height: 72, decoration: BoxDecoration(
+            color: AppColors.vsSurface,
+            borderRadius: BorderRadius.circular(12),
+          )),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _importFile(
+    BuildContext context,
+    DriveFile file,
+    DriveNotifier notifier,
+    bool isFrench,
+  ) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(isFrench ? 'Téléchargement de ${file.name}...' : 'Downloading ${file.name}...'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+    await notifier.importFile(file, routerContext: context);
+  }
+}
+
+IconData _fileIcon(String mimeType) {
+  if (mimeType.contains('pdf')) return Icons.picture_as_pdf;
+  if (mimeType.contains('word') || mimeType.contains('document')) return Icons.description;
+  return Icons.article;
+}
+
+String _fileDetails(DriveFile file, bool isFrench) {
+  final parts = <String>[];
+  if (file.sizeBytes != null) {
+    final kb = file.sizeBytes! / 1024;
+    if (kb > 1024) {
+      parts.add('${(kb / 1024).toStringAsFixed(1)} MB');
+    } else {
+      parts.add('${kb.toStringAsFixed(0)} KB');
+    }
+  }
+  final date = file.modifiedTime;
+  parts.add('${date.day}/${date.month}/${date.year}');
+  return parts.join(' · ');
+}
