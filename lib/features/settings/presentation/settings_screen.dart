@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/providers/locale_provider.dart';
 import '../../../core/router/app_routes.dart';
@@ -182,9 +182,10 @@ class SettingsScreen extends ConsumerWidget {
                                   final shareText = isFrench
                                       ? 'Utilisez mon code $code pour vous inscrire sur VeriScript et obtenez 2 scans bonus! https://play.google.com/store/apps/details?id=com.veriscipt.mobile'
                                       : 'Use my code $code to sign up for VeriScript and get 2 bonus scans! https://play.google.com/store/apps/details?id=com.veriscipt.mobile';
-                                  SharePlus.instance.share(
-                                    ShareParams(text: shareText),
+                                  final uri = Uri.parse(
+                                    'https://wa.me/681848500?text=${Uri.encodeComponent(shareText)}',
                                   );
+                                  launchUrl(uri, mode: LaunchMode.externalApplication);
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF25D366),

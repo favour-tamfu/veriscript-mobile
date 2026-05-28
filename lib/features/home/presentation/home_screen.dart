@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/local_db/app_database.dart';
 import '../../../core/providers/connectivity_provider.dart';
@@ -238,7 +238,10 @@ class HomeScreen extends ConsumerWidget {
                             final message = isFrench
                                 ? 'Découvrez VeriScript — détection de plagiat + conversion de fichiers pour les étudiants au Cameroun! Télécharger: https://play.google.com/store/apps/details?id=com.veriscipt.mobile'
                                 : 'Check out VeriScript — plagiarism detection + file conversion for students in Cameroon! Download: https://play.google.com/store/apps/details?id=com.veriscipt.mobile';
-                            SharePlus.instance.share(ShareParams(text: message));
+                            final uri = Uri.parse(
+                              'https://wa.me/681848500?text=${Uri.encodeComponent(message)}',
+                            );
+                            launchUrl(uri, mode: LaunchMode.externalApplication);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF25D366),
