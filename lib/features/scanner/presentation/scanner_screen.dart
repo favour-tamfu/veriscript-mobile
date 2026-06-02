@@ -225,6 +225,31 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
               ),
             ),
           ],
+          const SizedBox(height: 8),
+          VsCard(
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              value: state.detectAi,
+              onChanged: notifier.setDetectAi,
+              activeThumbColor: AppColors.vsAccent,
+              title: Text(
+                isFrench ? 'Détecter le contenu IA' : 'Detect AI content',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              subtitle: Text(
+                isFrench
+                    ? 'Analyse aussi le texte généré par IA (utilise un crédit IA)'
+                    : 'Also scan for AI-generated text (uses an AI credit)',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.vsGray),
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           VsButton.primary(
             label: isFrench ? 'Analyser le plagiat' : 'Scan for Plagiarism',

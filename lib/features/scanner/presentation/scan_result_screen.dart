@@ -3,11 +3,11 @@ import 'dart:typed_data';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../core/network/edge_function_caller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_card.dart';
@@ -135,7 +135,7 @@ class ScanResultScreen extends ConsumerWidget {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.picture_as_pdf),
                         label: Text(isFrench ? 'Exporter PDF' : 'Export PDF'),
-                        onPressed: () => _exportPdf(context, ref, isFrench),
+                        onPressed: () => _exportPdf(context, job, isFrench),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -143,7 +143,7 @@ class ScanResultScreen extends ConsumerWidget {
                       child: OutlinedButton.icon(
                         icon: const Icon(Icons.share),
                         label: Text(isFrench ? 'Partager' : 'Share'),
-                        onPressed: () => _share(job, isFrench),
+                        onPressed: () => _share(context, job, isFrench),
                       ),
                     ),
                     if (job.status == 'failed') ...[
@@ -321,25 +321,16 @@ class ScanResultScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _exportPdf(BuildContext context, WidgetRef ref, bool isFrench) async {
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-
+  Future<void> _exportPdf(BuildContext context, ScanJob job, bool isFrench) async {
+    final messenger = ScaffoldMessenger.of(context);
     try {
-      final result = await ref.read(edgeFunctionCallerProvider).invoke(
-        'export-report-pdf',
-        body: {'reportId': reportId, 'userId': ''},
+      final bytes = await _buildReportBytes(job, isFrench);
+      await Printing.layoutPdf(
+        name: 'VeriScript Report',
+        onLayout: (_) async => bytes,
       );
-
-      if (result['htmlContent'] != null) {
-        await Printing.layoutPdf(
-          onLayout: (_) async {
-            // Flutter printing will handle HTML via webview on supported platforms
-            return Uint8List(0);
-          },
-        );
-      }
-    } catch (e) {
-      scaffoldMessenger.showSnackBar(
+    } catch (_) {
+      messenger.showSnackBar(
         SnackBar(
           content: Text(isFrench ? 'Exportation échouée. Réessayez.' : 'Export failed. Try again.'),
           backgroundColor: AppColors.vsError,
@@ -348,18 +339,129 @@ class ScanResultScreen extends ConsumerWidget {
     }
   }
 
-  void _share(ScanJob job, bool isFrench) {
-    final pct = job.similarityPct?.round() ?? 0;
-    final aiPart = job.aiProbability != null
-        ? (isFrench ? ' · IA ${job.aiProbability!.round()}%' : ' · AI ${job.aiProbability!.round()}%')
-        : '';
-    SharePlus.instance.share(
-      ShareParams(
-        text: isFrench
-            ? 'Mon rapport VeriScript: Similarité $pct%$aiPart — rapport généré le ${job.createdAt.toLocal().toString().split(' ')[0]}'
-            : 'My VeriScript report: Similarity $pct%$aiPart — report generated ${job.createdAt.toLocal().toString().split(' ')[0]}',
+  Future<void> _share(BuildContext context, ScanJob job, bool isFrench) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final bytes = await _buildReportBytes(job, isFrench);
+      final date = job.createdAt.toLocal().toString().split(' ')[0];
+      await Printing.sharePdf(bytes: bytes, filename: 'veriscript-report-$date.pdf');
+    } catch (_) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(isFrench ? 'Partage échoué. Réessayez.' : 'Share failed. Try again.'),
+          backgroundColor: AppColors.vsError,
+        ),
+      );
+    }
+  }
+
+  Future<Uint8List> _buildReportBytes(ScanJob job, bool isFrench) async {
+    final doc = pw.Document();
+    final pct = job.similarityPct ?? 0.0;
+    final ai = job.aiProbability;
+    final sources = job.sources ?? [];
+    final dateStr = job.createdAt.toLocal().toString().split(' ')[0];
+    final simColor = _pdfRiskColor(pct);
+
+    doc.addPage(
+      pw.MultiPage(
+        build: (context) => [
+          pw.Container(
+            padding: const pw.EdgeInsets.all(20),
+            decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFF1A3C5E)),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(
+                  'VeriScript',
+                  style: pw.TextStyle(
+                    color: PdfColors.white,
+                    fontSize: 22,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
+                pw.Text(
+                  isFrench ? "Rapport d'originalité" : 'Originality Report',
+                  style: const pw.TextStyle(color: PdfColor.fromInt(0xFF2BBFAA), fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          pw.SizedBox(height: 16),
+          pw.Text(dateStr, style: const pw.TextStyle(color: PdfColors.grey, fontSize: 11)),
+          pw.SizedBox(height: 20),
+          pw.Text(
+            isFrench ? 'Score de similarité' : 'Similarity Score',
+            style: const pw.TextStyle(color: PdfColors.grey, fontSize: 12),
+          ),
+          pw.Text(
+            '${pct.round()}%',
+            style: pw.TextStyle(color: simColor, fontSize: 48, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.Text(
+            _riskLabel(pct, isFrench),
+            style: pw.TextStyle(color: simColor, fontWeight: pw.FontWeight.bold),
+          ),
+          if (ai != null) ...[
+            pw.SizedBox(height: 16),
+            pw.Text(
+              isFrench ? 'Contenu généré par IA' : 'AI-Generated Content',
+              style: const pw.TextStyle(color: PdfColors.grey, fontSize: 12),
+            ),
+            pw.Text(
+              '${ai.round()}%',
+              style: pw.TextStyle(
+                color: _pdfRiskColor(ai),
+                fontSize: 32,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.Text(_aiLabel(ai, isFrench), style: pw.TextStyle(color: _pdfRiskColor(ai))),
+          ],
+          pw.SizedBox(height: 24),
+          pw.Text(
+            '${isFrench ? 'Sources correspondantes' : 'Matched Sources'} (${sources.length})',
+            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+          ),
+          pw.SizedBox(height: 8),
+          if (sources.isEmpty)
+            pw.Text(
+              isFrench ? 'Aucune source spécifique identifiée' : 'No specific sources identified',
+              style: const pw.TextStyle(color: PdfColors.grey),
+            )
+          else
+            ...sources.map(
+              (s) => pw.Container(
+                margin: const pw.EdgeInsets.only(bottom: 8),
+                padding: const pw.EdgeInsets.all(10),
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.grey300),
+                  borderRadius: pw.BorderRadius.circular(6),
+                ),
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(
+                      '${s.matchedPercent.round()}%  ·  ${s.title}',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+                    ),
+                    pw.Text(s.url, style: const pw.TextStyle(color: PdfColors.grey, fontSize: 10)),
+                  ],
+                ),
+              ),
+            ),
+          pw.SizedBox(height: 24),
+          pw.Center(
+            child: pw.Text(
+              'Generated by VeriScript · $dateStr',
+              style: const pw.TextStyle(color: PdfColors.grey, fontSize: 10),
+            ),
+          ),
+        ],
       ),
     );
+
+    return doc.save();
   }
 }
 
@@ -367,6 +469,12 @@ Color _aiColor(double pct) {
   if (pct < 30) return AppColors.vsLowSimilarity;
   if (pct < 70) return AppColors.vsMedSimilarity;
   return AppColors.vsHighSimilarity;
+}
+
+PdfColor _pdfRiskColor(double pct) {
+  if (pct < 30) return const PdfColor.fromInt(0xFF43A047);
+  if (pct < 70) return const PdfColor.fromInt(0xFFFB8C00);
+  return const PdfColor.fromInt(0xFFE53935);
 }
 
 String _aiLabel(double pct, bool isFrench) {

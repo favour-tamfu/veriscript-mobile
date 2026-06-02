@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { jobId, storagePath, documentId, userId } = await req.json()
+    const { jobId, storagePath, documentId, userId, detectAi } = await req.json()
 
     if (!jobId || !storagePath || !documentId || !userId) {
       return new Response(
@@ -69,10 +69,11 @@ serve(async (req) => {
         body: JSON.stringify({
           url: signedUrl,
           properties: {
-            // Run AI-generated-content detection in the same scan; the result
-            // comes back as a 'suspected-ai-text' alert in the completion webhook.
+            // Run AI-generated-content detection in the same scan (unless the
+            // client opted out); the result comes back as a 'suspected-ai-text'
+            // alert in the completion webhook.
             aiGeneratedText: {
-              detect: true,
+              detect: detectAi !== false,
             },
             webhooks: {
               // {STATUS} is substituted by Copyleaks; scanId is appended as a

@@ -21,6 +21,7 @@ class ScannerState {
     this.progressEstimate,
     this.errorMessage,
     this.completedJob,
+    this.detectAi = true,
   });
 
   final File? selectedFile;
@@ -31,6 +32,7 @@ class ScannerState {
   final double? progressEstimate;
   final String? errorMessage;
   final ScanJob? completedJob;
+  final bool detectAi;
 
   ScannerState copyWith({
     File? selectedFile,
@@ -41,6 +43,7 @@ class ScannerState {
     double? progressEstimate,
     String? errorMessage,
     ScanJob? completedJob,
+    bool? detectAi,
     bool clearFile = false,
     bool clearError = false,
     bool clearProgress = false,
@@ -54,6 +57,7 @@ class ScannerState {
       progressEstimate: clearProgress ? null : progressEstimate ?? this.progressEstimate,
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       completedJob: completedJob ?? this.completedJob,
+      detectAi: detectAi ?? this.detectAi,
     );
   }
 }
@@ -95,7 +99,12 @@ class ScannerNotifier extends Notifier<ScannerState> {
       fileName: path.split('/').last.split('\\').last,
       fileSizeBytes: size,
       scanStatus: 'idle',
+      detectAi: state.detectAi,
     );
+  }
+
+  void setDetectAi(bool value) {
+    state = state.copyWith(detectAi: value);
   }
 
   Future<void> startScan() async {
@@ -142,7 +151,13 @@ class ScannerNotifier extends Notifier<ScannerState> {
 
       _startProgressSimulation();
 
-      await repository.startScan(job.reportId, storagePath, job.documentId, userId);
+      await repository.startScan(
+        job.reportId,
+        storagePath,
+        job.documentId,
+        userId,
+        detectAi: state.detectAi,
+      );
 
       await _jobSubscription?.cancel();
       _jobSubscription = repository.watchScanJob(job.reportId).listen(

@@ -66,13 +66,15 @@ class ScanRepository {
     String reportId,
     String storagePath,
     String documentId,
-    String userId,
-  ) async {
+    String userId, {
+    bool detectAi = true,
+  }) async {
     await _edgeFunctionCaller.invoke('scan-document', body: {
       'jobId': reportId,
       'storagePath': storagePath,
       'documentId': documentId,
       'userId': userId,
+      'detectAi': detectAi,
     });
   }
 
