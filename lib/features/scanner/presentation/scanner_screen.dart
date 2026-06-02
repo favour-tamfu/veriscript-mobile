@@ -328,8 +328,8 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
             const SizedBox(height: 12),
             Text(
               isFrench
-                  ? 'Cela prend généralement 30 à 120 secondes'
-                  : 'This usually takes 30–120 seconds',
+                  ? 'Cela peut prendre une à deux minutes — gardez l\'application ouverte'
+                  : 'This can take a minute or two — keep the app open',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsGray),
               textAlign: TextAlign.center,
             ),

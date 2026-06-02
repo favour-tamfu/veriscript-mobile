@@ -104,7 +104,21 @@ class ScannerNotifier extends Notifier<ScannerState> {
     if (file == null || fileName == null) return;
 
     final userId = Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) return;
+    if (userId == null) {
+      state = state.copyWith(
+        scanStatus: 'failed',
+        errorMessage: 'You must be signed in to scan.',
+      );
+      return;
+    }
+
+    // Show the loader immediately so the tap has instant feedback, even while
+    // the quota check and upload are still in flight.
+    state = state.copyWith(
+      scanStatus: 'uploading',
+      clearError: true,
+      progressEstimate: 0.02,
+    );
 
     final repository = ref.read(scanRepositoryProvider);
 
@@ -113,8 +127,6 @@ class ScannerNotifier extends Notifier<ScannerState> {
       state = state.copyWith(scanStatus: 'quota_exceeded');
       return;
     }
-
-    state = state.copyWith(scanStatus: 'uploading', clearError: true);
 
     try {
       final ext = fileName.split('.').last.toLowerCase();
