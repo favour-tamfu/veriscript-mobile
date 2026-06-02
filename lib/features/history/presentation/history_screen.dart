@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_card.dart';
 import '../../../core/widgets/vs_empty_state.dart';
+import '../../converter/data/conversion_repository.dart';
 import '../data/history_repository.dart';
 import '../domain/history_item.dart';
 
@@ -29,7 +32,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   _SortOrder _sort = _SortOrder.newest;
   _StatusFilter _statusFilter = _StatusFilter.all;
   bool _isLoadingRemote = false;
-  List<HistoryItem> _remoteItems = [];
+  List<HistoryItem> _items = [];
   int _page = 0;
 
   @override
@@ -46,30 +49,33 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       _isLoadingRemote = true;
       if (refresh) {
         _page = 0;
-        _remoteItems = [];
+        _items = [];
       }
     });
 
+    final repo = ref.read(historyRepositoryProvider);
     try {
-      final items = await ref.read(historyRepositoryProvider).fetchRemoteHistory(userId, page: _page);
-      await ref.read(historyRepositoryProvider).syncToLocal(items);
+      final items = await repo.fetchRemoteHistory(userId, page: _page);
+      await repo.syncToLocal(items);
+      if (!mounted) return;
       setState(() {
-        _remoteItems = refresh ? items : [..._remoteItems, ...items];
+        _items = refresh ? items : [..._items, ...items];
         _isLoadingRemote = false;
       });
     } catch (_) {
-      setState(() => _isLoadingRemote = false);
+      // Offline / fetch failed: fall back to the local cache if we have nothing.
+      final fallback = _items.isEmpty ? await repo.fetchLocalHistory(userId) : _items;
+      if (!mounted) return;
+      setState(() {
+        _items = fallback;
+        _isLoadingRemote = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isFrench = Localizations.localeOf(context).languageCode == 'fr';
-    final userId = Supabase.instance.client.auth.currentUser?.id ?? '';
-
-    final historyStream = _searchQuery.isNotEmpty
-        ? ref.watch(historyRepositoryProvider).searchLocalHistory(userId, _searchQuery)
-        : ref.watch(historyRepositoryProvider).watchLocalHistory(userId);
 
     return Scaffold(
       appBar: VsAppBar(
@@ -108,53 +114,60 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 onChanged: (v) => setState(() => _searchQuery = v),
               ),
             ),
-          Expanded(
-            child: StreamBuilder<List<HistoryItem>>(
-              stream: historyStream,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting && _isLoadingRemote) {
-                  return _buildShimmer();
-                }
-
-                var items = snapshot.data ?? [];
-                items = _applyFilters(items);
-
-                if (items.isEmpty && !_isLoadingRemote) {
-                  return Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: VsEmptyState(
-                      lottieAsset: 'assets/animations/empty.json',
-                      title: isFrench ? 'Aucun historique' : 'No history yet',
-                      subtitle: isFrench
-                          ? 'Vos documents traités apparaîtront ici'
-                          : 'Your processed documents will appear here',
-                    ),
-                  );
-                }
-
-                return RefreshIndicator(
-                  onRefresh: () => _loadRemoteHistory(refresh: true),
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: items.length + (_isLoadingRemote ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index == items.length) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: CircularProgressIndicator(color: AppColors.vsAccent),
-                          ),
-                        );
-                      }
-
-                      return _buildHistoryCard(context, items[index], isFrench);
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
+          Expanded(child: _buildList(context, isFrench)),
         ],
+      ),
+    );
+  }
+
+  Widget _buildList(BuildContext context, bool isFrench) {
+    if (_isLoadingRemote && _items.isEmpty) {
+      return _buildShimmer();
+    }
+
+    var items = _items;
+    if (_searchQuery.isNotEmpty) {
+      final q = _searchQuery.toLowerCase();
+      items = items.where((i) => i.name.toLowerCase().contains(q)).toList();
+    }
+    items = _applyFilters(items);
+
+    if (items.isEmpty && !_isLoadingRemote) {
+      return RefreshIndicator(
+        onRefresh: () => _loadRemoteHistory(refresh: true),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: VsEmptyState(
+                lottieAsset: 'assets/animations/empty.json',
+                title: isFrench ? 'Aucun historique' : 'No history yet',
+                subtitle: isFrench
+                    ? 'Vos documents traités apparaîtront ici'
+                    : 'Your processed documents will appear here',
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () => _loadRemoteHistory(refresh: true),
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: items.length + (_isLoadingRemote ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == items.length) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(color: AppColors.vsAccent),
+              ),
+            );
+          }
+          return _buildHistoryCard(context, items[index], isFrench);
+        },
       ),
     );
   }
@@ -213,6 +226,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             false;
       },
       onDismissed: (_) {
+        setState(() => _items.removeWhere((i) => i.id == item.id));
         ref.read(historyRepositoryProvider).deleteDocument(
               item.documentId,
               '',
@@ -231,35 +245,40 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: VsCard(
-          child: Row(
-            children: [
-              _buildActionIcon(item.action),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      _buildSubtitle(item, isFrench),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsGray),
-                    ),
-                    Text(
-                      DateFormat.yMMMd().add_jm().format(item.createdAt.toLocal()),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsGray, fontSize: 11),
-                    ),
-                  ],
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _openItem(context, item, isFrench),
+          child: VsCard(
+            child: Row(
+              children: [
+                _buildActionIcon(item.action),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.name,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        _buildSubtitle(item, isFrench),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsGray),
+                      ),
+                      Text(
+                        DateFormat.yMMMd().add_jm().format(item.createdAt.toLocal()),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsGray, fontSize: 11),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              _buildStatusChip(context, item.status, isFrench),
-            ],
+                const SizedBox(width: 8),
+                _buildStatusChip(context, item.status, isFrench),
+                const Icon(Icons.chevron_right, color: AppColors.vsGray, size: 20),
+              ],
+            ),
           ),
         ),
       ),
@@ -299,6 +318,169 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       ),
       child: Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color, fontWeight: FontWeight.w600)),
     );
+  }
+
+  void _openItem(BuildContext context, HistoryItem item, bool isFrench) {
+    // A completed scan opens the full Originality Report directly.
+    if (item.action == 'scan' && item.status == 'done') {
+      context.push('/scanner/result/${item.id}');
+      return;
+    }
+    _showOperationSheet(context, item, isFrench);
+  }
+
+  void _showOperationSheet(BuildContext context, HistoryItem item, bool isFrench) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.vsSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _buildActionIcon(item.action),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    item.name,
+                    style: Theme.of(ctx).textTheme.titleMedium,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ..._operationDetailRows(ctx, item, isFrench),
+            _detailRow(ctx, isFrench ? 'Date' : 'Date',
+                DateFormat.yMMMd().add_jm().format(item.createdAt.toLocal())),
+            _detailRow(ctx, isFrench ? 'Statut' : 'Status',
+                _statusText(item.status, isFrench)),
+            const SizedBox(height: 20),
+            if (item.action == 'convert' &&
+                item.status == 'done' &&
+                item.outputPath != null)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.download),
+                  label: Text(isFrench
+                      ? 'Télécharger le fichier converti'
+                      : 'Download converted file'),
+                  onPressed: () => _downloadConverted(ctx, item, isFrench),
+                ),
+              ),
+            if (item.action == 'scan')
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.assessment_rounded),
+                  label: Text(
+                      isFrench ? 'Voir le rapport complet' : 'View full report'),
+                  onPressed: item.status == 'done'
+                      ? () {
+                          Navigator.pop(ctx);
+                          context.push('/scanner/result/${item.id}');
+                        }
+                      : null,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _operationDetailRows(
+      BuildContext ctx, HistoryItem item, bool isFrench) {
+    switch (item.action) {
+      case 'convert':
+        return [
+          _detailRow(ctx, isFrench ? 'Opération' : 'Operation',
+              isFrench ? 'Conversion de fichier' : 'File conversion'),
+          _detailRow(ctx, isFrench ? 'De → Vers' : 'From → To',
+              '${(item.fromFormat ?? '?').toUpperCase()} → ${(item.toFormat ?? '?').toUpperCase()}'),
+        ];
+      case 'scan':
+        return [
+          _detailRow(ctx, isFrench ? 'Opération' : 'Operation',
+              isFrench ? 'Vérification de plagiat' : 'Plagiarism check'),
+          if (item.similarityPct != null)
+            _detailRow(ctx, isFrench ? 'Similarité' : 'Similarity',
+                '${item.similarityPct!.round()}%'),
+          if (item.aiProbability != null)
+            _detailRow(ctx, isFrench ? 'Contenu IA' : 'AI content',
+                '${item.aiProbability!.round()}%'),
+        ];
+      case 'translate':
+        return [
+          _detailRow(ctx, isFrench ? 'Opération' : 'Operation',
+              isFrench ? 'Traduction' : 'Translation'),
+          _detailRow(ctx, isFrench ? 'Langues' : 'Languages',
+              '${(item.sourceLang ?? '?').toUpperCase()} → ${(item.targetLang ?? '?').toUpperCase()}'),
+        ];
+      default:
+        return [
+          _detailRow(ctx, isFrench ? 'Type' : 'Type', item.type.toUpperCase()),
+        ];
+    }
+  }
+
+  Widget _detailRow(BuildContext ctx, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(label,
+                style: Theme.of(ctx)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.vsGray)),
+          ),
+          Expanded(
+            child: Text(value,
+                style: Theme.of(ctx)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _statusText(String status, bool isFrench) {
+    return status == 'done'
+        ? (isFrench ? 'Terminé' : 'Done')
+        : status == 'failed'
+            ? (isFrench ? 'Échoué' : 'Failed')
+            : (isFrench ? 'En cours' : 'Processing');
+  }
+
+  Future<void> _downloadConverted(
+      BuildContext sheetContext, HistoryItem item, bool isFrench) async {
+    final messenger = ScaffoldMessenger.of(context);
+    Navigator.pop(sheetContext);
+    try {
+      final url = await ref
+          .read(conversionRepositoryProvider)
+          .getSignedDownloadUrl(item.outputPath!);
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } catch (_) {
+      messenger.showSnackBar(SnackBar(
+        content: Text(isFrench ? 'Téléchargement échoué.' : 'Download failed.'),
+        backgroundColor: AppColors.vsError,
+      ));
+    }
   }
 
   String _buildSubtitle(HistoryItem item, bool isFrench) {

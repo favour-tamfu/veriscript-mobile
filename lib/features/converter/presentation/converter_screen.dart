@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_error_view.dart';
+import '../domain/conversion_formats.dart';
 import '../presentation/converter_notifier.dart';
 
 class ConverterScreen extends ConsumerWidget {
@@ -81,8 +82,8 @@ class ConverterScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Text(
                     isFrench
-                        ? 'PDF, DOCX, TXT · Max 10 Mo'
-                        : 'PDF, DOCX, TXT · Max 10MB',
+                        ? 'PDF, Word, images, tableurs et plus · Max 10 Mo'
+                        : 'PDF, Word, images, spreadsheets & more · Max 10MB',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -98,9 +99,7 @@ class ConverterScreen extends ConsumerWidget {
 
     if (state.selectedFile != null && state.jobStatus == 'idle') {
       final file = state.selectedFile!;
-      final availableFormats = ['pdf', 'docx', 'txt']
-          .where((format) => format != state.fromFormat)
-          .toList();
+      final availableFormats = targetFormatsFor(state.fromFormat ?? '');
 
       return ListView(
         children: [

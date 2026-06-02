@@ -14,8 +14,10 @@ class HistoryItem with _$HistoryItem {
     required String status,
     required DateTime createdAt,
     double? similarityPct,
+    double? aiProbability,
     String? fromFormat,
     String? toFormat,
+    String? outputPath,
     String? sourceLang,
     String? targetLang,
   }) = _HistoryItem;

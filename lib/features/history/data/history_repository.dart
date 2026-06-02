@@ -40,7 +40,7 @@ class HistoryRepository {
       // Check for scan report
       final scan = await _client
           .from('scan_reports')
-          .select('id, status, similarity_pct')
+          .select('id, status, similarity_pct, ai_probability')
           .eq('document_id', docId)
           .maybeSingle();
 
@@ -54,6 +54,7 @@ class HistoryRepository {
           status: scan['status'] as String,
           createdAt: DateTime.parse(doc['created_at'] as String),
           similarityPct: (scan['similarity_pct'] as num?)?.toDouble(),
+          aiProbability: (scan['ai_probability'] as num?)?.toDouble(),
         ));
         continue;
       }
@@ -61,7 +62,7 @@ class HistoryRepository {
       // Check for conversion job
       final conv = await _client
           .from('conversion_jobs')
-          .select('id, status, from_format, to_format')
+          .select('id, status, from_format, to_format, output_path')
           .eq('document_id', docId)
           .maybeSingle();
 
@@ -76,6 +77,7 @@ class HistoryRepository {
           createdAt: DateTime.parse(doc['created_at'] as String),
           fromFormat: conv['from_format'] as String?,
           toFormat: conv['to_format'] as String?,
+          outputPath: conv['output_path'] as String?,
         ));
         continue;
       }
@@ -106,6 +108,24 @@ class HistoryRepository {
         createdAt: drift.Value(item.createdAt),
       ));
     }
+  }
+
+  /// One-shot local cache read used as an offline fallback when the remote
+  /// history can't be fetched. Operation details aren't cached locally, so
+  /// these come back as plain document entries.
+  Future<List<HistoryItem>> fetchLocalHistory(String userId) async {
+    final docs = await _documentsDao.getRecentDocuments(userId, limit: 100);
+    return docs
+        .map((doc) => HistoryItem(
+              id: doc.id,
+              documentId: doc.id,
+              name: doc.name,
+              type: doc.type,
+              action: 'document',
+              status: 'done',
+              createdAt: doc.createdAt,
+            ))
+        .toList();
   }
 
   Stream<List<HistoryItem>> watchLocalHistory(String userId) {

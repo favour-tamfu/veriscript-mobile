@@ -28,8 +28,10 @@ mixin _$HistoryItem {
   String get status => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   double? get similarityPct => throw _privateConstructorUsedError;
+  double? get aiProbability => throw _privateConstructorUsedError;
   String? get fromFormat => throw _privateConstructorUsedError;
   String? get toFormat => throw _privateConstructorUsedError;
+  String? get outputPath => throw _privateConstructorUsedError;
   String? get sourceLang => throw _privateConstructorUsedError;
   String? get targetLang => throw _privateConstructorUsedError;
 
@@ -58,8 +60,10 @@ abstract class $HistoryItemCopyWith<$Res> {
       String status,
       DateTime createdAt,
       double? similarityPct,
+      double? aiProbability,
       String? fromFormat,
       String? toFormat,
+      String? outputPath,
       String? sourceLang,
       String? targetLang});
 }
@@ -87,8 +91,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
     Object? status = null,
     Object? createdAt = null,
     Object? similarityPct = freezed,
+    Object? aiProbability = freezed,
     Object? fromFormat = freezed,
     Object? toFormat = freezed,
+    Object? outputPath = freezed,
     Object? sourceLang = freezed,
     Object? targetLang = freezed,
   }) {
@@ -125,6 +131,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
           ? _value.similarityPct
           : similarityPct // ignore: cast_nullable_to_non_nullable
               as double?,
+      aiProbability: freezed == aiProbability
+          ? _value.aiProbability
+          : aiProbability // ignore: cast_nullable_to_non_nullable
+              as double?,
       fromFormat: freezed == fromFormat
           ? _value.fromFormat
           : fromFormat // ignore: cast_nullable_to_non_nullable
@@ -132,6 +142,10 @@ class _$HistoryItemCopyWithImpl<$Res, $Val extends HistoryItem>
       toFormat: freezed == toFormat
           ? _value.toFormat
           : toFormat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      outputPath: freezed == outputPath
+          ? _value.outputPath
+          : outputPath // ignore: cast_nullable_to_non_nullable
               as String?,
       sourceLang: freezed == sourceLang
           ? _value.sourceLang
@@ -162,8 +176,10 @@ abstract class _$$HistoryItemImplCopyWith<$Res>
       String status,
       DateTime createdAt,
       double? similarityPct,
+      double? aiProbability,
       String? fromFormat,
       String? toFormat,
+      String? outputPath,
       String? sourceLang,
       String? targetLang});
 }
@@ -189,8 +205,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
     Object? status = null,
     Object? createdAt = null,
     Object? similarityPct = freezed,
+    Object? aiProbability = freezed,
     Object? fromFormat = freezed,
     Object? toFormat = freezed,
+    Object? outputPath = freezed,
     Object? sourceLang = freezed,
     Object? targetLang = freezed,
   }) {
@@ -227,6 +245,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
           ? _value.similarityPct
           : similarityPct // ignore: cast_nullable_to_non_nullable
               as double?,
+      aiProbability: freezed == aiProbability
+          ? _value.aiProbability
+          : aiProbability // ignore: cast_nullable_to_non_nullable
+              as double?,
       fromFormat: freezed == fromFormat
           ? _value.fromFormat
           : fromFormat // ignore: cast_nullable_to_non_nullable
@@ -234,6 +256,10 @@ class __$$HistoryItemImplCopyWithImpl<$Res>
       toFormat: freezed == toFormat
           ? _value.toFormat
           : toFormat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      outputPath: freezed == outputPath
+          ? _value.outputPath
+          : outputPath // ignore: cast_nullable_to_non_nullable
               as String?,
       sourceLang: freezed == sourceLang
           ? _value.sourceLang
@@ -259,8 +285,10 @@ class _$HistoryItemImpl implements _HistoryItem {
       required this.status,
       required this.createdAt,
       this.similarityPct,
+      this.aiProbability,
       this.fromFormat,
       this.toFormat,
+      this.outputPath,
       this.sourceLang,
       this.targetLang});
 
@@ -284,9 +312,13 @@ class _$HistoryItemImpl implements _HistoryItem {
   @override
   final double? similarityPct;
   @override
+  final double? aiProbability;
+  @override
   final String? fromFormat;
   @override
   final String? toFormat;
+  @override
+  final String? outputPath;
   @override
   final String? sourceLang;
   @override
@@ -294,7 +326,7 @@ class _$HistoryItemImpl implements _HistoryItem {
 
   @override
   String toString() {
-    return 'HistoryItem(id: $id, documentId: $documentId, name: $name, type: $type, action: $action, status: $status, createdAt: $createdAt, similarityPct: $similarityPct, fromFormat: $fromFormat, toFormat: $toFormat, sourceLang: $sourceLang, targetLang: $targetLang)';
+    return 'HistoryItem(id: $id, documentId: $documentId, name: $name, type: $type, action: $action, status: $status, createdAt: $createdAt, similarityPct: $similarityPct, aiProbability: $aiProbability, fromFormat: $fromFormat, toFormat: $toFormat, outputPath: $outputPath, sourceLang: $sourceLang, targetLang: $targetLang)';
   }
 
   @override
@@ -313,10 +345,14 @@ class _$HistoryItemImpl implements _HistoryItem {
                 other.createdAt == createdAt) &&
             (identical(other.similarityPct, similarityPct) ||
                 other.similarityPct == similarityPct) &&
+            (identical(other.aiProbability, aiProbability) ||
+                other.aiProbability == aiProbability) &&
             (identical(other.fromFormat, fromFormat) ||
                 other.fromFormat == fromFormat) &&
             (identical(other.toFormat, toFormat) ||
                 other.toFormat == toFormat) &&
+            (identical(other.outputPath, outputPath) ||
+                other.outputPath == outputPath) &&
             (identical(other.sourceLang, sourceLang) ||
                 other.sourceLang == sourceLang) &&
             (identical(other.targetLang, targetLang) ||
@@ -335,8 +371,10 @@ class _$HistoryItemImpl implements _HistoryItem {
       status,
       createdAt,
       similarityPct,
+      aiProbability,
       fromFormat,
       toFormat,
+      outputPath,
       sourceLang,
       targetLang);
 
@@ -366,8 +404,10 @@ abstract class _HistoryItem implements HistoryItem {
       required final String status,
       required final DateTime createdAt,
       final double? similarityPct,
+      final double? aiProbability,
       final String? fromFormat,
       final String? toFormat,
+      final String? outputPath,
       final String? sourceLang,
       final String? targetLang}) = _$HistoryItemImpl;
 
@@ -391,9 +431,13 @@ abstract class _HistoryItem implements HistoryItem {
   @override
   double? get similarityPct;
   @override
+  double? get aiProbability;
+  @override
   String? get fromFormat;
   @override
   String? get toFormat;
+  @override
+  String? get outputPath;
   @override
   String? get sourceLang;
   @override

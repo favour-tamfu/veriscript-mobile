@@ -16,8 +16,10 @@ _$HistoryItemImpl _$$HistoryItemImplFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       similarityPct: (json['similarityPct'] as num?)?.toDouble(),
+      aiProbability: (json['aiProbability'] as num?)?.toDouble(),
       fromFormat: json['fromFormat'] as String?,
       toFormat: json['toFormat'] as String?,
+      outputPath: json['outputPath'] as String?,
       sourceLang: json['sourceLang'] as String?,
       targetLang: json['targetLang'] as String?,
     );
@@ -32,8 +34,10 @@ Map<String, dynamic> _$$HistoryItemImplToJson(_$HistoryItemImpl instance) =>
       'status': instance.status,
       'createdAt': instance.createdAt.toIso8601String(),
       'similarityPct': instance.similarityPct,
+      'aiProbability': instance.aiProbability,
       'fromFormat': instance.fromFormat,
       'toFormat': instance.toFormat,
+      'outputPath': instance.outputPath,
       'sourceLang': instance.sourceLang,
       'targetLang': instance.targetLang,
     };

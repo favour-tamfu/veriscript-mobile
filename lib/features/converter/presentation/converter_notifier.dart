@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 
 import '../data/conversion_repository.dart';
+import '../domain/conversion_formats.dart';
 
 final converterNotifierProvider =
     NotifierProvider<ConverterNotifier, ConverterState>(
@@ -69,7 +70,7 @@ class ConverterNotifier extends Notifier<ConverterState> {
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: const ['pdf', 'docx', 'txt'],
+      allowedExtensions: kConvertibleInputExtensions,
     );
 
     final path = result?.files.single.path;
@@ -78,7 +79,7 @@ class ConverterNotifier extends Notifier<ConverterState> {
     }
 
     final file = File(path);
-    final format = p.extension(path).replaceFirst('.', '').toLowerCase();
+    final format = normalizeFormat(p.extension(path).replaceFirst('.', ''));
     state = ConverterState(
       selectedFile: file,
       fromFormat: format,
