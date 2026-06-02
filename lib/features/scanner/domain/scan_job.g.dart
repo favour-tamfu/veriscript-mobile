@@ -13,6 +13,7 @@ _$ScanJobImpl _$$ScanJobImplFromJson(Map<String, dynamic> json) =>
       userId: json['userId'] as String,
       status: json['status'] as String,
       similarityPct: (json['similarityPct'] as num?)?.toDouble(),
+      aiProbability: (json['aiProbability'] as num?)?.toDouble(),
       sources: (json['sources'] as List<dynamic>?)
           ?.map((e) => ScanSource.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$ScanJobImplToJson(_$ScanJobImpl instance) =>
       'userId': instance.userId,
       'status': instance.status,
       'similarityPct': instance.similarityPct,
+      'aiProbability': instance.aiProbability,
       'sources': instance.sources,
       'reportPdfUrl': instance.reportPdfUrl,
       'externalScanId': instance.externalScanId,

@@ -137,6 +137,7 @@ class ScanRepository {
       userId: row['user_id'] as String,
       status: row['status'] as String,
       similarityPct: (row['similarity_pct'] as num?)?.toDouble(),
+      aiProbability: (row['ai_probability'] as num?)?.toDouble(),
       sources: sources,
       reportPdfUrl: row['report_pdf_url'] as String?,
       externalScanId: row['external_scan_id'] as String?,

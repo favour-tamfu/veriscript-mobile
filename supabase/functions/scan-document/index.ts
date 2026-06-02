@@ -69,6 +69,11 @@ serve(async (req) => {
         body: JSON.stringify({
           url: signedUrl,
           properties: {
+            // Run AI-generated-content detection in the same scan; the result
+            // comes back as a 'suspected-ai-text' alert in the completion webhook.
+            aiGeneratedText: {
+              detect: true,
+            },
             webhooks: {
               // {STATUS} is substituted by Copyleaks; scanId is appended as a
               // literal segment so the webhook can identify the scan reliably.

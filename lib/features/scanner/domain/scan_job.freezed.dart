@@ -25,6 +25,7 @@ mixin _$ScanJob {
   String get userId => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   double? get similarityPct => throw _privateConstructorUsedError;
+  double? get aiProbability => throw _privateConstructorUsedError;
   List<ScanSource>? get sources => throw _privateConstructorUsedError;
   String? get reportPdfUrl => throw _privateConstructorUsedError;
   String? get externalScanId => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $ScanJobCopyWith<$Res> {
       String userId,
       String status,
       double? similarityPct,
+      double? aiProbability,
       List<ScanSource>? sources,
       String? reportPdfUrl,
       String? externalScanId,
@@ -76,6 +78,7 @@ class _$ScanJobCopyWithImpl<$Res, $Val extends ScanJob>
     Object? userId = null,
     Object? status = null,
     Object? similarityPct = freezed,
+    Object? aiProbability = freezed,
     Object? sources = freezed,
     Object? reportPdfUrl = freezed,
     Object? externalScanId = freezed,
@@ -101,6 +104,10 @@ class _$ScanJobCopyWithImpl<$Res, $Val extends ScanJob>
       similarityPct: freezed == similarityPct
           ? _value.similarityPct
           : similarityPct // ignore: cast_nullable_to_non_nullable
+              as double?,
+      aiProbability: freezed == aiProbability
+          ? _value.aiProbability
+          : aiProbability // ignore: cast_nullable_to_non_nullable
               as double?,
       sources: freezed == sources
           ? _value.sources
@@ -135,6 +142,7 @@ abstract class _$$ScanJobImplCopyWith<$Res> implements $ScanJobCopyWith<$Res> {
       String userId,
       String status,
       double? similarityPct,
+      double? aiProbability,
       List<ScanSource>? sources,
       String? reportPdfUrl,
       String? externalScanId,
@@ -159,6 +167,7 @@ class __$$ScanJobImplCopyWithImpl<$Res>
     Object? userId = null,
     Object? status = null,
     Object? similarityPct = freezed,
+    Object? aiProbability = freezed,
     Object? sources = freezed,
     Object? reportPdfUrl = freezed,
     Object? externalScanId = freezed,
@@ -184,6 +193,10 @@ class __$$ScanJobImplCopyWithImpl<$Res>
       similarityPct: freezed == similarityPct
           ? _value.similarityPct
           : similarityPct // ignore: cast_nullable_to_non_nullable
+              as double?,
+      aiProbability: freezed == aiProbability
+          ? _value.aiProbability
+          : aiProbability // ignore: cast_nullable_to_non_nullable
               as double?,
       sources: freezed == sources
           ? _value._sources
@@ -214,6 +227,7 @@ class _$ScanJobImpl implements _ScanJob {
       required this.userId,
       required this.status,
       this.similarityPct,
+      this.aiProbability,
       final List<ScanSource>? sources,
       this.reportPdfUrl,
       this.externalScanId,
@@ -233,6 +247,8 @@ class _$ScanJobImpl implements _ScanJob {
   final String status;
   @override
   final double? similarityPct;
+  @override
+  final double? aiProbability;
   final List<ScanSource>? _sources;
   @override
   List<ScanSource>? get sources {
@@ -252,7 +268,7 @@ class _$ScanJobImpl implements _ScanJob {
 
   @override
   String toString() {
-    return 'ScanJob(id: $id, documentId: $documentId, userId: $userId, status: $status, similarityPct: $similarityPct, sources: $sources, reportPdfUrl: $reportPdfUrl, externalScanId: $externalScanId, createdAt: $createdAt)';
+    return 'ScanJob(id: $id, documentId: $documentId, userId: $userId, status: $status, similarityPct: $similarityPct, aiProbability: $aiProbability, sources: $sources, reportPdfUrl: $reportPdfUrl, externalScanId: $externalScanId, createdAt: $createdAt)';
   }
 
   @override
@@ -267,6 +283,8 @@ class _$ScanJobImpl implements _ScanJob {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.similarityPct, similarityPct) ||
                 other.similarityPct == similarityPct) &&
+            (identical(other.aiProbability, aiProbability) ||
+                other.aiProbability == aiProbability) &&
             const DeepCollectionEquality().equals(other._sources, _sources) &&
             (identical(other.reportPdfUrl, reportPdfUrl) ||
                 other.reportPdfUrl == reportPdfUrl) &&
@@ -285,6 +303,7 @@ class _$ScanJobImpl implements _ScanJob {
       userId,
       status,
       similarityPct,
+      aiProbability,
       const DeepCollectionEquality().hash(_sources),
       reportPdfUrl,
       externalScanId,
@@ -313,6 +332,7 @@ abstract class _ScanJob implements ScanJob {
       required final String userId,
       required final String status,
       final double? similarityPct,
+      final double? aiProbability,
       final List<ScanSource>? sources,
       final String? reportPdfUrl,
       final String? externalScanId,
@@ -330,6 +350,8 @@ abstract class _ScanJob implements ScanJob {
   String get status;
   @override
   double? get similarityPct;
+  @override
+  double? get aiProbability;
   @override
   List<ScanSource>? get sources;
   @override

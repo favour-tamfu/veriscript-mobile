@@ -11,6 +11,7 @@ class ScanJob with _$ScanJob {
     required String userId,
     required String status,
     double? similarityPct,
+    double? aiProbability,
     List<ScanSource>? sources,
     String? reportPdfUrl,
     String? externalScanId,

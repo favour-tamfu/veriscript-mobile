@@ -66,11 +66,31 @@ serve(async (req) => {
         matchedWords: s.matchedWords ?? s.totalWords ?? 0,
       }))
 
+      // AI content detection (enabled via aiGeneratedText.detect at submit).
+      // Copyleaks adds a 'suspected-ai-text' alert when AI is detected; its
+      // additionalData carries { summary: { ai, human } } as 0-1 floats. We
+      // store a 0-100 percentage. No alert => detection ran but found none.
+      let aiProbability = 0
+      const alerts = body?.notifications?.alerts ?? body?.alerts ?? []
+      const aiAlert = Array.isArray(alerts)
+        ? alerts.find((a: any) =>
+            a?.code === 'suspected-ai-text' || a?.alertId === 'suspected-ai-text')
+        : undefined
+      if (aiAlert) {
+        let extra: any = aiAlert.additionalData
+        if (typeof extra === 'string') {
+          try { extra = JSON.parse(extra) } catch (_) { extra = {} }
+        }
+        const aiScore = extra?.summary?.ai ?? results?.ai?.summary?.ai
+        aiProbability = typeof aiScore === 'number' ? Math.round(aiScore * 100) : 100
+      }
+
       await supabaseAdmin
         .from('scan_reports')
         .update({
           status: 'done',
           similarity_pct: similarityPct,
+          ai_probability: aiProbability,
           sources: JSON.stringify(sources),
         })
         .eq('external_scan_id', scanId)

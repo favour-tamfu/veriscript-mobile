@@ -121,6 +121,11 @@ class ScanResultScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
+                // Section 1b: AI-generated content detection
+                if (job.aiProbability != null) ...[
+                  const SizedBox(height: 16),
+                  _buildAiCard(context, job.aiProbability!, isFrench),
+                ],
                 const SizedBox(height: 16),
 
                 // Section 2: Action buttons
@@ -264,6 +269,58 @@ class ScanResultScreen extends ConsumerWidget {
     );
   }
 
+  Widget _buildAiCard(BuildContext context, double aiPct, bool isFrench) {
+    final color = _aiColor(aiPct);
+    return VsCard(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: Icon(Icons.auto_awesome_rounded, color: color),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isFrench ? 'Contenu généré par IA' : 'AI-Generated Content',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _aiLabel(aiPct, isFrench),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: color),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            '${aiPct.round()}%',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _exportPdf(BuildContext context, WidgetRef ref, bool isFrench) async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
@@ -293,14 +350,33 @@ class ScanResultScreen extends ConsumerWidget {
 
   void _share(ScanJob job, bool isFrench) {
     final pct = job.similarityPct?.round() ?? 0;
+    final aiPart = job.aiProbability != null
+        ? (isFrench ? ' · IA ${job.aiProbability!.round()}%' : ' · AI ${job.aiProbability!.round()}%')
+        : '';
     SharePlus.instance.share(
       ShareParams(
         text: isFrench
-            ? 'Mon rapport VeriScript: Similarité $pct% — rapport généré le ${job.createdAt.toLocal().toString().split(' ')[0]}'
-            : 'My VeriScript report: Similarity $pct% — report generated ${job.createdAt.toLocal().toString().split(' ')[0]}',
+            ? 'Mon rapport VeriScript: Similarité $pct%$aiPart — rapport généré le ${job.createdAt.toLocal().toString().split(' ')[0]}'
+            : 'My VeriScript report: Similarity $pct%$aiPart — report generated ${job.createdAt.toLocal().toString().split(' ')[0]}',
       ),
     );
   }
+}
+
+Color _aiColor(double pct) {
+  if (pct < 30) return AppColors.vsLowSimilarity;
+  if (pct < 70) return AppColors.vsMedSimilarity;
+  return AppColors.vsHighSimilarity;
+}
+
+String _aiLabel(double pct, bool isFrench) {
+  if (pct < 30) {
+    return isFrench ? 'Probablement écrit par un humain' : 'Likely human-written';
+  }
+  if (pct < 70) {
+    return isFrench ? 'Contenu possiblement mixte' : 'Possibly mixed content';
+  }
+  return isFrench ? 'Probablement généré par IA' : 'Likely AI-generated';
 }
 
 Color _similarityColor(double pct) {
