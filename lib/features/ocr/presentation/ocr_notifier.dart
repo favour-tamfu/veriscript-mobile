@@ -91,18 +91,22 @@ class OcrNotifier extends Notifier<OcrState> {
     final xFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
     if (xFile == null) return;
 
-    // Crop image
-    final cropped = await ImageCropper().cropImage(
-      sourcePath: xFile.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Crop Document',
-          lockAspectRatio: false,
-        ),
-      ],
-    );
-
-    final file = File(cropped?.path ?? xFile.path);
+    // Crop image (fall back to the original if cropping is unavailable).
+    File file;
+    try {
+      final cropped = await ImageCropper().cropImage(
+        sourcePath: xFile.path,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Document',
+            lockAspectRatio: false,
+          ),
+        ],
+      );
+      file = File(cropped?.path ?? xFile.path);
+    } catch (_) {
+      file = File(xFile.path);
+    }
 
     state = state.copyWith(
       source: OcrSource.gallery,

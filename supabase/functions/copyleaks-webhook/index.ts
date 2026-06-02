@@ -8,9 +8,10 @@ import { supabaseAdmin } from '../_shared/supabase_admin.ts'
 // is a literal segment we add so it's available deterministically. We still
 // fall back to the request body for older in-flight scans.
 //
-// Completed payload shape (Copyleaks v3):
-//   { status: 1, scannedDocument: { scanId }, results: { score: { aggregatedScore },
-//     internet: [...], database: [...], batch: [...], repositories: [...] } }
+// Important: the payload carries a numeric `status` (e.g. 1) even on FAILED
+// scans, and an `error` object when something went wrong (e.g. insufficient
+// credits). So the error case must take precedence over any "status === 1"
+// heuristic, and completion is determined by the URL path status.
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -32,23 +33,32 @@ serve(async (req) => {
     }
 
     const scanId = pathScanId ?? body?.scannedDocument?.scanId ?? body?.scanId
-    const statusWord = (pathStatus ?? body?.status ?? '').toString().toLowerCase()
+    const statusWord = (pathStatus ?? '').toString().toLowerCase()
 
     if (!scanId) {
-      console.error('copyleaks-webhook: no scanId in path or body', url.pathname, raw.slice(0, 500))
+      console.error('copyleaks-webhook: no scanId', url.pathname, raw.slice(0, 500))
       return new Response(JSON.stringify({ error: 'Missing scanId' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    const isCompleted =
-      statusWord === 'completed' || statusWord === 'success' ||
-      statusWord === 'finished' || body?.status === 1
-    const isError =
-      statusWord === 'error' || statusWord === 'failed' || body?.status === 4
+    const hasError =
+      body?.error != null || statusWord === 'error' || statusWord === 'failed'
+    const isCompleted = !hasError &&
+      (statusWord === 'completed' ||
+        statusWord === 'success' ||
+        statusWord === 'finished')
 
-    if (isCompleted) {
+    if (hasError) {
+      await supabaseAdmin
+        .from('scan_reports')
+        .update({
+          status: 'failed',
+          error_message: body?.error?.message ?? 'Scan failed.',
+        })
+        .eq('external_scan_id', scanId)
+    } else if (isCompleted) {
       const results = body?.results ?? {}
       const similarityPct = results?.score?.aggregatedScore ?? 0
 
@@ -60,7 +70,7 @@ serve(async (req) => {
         ...(results?.comparison ?? []),
       ]
       const sources = rawSources.map((s: any) => ({
-        url: s.url ?? '',
+        url: s.url ?? s.metadata?.finalUrl ?? '',
         title: s.title ?? s.url ?? 'Unknown Source',
         matchedPercent: s.matchedPercent ?? 0,
         matchedWords: s.matchedWords ?? s.totalWords ?? 0,
@@ -93,11 +103,6 @@ serve(async (req) => {
           ai_probability: aiProbability,
           sources: JSON.stringify(sources),
         })
-        .eq('external_scan_id', scanId)
-    } else if (isError) {
-      await supabaseAdmin
-        .from('scan_reports')
-        .update({ status: 'failed' })
         .eq('external_scan_id', scanId)
     }
     // Non-terminal lifecycle events (new, indexed, creditsChecked, …) are acked.

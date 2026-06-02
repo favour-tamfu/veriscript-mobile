@@ -29,6 +29,7 @@ mixin _$ScanJob {
   List<ScanSource>? get sources => throw _privateConstructorUsedError;
   String? get reportPdfUrl => throw _privateConstructorUsedError;
   String? get externalScanId => throw _privateConstructorUsedError;
+  String? get errorMessage => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this ScanJob to a JSON map.
@@ -55,6 +56,7 @@ abstract class $ScanJobCopyWith<$Res> {
       List<ScanSource>? sources,
       String? reportPdfUrl,
       String? externalScanId,
+      String? errorMessage,
       DateTime createdAt});
 }
 
@@ -82,6 +84,7 @@ class _$ScanJobCopyWithImpl<$Res, $Val extends ScanJob>
     Object? sources = freezed,
     Object? reportPdfUrl = freezed,
     Object? externalScanId = freezed,
+    Object? errorMessage = freezed,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -121,6 +124,10 @@ class _$ScanJobCopyWithImpl<$Res, $Val extends ScanJob>
           ? _value.externalScanId
           : externalScanId // ignore: cast_nullable_to_non_nullable
               as String?,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -146,6 +153,7 @@ abstract class _$$ScanJobImplCopyWith<$Res> implements $ScanJobCopyWith<$Res> {
       List<ScanSource>? sources,
       String? reportPdfUrl,
       String? externalScanId,
+      String? errorMessage,
       DateTime createdAt});
 }
 
@@ -171,6 +179,7 @@ class __$$ScanJobImplCopyWithImpl<$Res>
     Object? sources = freezed,
     Object? reportPdfUrl = freezed,
     Object? externalScanId = freezed,
+    Object? errorMessage = freezed,
     Object? createdAt = null,
   }) {
     return _then(_$ScanJobImpl(
@@ -210,6 +219,10 @@ class __$$ScanJobImplCopyWithImpl<$Res>
           ? _value.externalScanId
           : externalScanId // ignore: cast_nullable_to_non_nullable
               as String?,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -231,6 +244,7 @@ class _$ScanJobImpl implements _ScanJob {
       final List<ScanSource>? sources,
       this.reportPdfUrl,
       this.externalScanId,
+      this.errorMessage,
       required this.createdAt})
       : _sources = sources;
 
@@ -264,11 +278,13 @@ class _$ScanJobImpl implements _ScanJob {
   @override
   final String? externalScanId;
   @override
+  final String? errorMessage;
+  @override
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'ScanJob(id: $id, documentId: $documentId, userId: $userId, status: $status, similarityPct: $similarityPct, aiProbability: $aiProbability, sources: $sources, reportPdfUrl: $reportPdfUrl, externalScanId: $externalScanId, createdAt: $createdAt)';
+    return 'ScanJob(id: $id, documentId: $documentId, userId: $userId, status: $status, similarityPct: $similarityPct, aiProbability: $aiProbability, sources: $sources, reportPdfUrl: $reportPdfUrl, externalScanId: $externalScanId, errorMessage: $errorMessage, createdAt: $createdAt)';
   }
 
   @override
@@ -290,6 +306,8 @@ class _$ScanJobImpl implements _ScanJob {
                 other.reportPdfUrl == reportPdfUrl) &&
             (identical(other.externalScanId, externalScanId) ||
                 other.externalScanId == externalScanId) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -307,6 +325,7 @@ class _$ScanJobImpl implements _ScanJob {
       const DeepCollectionEquality().hash(_sources),
       reportPdfUrl,
       externalScanId,
+      errorMessage,
       createdAt);
 
   /// Create a copy of ScanJob
@@ -336,6 +355,7 @@ abstract class _ScanJob implements ScanJob {
       final List<ScanSource>? sources,
       final String? reportPdfUrl,
       final String? externalScanId,
+      final String? errorMessage,
       required final DateTime createdAt}) = _$ScanJobImpl;
 
   factory _ScanJob.fromJson(Map<String, dynamic> json) = _$ScanJobImpl.fromJson;
@@ -358,6 +378,8 @@ abstract class _ScanJob implements ScanJob {
   String? get reportPdfUrl;
   @override
   String? get externalScanId;
+  @override
+  String? get errorMessage;
   @override
   DateTime get createdAt;
 

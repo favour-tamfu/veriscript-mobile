@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/file_download.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_card.dart';
 import '../../../core/widgets/vs_empty_state.dart';
@@ -474,7 +474,16 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       final url = await ref
           .read(conversionRepositoryProvider)
           .getSignedDownloadUrl(item.outputPath!);
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      final base = item.name.contains('.')
+          ? item.name.substring(0, item.name.lastIndexOf('.'))
+          : item.name;
+      final err = await downloadAndOpenFile(url, '$base.${item.toFormat ?? 'pdf'}');
+      if (err != null) {
+        messenger.showSnackBar(SnackBar(
+          content: Text(isFrench ? 'Téléchargement échoué.' : 'Download failed.'),
+          backgroundColor: AppColors.vsError,
+        ));
+      }
     } catch (_) {
       messenger.showSnackBar(SnackBar(
         content: Text(isFrench ? 'Téléchargement échoué.' : 'Download failed.'),

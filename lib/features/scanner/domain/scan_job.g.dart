@@ -19,6 +19,7 @@ _$ScanJobImpl _$$ScanJobImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       reportPdfUrl: json['reportPdfUrl'] as String?,
       externalScanId: json['externalScanId'] as String?,
+      errorMessage: json['errorMessage'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -33,6 +34,7 @@ Map<String, dynamic> _$$ScanJobImplToJson(_$ScanJobImpl instance) =>
       'sources': instance.sources,
       'reportPdfUrl': instance.reportPdfUrl,
       'externalScanId': instance.externalScanId,
+      'errorMessage': instance.errorMessage,
       'createdAt': instance.createdAt.toIso8601String(),
     };
 

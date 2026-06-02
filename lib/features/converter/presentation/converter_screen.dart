@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/file_download.dart';
 import '../../../core/widgets/vs_error_view.dart';
 import '../../home/data/quota_repository.dart';
 import '../data/conversion_repository.dart';
@@ -265,8 +265,19 @@ class ConverterScreen extends ConsumerWidget {
                 onPressed: state.downloadUrl == null
                     ? null
                     : () async {
-                        final uri = Uri.parse(state.downloadUrl!);
-                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                        final messenger = ScaffoldMessenger.of(context);
+                        final err = await downloadAndOpenFile(
+                          state.downloadUrl!,
+                          'converted.${state.toFormat}',
+                        );
+                        if (err != null) {
+                          messenger.showSnackBar(SnackBar(
+                            content: Text(isFrench
+                                ? 'Téléchargement échoué.'
+                                : 'Download failed.'),
+                            backgroundColor: AppColors.vsError,
+                          ));
+                        }
                       },
                 child: Text(
                   isFrench ? 'Télécharger le fichier' : 'Download File',

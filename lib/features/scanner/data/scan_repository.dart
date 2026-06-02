@@ -143,6 +143,7 @@ class ScanRepository {
       sources: sources,
       reportPdfUrl: row['report_pdf_url'] as String?,
       externalScanId: row['external_scan_id'] as String?,
+      errorMessage: row['error_message'] as String?,
       createdAt: DateTime.parse(row['created_at'] as String),
     );
   }

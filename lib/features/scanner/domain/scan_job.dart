@@ -15,6 +15,7 @@ class ScanJob with _$ScanJob {
     List<ScanSource>? sources,
     String? reportPdfUrl,
     String? externalScanId,
+    String? errorMessage,
     required DateTime createdAt,
   }) = _ScanJob;
 
