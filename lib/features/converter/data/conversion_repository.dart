@@ -6,6 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/supabase/supabase_providers.dart';
 
+/// Free monthly conversions for non-Plus users.
+const int kFreeConversionLimit = 5;
+
 final conversionRepositoryProvider = Provider<ConversionRepository>(
   (ref) => ConversionRepository(
     ref.watch(supabaseClientProvider),
@@ -114,5 +117,32 @@ class ConversionRepository {
     // The cloudconvert-webhook uploads converted files to the `processed`
     // bucket, not `documents`.
     return _storage.from('processed').createSignedUrl(outputPath, 60 * 60);
+  }
+
+  /// Whether the current user can start another conversion this period.
+  Future<bool> canConvert() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return false;
+
+    final quota = await _client
+        .from('usage_quotas')
+        .select('conversions_used')
+        .eq('user_id', userId)
+        .maybeSingle();
+    final profile = await _client
+        .from('profiles')
+        .select('plan')
+        .eq('id', userId)
+        .maybeSingle();
+
+    if (profile?['plan'] == 'plus') return true;
+    final used = (quota?['conversions_used'] as int?) ?? 0;
+    return used < kFreeConversionLimit;
+  }
+
+  Future<void> incrementConversionCount() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return;
+    await _client.rpc('increment_conversions_used', params: {'p_user_id': userId});
   }
 }

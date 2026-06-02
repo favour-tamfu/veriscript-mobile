@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_error_view.dart';
+import '../../home/data/quota_repository.dart';
+import '../data/conversion_repository.dart';
 import '../domain/conversion_formats.dart';
 import '../presentation/converter_notifier.dart';
 
@@ -35,6 +37,44 @@ class ConverterScreen extends ConsumerWidget {
     ConverterNotifier notifier,
     bool isFrench,
   ) {
+    if (state.jobStatus == 'quota_exceeded') {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.block, color: AppColors.vsError, size: 48),
+              const SizedBox(height: 16),
+              Text(
+                isFrench
+                    ? 'Limite de conversions atteinte'
+                    : 'Conversion limit reached',
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                isFrench
+                    ? 'Passez à VeriScript Plus pour des conversions illimitées.'
+                    : 'Upgrade to VeriScript Plus for unlimited conversions.',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AppColors.vsGray),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: notifier.reset,
+                child: Text(isFrench ? 'Retour' : 'Back'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (state.jobStatus == 'idle' && state.selectedFile == null) {
       return Center(
         child: InkWell(
@@ -100,6 +140,10 @@ class ConverterScreen extends ConsumerWidget {
     if (state.selectedFile != null && state.jobStatus == 'idle') {
       final file = state.selectedFile!;
       final availableFormats = targetFormatsFor(state.fromFormat ?? '');
+      final conversionsUsed =
+          ref.watch(quotaProvider).asData?.value.conversionsUsed ?? 0;
+      final remaining =
+          (kFreeConversionLimit - conversionsUsed).clamp(0, kFreeConversionLimit);
 
       return ListView(
         children: [
@@ -165,8 +209,8 @@ class ConverterScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             isFrench
-                ? '5 sur 5 conversions gratuites restantes'
-                : '5 of 5 free conversions remaining',
+                ? '$remaining sur $kFreeConversionLimit conversions gratuites restantes'
+                : '$remaining of $kFreeConversionLimit free conversions remaining',
             style: Theme.of(context)
                 .textTheme
                 .bodySmall

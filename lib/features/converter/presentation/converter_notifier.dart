@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 
+import '../../home/data/quota_repository.dart';
 import '../data/conversion_repository.dart';
 import '../domain/conversion_formats.dart';
 
@@ -112,8 +113,14 @@ class ConverterNotifier extends Notifier<ConverterState> {
       clearDownloadUrl: true,
     );
 
+    final repository = ref.read(conversionRepositoryProvider);
+
+    if (!await repository.canConvert()) {
+      state = state.copyWith(jobStatus: 'quota_exceeded');
+      return;
+    }
+
     try {
-      final repository = ref.read(conversionRepositoryProvider);
       final storagePath = await repository.uploadFile(file);
       final fileName = p.basename(file.path);
       final jobId = await repository.insertJob(fromFormat, toFormat, storagePath, fileName);
@@ -129,6 +136,9 @@ class ConverterNotifier extends Notifier<ConverterState> {
         fromFormat,
         toFormat,
       );
+
+      await repository.incrementConversionCount();
+      ref.invalidate(quotaProvider);
 
       await _jobSubscription?.cancel();
       _jobSubscription = repository.watchJobStatus(jobId).listen(
