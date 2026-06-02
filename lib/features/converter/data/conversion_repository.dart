@@ -39,17 +39,32 @@ class ConversionRepository {
     String fromFormat,
     String toFormat,
     String storagePath,
+    String fileName,
   ) async {
     final userId = _client.auth.currentUser?.id;
     if (userId == null) {
       throw Exception('User must be signed in.');
     }
 
+    // Create a document record first so conversion_jobs.document_id has a
+    // valid UUID FK (and history can join back to it).
+    final docResponse = await _client
+        .from('documents')
+        .insert(<String, dynamic>{
+          'user_id': userId,
+          'name': fileName,
+          'type': fromFormat,
+          'storage_path': storagePath,
+        })
+        .select('id')
+        .single();
+    final documentId = docResponse['id'] as String;
+
     final response = await _client
         .from('conversion_jobs')
         .insert(<String, dynamic>{
           'user_id': userId,
-          'document_id': storagePath,
+          'document_id': documentId,
           'from_format': fromFormat,
           'to_format': toFormat,
           'status': 'pending',
@@ -77,21 +92,27 @@ class ConversionRepository {
     );
   }
 
-  Stream<String> watchJobStatus(String jobId) {
+  Stream<({String status, String? outputPath})> watchJobStatus(String jobId) {
     return _client
         .from('conversion_jobs')
         .stream(primaryKey: ['id'])
         .eq('id', jobId)
         .map((rows) {
           if (rows.isEmpty) {
-            return 'processing';
+            return (status: 'processing', outputPath: null);
           }
 
-          return rows.first['status']?.toString() ?? 'processing';
+          final row = rows.first;
+          return (
+            status: row['status']?.toString() ?? 'processing',
+            outputPath: row['output_path'] as String?,
+          );
         });
   }
 
   Future<String> getSignedDownloadUrl(String outputPath) async {
-    return _storage.from('documents').createSignedUrl(outputPath, 60 * 60);
+    // The cloudconvert-webhook uploads converted files to the `processed`
+    // bucket, not `documents`.
+    return _storage.from('processed').createSignedUrl(outputPath, 60 * 60);
   }
 }

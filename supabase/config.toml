@@ -53,5 +53,14 @@ enabled = true
 policy = "per_worker"
 inspector_port = 8083
 
+# Webhooks are called by external services (CloudConvert / Copyleaks) without a
+# Supabase JWT, so JWT verification must be off or they'd return 401. The
+# cloudconvert-webhook verifies CloudConvert's HMAC signature instead.
+[functions.cloudconvert-webhook]
+verify_jwt = false
+
+[functions.copyleaks-webhook]
+verify_jwt = false
+
 [analytics]
 enabled = false

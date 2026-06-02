@@ -39,10 +39,11 @@ serve(async (req) => {
 
     // Authenticate with Copyleaks
     const copyleaksKey = Deno.env.get('COPYLEAKS_KEY')!
+    const copyleaksEmail = Deno.env.get('COPYLEAKS_EMAIL')!
     const loginResponse = await fetch('https://id.copyleaks.com/v3/account/login/api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: '', key: copyleaksKey }),
+      body: JSON.stringify({ email: copyleaksEmail, key: copyleaksKey }),
     })
 
     if (!loginResponse.ok) {

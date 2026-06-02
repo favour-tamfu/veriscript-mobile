@@ -986,8 +986,8 @@ Methods:
 - `uploadFile(File file)` → upload to Supabase Storage bucket `'documents'` at path `'userId/filename'` → return storage path
 - `insertJob(fromFormat, toFormat, storagePath)` → insert to `conversion_jobs` table → return job id
 - `callConvertEdgeFunction(jobId, storagePath, fromFormat, toFormat)` → POST to Supabase Edge Function `'convert-file'`
-- `watchJobStatus(String jobId)` → `Stream<String>` via Supabase Realtime on `conversion_jobs` table, filter `id=eq.jobId`, map to status string
-- `getSignedDownloadUrl(String outputPath)` → Supabase Storage signed URL (60 min expiry)
+- `watchJobStatus(String jobId)` → `Stream<({String status, String? outputPath})>` via Supabase Realtime on `conversion_jobs` table, filter `id=eq.jobId`, mapping both `status` and `output_path`
+- `getSignedDownloadUrl(String outputPath)` → Supabase Storage signed URL (60 min expiry) from the `processed` bucket
 
 ### `lib/features/converter/presentation/converter_notifier.dart`
 

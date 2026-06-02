@@ -56,7 +56,7 @@ class ConverterState {
 }
 
 class ConverterNotifier extends Notifier<ConverterState> {
-  StreamSubscription<String>? _jobSubscription;
+  StreamSubscription<({String status, String? outputPath})>? _jobSubscription;
 
   @override
   ConverterState build() {
@@ -114,7 +114,8 @@ class ConverterNotifier extends Notifier<ConverterState> {
     try {
       final repository = ref.read(conversionRepositoryProvider);
       final storagePath = await repository.uploadFile(file);
-      final jobId = await repository.insertJob(fromFormat, toFormat, storagePath);
+      final fileName = p.basename(file.path);
+      final jobId = await repository.insertJob(fromFormat, toFormat, storagePath, fileName);
 
       state = state.copyWith(
         currentJobId: jobId,
@@ -130,9 +131,18 @@ class ConverterNotifier extends Notifier<ConverterState> {
 
       await _jobSubscription?.cancel();
       _jobSubscription = repository.watchJobStatus(jobId).listen(
-        (status) async {
+        (update) async {
+          final status = update.status;
           if (status == 'done') {
-            final outputPath = 'placeholder/converted_$jobId.$toFormat';
+            final outputPath = update.outputPath;
+            if (outputPath == null || outputPath.isEmpty) {
+              state = state.copyWith(
+                jobStatus: 'failed',
+                errorMessage:
+                    'Conversion finished but no output file was found.',
+              );
+              return;
+            }
             final downloadUrl =
                 await repository.getSignedDownloadUrl(outputPath);
             state = state.copyWith(
