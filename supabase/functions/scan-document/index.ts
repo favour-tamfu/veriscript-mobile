@@ -70,7 +70,9 @@ serve(async (req) => {
           url: signedUrl,
           properties: {
             webhooks: {
-              status: `https://${projectRef}.supabase.co/functions/v1/copyleaks-webhook/{STATUS}`,
+              // {STATUS} is substituted by Copyleaks; scanId is appended as a
+              // literal segment so the webhook can identify the scan reliably.
+              status: `https://${projectRef}.supabase.co/functions/v1/copyleaks-webhook/{STATUS}/${scanId}`,
             },
           },
         }),

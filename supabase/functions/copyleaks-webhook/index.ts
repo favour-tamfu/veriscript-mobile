@@ -2,32 +2,68 @@ import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { corsHeaders } from '../_shared/cors.ts'
 import { supabaseAdmin } from '../_shared/supabase_admin.ts'
 
+// Copyleaks calls the per-scan status webhook configured at submit time:
+//   /functions/v1/copyleaks-webhook/{STATUS}/<scanId>
+// {STATUS} is substituted by Copyleaks (e.g. "completed", "error"). The scanId
+// is a literal segment we add so it's available deterministically. We still
+// fall back to the request body for older in-flight scans.
+//
+// Completed payload shape (Copyleaks v3):
+//   { status: 1, scannedDocument: { scanId }, results: { score: { aggregatedScore },
+//     internet: [...], database: [...], batch: [...], repositories: [...] } }
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const body = await req.json()
+    const url = new URL(req.url)
+    const segments = url.pathname.split('/').filter(Boolean)
+    const fnIndex = segments.indexOf('copyleaks-webhook')
+    const pathStatus = fnIndex >= 0 ? segments[fnIndex + 1] : undefined
+    const pathScanId = fnIndex >= 0 ? segments[fnIndex + 2] : undefined
 
-    // Copyleaks sends: { scanId, status, results: { score: { aggregatedScore }, comparison: [...sources] } }
-    const { scanId, status, results } = body
+    const raw = await req.text()
+    let body: any = {}
+    try {
+      body = raw ? JSON.parse(raw) : {}
+    } catch (_) {
+      body = {}
+    }
+
+    const scanId = pathScanId ?? body?.scannedDocument?.scanId ?? body?.scanId
+    const statusWord = (pathStatus ?? body?.status ?? '').toString().toLowerCase()
 
     if (!scanId) {
+      console.error('copyleaks-webhook: no scanId in path or body', url.pathname, raw.slice(0, 500))
       return new Response(JSON.stringify({ error: 'Missing scanId' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    if (status === 'completed' || status === 'success' || status === 'finished') {
+    const isCompleted =
+      statusWord === 'completed' || statusWord === 'success' ||
+      statusWord === 'finished' || body?.status === 1
+    const isError =
+      statusWord === 'error' || statusWord === 'failed' || body?.status === 4
+
+    if (isCompleted) {
+      const results = body?.results ?? {}
       const similarityPct = results?.score?.aggregatedScore ?? 0
 
-      const sources = (results?.comparison ?? []).map((source: any) => ({
-        url: source.url ?? '',
-        title: source.title ?? source.url ?? 'Unknown Source',
-        matchedPercent: source.matchedPercent ?? 0,
-        matchedWords: source.matchedWords ?? 0,
+      const rawSources = [
+        ...(results?.internet ?? []),
+        ...(results?.database ?? []),
+        ...(results?.batch ?? []),
+        ...(results?.repositories ?? []),
+        ...(results?.comparison ?? []),
+      ]
+      const sources = rawSources.map((s: any) => ({
+        url: s.url ?? '',
+        title: s.title ?? s.url ?? 'Unknown Source',
+        matchedPercent: s.matchedPercent ?? 0,
+        matchedWords: s.matchedWords ?? s.totalWords ?? 0,
       }))
 
       await supabaseAdmin
@@ -38,21 +74,22 @@ serve(async (req) => {
           sources: JSON.stringify(sources),
         })
         .eq('external_scan_id', scanId)
-    } else if (status === 'error' || status === 'failed') {
+    } else if (isError) {
       await supabaseAdmin
         .from('scan_reports')
         .update({ status: 'failed' })
         .eq('external_scan_id', scanId)
     }
+    // Non-terminal lifecycle events (new, indexed, creditsChecked, …) are acked.
 
     return new Response(JSON.stringify({ received: true }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (error) {
     console.error('copyleaks-webhook error:', error)
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
   }
 })
