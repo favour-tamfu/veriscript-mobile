@@ -51,12 +51,17 @@ serve(async (req) => {
         statusWord === 'finished')
 
     if (hasError) {
+      // Store a stable code (not raw Copyleaks text) so the app can show a
+      // friendly, localised message.
+      const errId = body?.error?.id ?? ''
+      const errType = body?.error?.type ?? ''
+      const errorCode =
+        errId === 'insufficient_credits' || errType === 'payment_error'
+          ? 'insufficient_credits'
+          : 'scan_error'
       await supabaseAdmin
         .from('scan_reports')
-        .update({
-          status: 'failed',
-          error_message: body?.error?.message ?? 'Scan failed.',
-        })
+        .update({ status: 'failed', error_message: errorCode })
         .eq('external_scan_id', scanId)
     } else if (isCompleted) {
       const results = body?.results ?? {}

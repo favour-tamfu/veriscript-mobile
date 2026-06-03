@@ -102,7 +102,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
 
     if (state.scanStatus == 'failed') {
       return VsErrorView(
-        message: state.errorMessage ?? 'An error occurred',
+        message: _friendlyError(state.errorMessage, isFrench),
         onRetry: notifier.reset,
       );
     }
@@ -413,6 +413,21 @@ String _formatSize(int bytes) {
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
   return '${(bytes / 1024).toStringAsFixed(1)} KB';
+}
+
+String _friendlyError(String? message, bool isFrench) {
+  if (message == 'insufficient_credits') {
+    return isFrench
+        ? 'Le service de vérification de plagiat est temporairement indisponible. Veuillez réessayer plus tard ou contacter le support.'
+        : 'The plagiarism service is temporarily unavailable. Please try again later or contact support.';
+  }
+  if (message == null || message.isEmpty || message == 'scan_error') {
+    return isFrench
+        ? 'Échec de l\'analyse. Veuillez réessayer.'
+        : 'Scan failed. Please try again.';
+  }
+  // A real, user-meaningful message (e.g. "File too large", "You must be signed in").
+  return message;
 }
 
 class _DashedBorderPainter extends CustomPainter {

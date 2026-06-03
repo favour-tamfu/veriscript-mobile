@@ -14,15 +14,27 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  static const _splashDuration = Duration(seconds: 5);
+
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(vsync: this, duration: _splashDuration);
     _redirectAfterDelay();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _redirectAfterDelay() async {
-    await Future<void>.delayed(const Duration(milliseconds: 2800));
+    await Future<void>.delayed(_splashDuration);
     if (!mounted) {
       return;
     }
@@ -65,7 +77,14 @@ class _SplashScreenState extends State<SplashScreen> {
               'assets/animations/splash.json',
               width: 200,
               height: 200,
-              repeat: false,
+              controller: _controller,
+              onLoaded: (composition) {
+                // Stretch the animation to span the full 5s splash, regardless
+                // of its native length.
+                _controller
+                  ..duration = _splashDuration
+                  ..forward(from: 0);
+              },
             ),
             const SizedBox(height: 24),
             Text(

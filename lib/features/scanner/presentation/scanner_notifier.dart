@@ -173,8 +173,7 @@ class ScannerNotifier extends Notifier<ScannerState> {
             _progressTimer?.cancel();
             state = state.copyWith(
               scanStatus: 'failed',
-              errorMessage:
-                  scanJob.errorMessage ?? 'Scan failed. Please try again.',
+              errorMessage: scanJob.errorMessage ?? 'scan_error',
               clearProgress: true,
             );
           }
