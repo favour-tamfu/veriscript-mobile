@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 
 import '../../home/data/quota_repository.dart';
+import '../../notifications/presentation/notifications_providers.dart';
 import '../data/conversion_repository.dart';
 import '../domain/conversion_formats.dart';
 
@@ -159,6 +160,12 @@ class ConverterNotifier extends Notifier<ConverterState> {
             state = state.copyWith(
               jobStatus: 'done',
               downloadUrl: downloadUrl,
+            );
+            await pushAppNotification(
+              ref,
+              title: 'Conversion complete',
+              body: 'Your ${toFormat.toUpperCase()} file is ready to download.',
+              type: 'conversion',
             );
             return;
           }

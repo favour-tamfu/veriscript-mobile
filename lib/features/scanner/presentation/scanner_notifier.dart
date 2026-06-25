@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../notifications/presentation/notifications_providers.dart';
 import '../data/scan_repository.dart';
 import '../domain/scan_job.dart';
 
@@ -168,6 +169,15 @@ class ScannerNotifier extends Notifier<ScannerState> {
               scanStatus: 'done',
               completedJob: scanJob,
               progressEstimate: 1.0,
+            );
+            final sim = scanJob.similarityPct?.round();
+            pushAppNotification(
+              ref,
+              title: 'Scan complete',
+              body: sim != null
+                  ? 'Originality report ready · $sim% similarity.'
+                  : 'Your originality report is ready.',
+              type: 'scan',
             );
           } else if (scanJob.status == 'failed') {
             _progressTimer?.cancel();

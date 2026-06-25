@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_button.dart';
@@ -37,15 +39,19 @@ class _DriveScreenState extends ConsumerState<DriveScreen> {
     return Scaffold(
       appBar: VsAppBar(
         title: state.userEmail != null ? 'Google Drive · ${state.userEmail}' : 'Google Drive',
-        actions: state.isSignedIn
-            ? [
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  tooltip: isFrench ? 'Déconnecter Drive' : 'Disconnect Drive',
-                  onPressed: notifier.signOut,
-                ),
-              ]
-            : null,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.folder_special_outlined),
+            tooltip: isFrench ? 'Ma bibliothèque' : 'My Library',
+            onPressed: () => context.push(AppRoutes.library),
+          ),
+          if (state.isSignedIn)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: isFrench ? 'Déconnecter Drive' : 'Disconnect Drive',
+              onPressed: notifier.signOut,
+            ),
+        ],
       ),
       body: state.isSignedIn
           ? _buildFileList(context, state, notifier, isFrench)
@@ -189,13 +195,39 @@ class _DriveScreenState extends ConsumerState<DriveScreen> {
     DriveNotifier notifier,
     bool isFrench,
   ) async {
-    ScaffoldMessenger.of(context).showSnackBar(
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
       SnackBar(
-        content: Text(isFrench ? 'Téléchargement de ${file.name}...' : 'Downloading ${file.name}...'),
-        duration: const Duration(seconds: 2),
+        content: Text(isFrench
+            ? 'Importation de ${file.name}...'
+            : 'Importing ${file.name}...'),
+        duration: const Duration(seconds: 1),
       ),
     );
-    await notifier.importFile(file, routerContext: context);
+
+    final saved = await notifier.importFile(file);
+    if (!context.mounted) return;
+
+    if (saved != null) {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            isFrench ? 'Enregistré dans votre bibliothèque' : 'Saved to your Library',
+          ),
+          action: SnackBarAction(
+            label: isFrench ? 'Voir' : 'View',
+            onPressed: () => context.push(AppRoutes.library),
+          ),
+        ),
+      );
+    } else {
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(isFrench ? 'Échec de l\'importation' : 'Import failed'),
+          backgroundColor: AppColors.vsError,
+        ),
+      );
+    }
   }
 }
 

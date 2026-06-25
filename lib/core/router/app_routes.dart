@@ -12,7 +12,10 @@ class AppRoutes {
   static const String converter = '/converter';
   static const String ocr = '/ocr';
   static const String translator = '/translator';
+  static const String translatorDocument = '/translator/document';
   static const String history = '/history';
   static const String settings = '/settings';
   static const String cloudDrive = '/cloud/drive';
+  static const String notifications = '/notifications';
+  static const String library = '/library';
 }

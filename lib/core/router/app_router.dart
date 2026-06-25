@@ -12,12 +12,15 @@ import '../../features/cloud/presentation/drive_screen.dart';
 import '../../features/converter/presentation/converter_screen.dart';
 import '../../features/history/presentation/history_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/library/presentation/library_screen.dart';
+import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/ocr/presentation/ocr_screen.dart';
 import '../../features/scanner/presentation/scan_result_screen.dart';
 import '../../features/scanner/presentation/scanner_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
+import '../../features/translator/presentation/document_translator_screen.dart';
 import '../../features/translator/presentation/translator_screen.dart';
 import 'app_routes.dart';
 import 'auth_guard.dart';
@@ -66,8 +69,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
+        path: AppRoutes.translatorDocument,
+        builder: (context, state) => const DocumentTranslatorScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.cloudDrive,
         builder: (context, state) => const DriveScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.library,
+        builder: (context, state) => const LibraryScreen(),
       ),
       GoRoute(
         path: '/scanner/result/:reportId',

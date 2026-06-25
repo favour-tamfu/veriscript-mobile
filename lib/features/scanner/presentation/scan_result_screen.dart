@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_card.dart';
@@ -152,7 +154,7 @@ class ScanResultScreen extends ConsumerWidget {
                         child: OutlinedButton.icon(
                           icon: const Icon(Icons.refresh),
                           label: Text(isFrench ? 'Analyser à nouveau' : 'Rescan'),
-                          onPressed: () {},
+                          onPressed: () => context.go(AppRoutes.scanner),
                         ),
                       ),
                     ],

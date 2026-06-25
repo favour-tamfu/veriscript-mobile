@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_empty_state.dart';
 import '../../../core/widgets/vs_offline_banner.dart';
+import '../../notifications/presentation/notifications_providers.dart';
 import '../data/quota_repository.dart';
 import 'quota_bar_widget.dart';
 import 'tool_card_widget.dart';
@@ -45,11 +47,19 @@ class HomeScreen extends ConsumerWidget {
             foregroundColor: Colors.white,
             pinned: true,
             expandedHeight: 220,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.light,
+            ),
             title: const Text('VeriScript'),
             actions: [
               IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_outlined),
+                onPressed: () => context.push(AppRoutes.notifications),
+                icon: Badge(
+                  isLabelVisible: ref.watch(unreadNotificationsCountProvider) > 0,
+                  label: Text('${ref.watch(unreadNotificationsCountProvider)}'),
+                  child: const Icon(Icons.notifications_outlined),
+                ),
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
@@ -98,7 +108,7 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   GridView.count(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.95,
+                    childAspectRatio: 0.80,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 12,
@@ -152,21 +162,21 @@ class HomeScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
-                    height: 120,
-                    child: documentsAsync.when(
-                      data: (documents) {
-                        if (documents.isEmpty) {
-                          return VsEmptyState(
-                            lottieAsset: 'assets/animations/empty.json',
-                            title: isFrench ? 'Aucun document' : 'No documents yet',
-                            subtitle: isFrench
-                                ? 'Importez votre premier document!'
-                                : 'Upload your first document!',
-                          );
-                        }
+                  documentsAsync.when(
+                    data: (documents) {
+                      if (documents.isEmpty) {
+                        return VsEmptyState(
+                          lottieAsset: 'assets/animations/empty.json',
+                          title: isFrench ? 'Aucun document' : 'No documents yet',
+                          subtitle: isFrench
+                              ? 'Importez votre premier document!'
+                              : 'Upload your first document!',
+                        );
+                      }
 
-                        return ListView.builder(
+                      return SizedBox(
+                        height: 140,
+                        child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: documents.length,
                           itemBuilder: (context, index) {
@@ -199,19 +209,35 @@ class HomeScreen extends ConsumerWidget {
                                             ?.copyWith(color: AppColors.vsGray),
                                       ),
                                       const Spacer(),
-                                      Chip(label: Text(document.type.toUpperCase())),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 3,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.vsAccent.withOpacity(0.12),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          document.type.toUpperCase(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall
+                                              ?.copyWith(color: AppColors.vsAccent),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                             );
                           },
-                        );
-                      },
-                      error: (_, __) => const SizedBox.shrink(),
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
-                    ),
+                        ),
+                      );
+                    },
+                    error: (_, __) => const SizedBox.shrink(),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
                   ),
                   const SizedBox(height: 24),
                   Container(

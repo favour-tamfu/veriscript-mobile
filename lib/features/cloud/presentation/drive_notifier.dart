@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../library/data/library_repository.dart';
+import '../../library/domain/library_file.dart';
+import '../../library/presentation/library_providers.dart';
 import '../data/drive_repository.dart';
 import '../domain/drive_file.dart';
 
@@ -98,13 +102,31 @@ class DriveNotifier extends Notifier<DriveState> {
     }
   }
 
-  Future<void> importFile(DriveFile file, {required Object routerContext}) async {
+  /// Downloads a Drive file and saves it into the local library bucket so it can
+  /// be reused later (e.g. translated). Returns the saved [LibraryFile], or null
+  /// on failure.
+  Future<LibraryFile?> importFile(DriveFile file) async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
-      await ref.read(driveRepositoryProvider).downloadFile(file);
+      final local = await ref.read(driveRepositoryProvider).downloadFile(file);
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (userId == null) {
+        state = state.copyWith(isLoading: false, errorMessage: 'Not signed in.');
+        return null;
+      }
+      final saved = await ref.read(libraryRepositoryProvider).save(
+            userId: userId,
+            source: local,
+            name: file.name,
+            mimeType: file.mimeType,
+            origin: 'drive',
+          );
+      ref.invalidate(libraryFilesProvider);
       state = state.copyWith(isLoading: false);
+      return saved;
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
+      return null;
     }
   }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../domain/language.dart';
@@ -54,6 +56,9 @@ class _TranslatorScreenState extends ConsumerState<TranslatorScreen> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  // Document translation entry
+                  _buildDocumentBanner(context, isFrench),
+                  const SizedBox(height: 12),
                   // Input area
                   _buildInputArea(context, state, notifier, isFrench),
                   const SizedBox(height: 12),
@@ -98,6 +103,51 @@ class _TranslatorScreenState extends ConsumerState<TranslatorScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDocumentBanner(BuildContext context, bool isFrench) {
+    return InkWell(
+      onTap: () => context.push(AppRoutes.translatorDocument),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.vsAccent.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.vsAccent.withValues(alpha: 0.4)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.description, color: AppColors.vsAccent),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isFrench ? 'Traduire un document' : 'Translate a document',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    isFrench
+                        ? 'PDF ou Word — la mise en page est conservée'
+                        : 'PDF or Word — keeps the original layout',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AppColors.vsGray),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: AppColors.vsAccent),
+          ],
+        ),
       ),
     );
   }
@@ -300,8 +350,6 @@ class _TranslatorScreenState extends ConsumerState<TranslatorScreen> {
                     }
                   },
                 ),
-                const Icon(Icons.volume_up, size: 20, color: AppColors.vsGray),
-                const SizedBox(width: 4),
                 IconButton(
                   icon: const Icon(Icons.swap_horiz, size: 20),
                   color: AppColors.vsGray,

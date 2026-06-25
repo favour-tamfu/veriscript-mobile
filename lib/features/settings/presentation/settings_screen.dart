@@ -78,6 +78,21 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const Divider(height: 1),
 
+          // My Library (in-app file bucket)
+          ListTile(
+            leading: const Icon(Icons.folder_special_outlined,
+                color: AppColors.vsAccent),
+            title: Text(isFrench ? 'Ma bibliothèque' : 'My Library'),
+            subtitle: Text(
+              isFrench
+                  ? 'Fichiers enregistrés pour plus tard'
+                  : 'Files saved for later',
+            ),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => context.push(AppRoutes.library),
+          ),
+          const Divider(height: 1),
+
           // Referral section header
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
@@ -124,7 +139,7 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                       error: (_, __) => Text(
                         isFrench ? 'Impossible de charger le code' : 'Failed to load code',
-                        style: TextStyle(color: AppColors.vsError),
+                        style: const TextStyle(color: AppColors.vsError),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -210,6 +225,46 @@ class SettingsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Legal section header
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+            child: Text(
+              isFrench ? 'Légal' : 'Legal',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.vsPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.gavel_rounded),
+            title: Text(
+              isFrench ? 'Conditions d\'utilisation' : 'Terms & Conditions',
+            ),
+            trailing: const Icon(Icons.open_in_new_rounded, size: 18),
+            onTap: () => launchUrl(
+              Uri.parse(
+                'https://favour-tamfu.github.io/Veriscript-legal/terms-and-conditions',
+              ),
+              mode: LaunchMode.externalApplication,
+            ),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_rounded),
+            title: Text(
+              isFrench ? 'Politique de confidentialité' : 'Privacy Policy',
+            ),
+            trailing: const Icon(Icons.open_in_new_rounded, size: 18),
+            onTap: () => launchUrl(
+              Uri.parse(
+                'https://favour-tamfu.github.io/Veriscript-legal/privacy-policy',
+              ),
+              mode: LaunchMode.externalApplication,
             ),
           ),
           const SizedBox(height: 24),

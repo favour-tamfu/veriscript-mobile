@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -226,22 +228,42 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             false;
       },
       onDismissed: (_) {
+        // Defer the actual delete so "Undo" can genuinely restore the item.
+        final index = _items.indexWhere((i) => i.id == item.id);
         setState(() => _items.removeWhere((i) => i.id == item.id));
-        ref.read(historyRepositoryProvider).deleteDocument(
-              item.documentId,
-              '',
-              Supabase.instance.client.auth.currentUser?.id ?? '',
-            );
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(isFrench ? 'Document supprimé' : 'Document deleted'),
-            action: SnackBarAction(
-              label: isFrench ? 'Annuler' : 'Undo',
-              onPressed: () {},
+
+        var undone = false;
+        final deleteTimer = Timer(const Duration(seconds: 5), () {
+          if (undone) return;
+          ref.read(historyRepositoryProvider).deleteDocument(
+                item.documentId,
+                '',
+                Supabase.instance.client.auth.currentUser?.id ?? '',
+              );
+        });
+
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(isFrench ? 'Document supprimé' : 'Document deleted'),
+              action: SnackBarAction(
+                label: isFrench ? 'Annuler' : 'Undo',
+                onPressed: () {
+                  undone = true;
+                  deleteTimer.cancel();
+                  if (!mounted) return;
+                  setState(() {
+                    final at = (index < 0 || index > _items.length)
+                        ? _items.length
+                        : index;
+                    _items.insert(at, item);
+                  });
+                },
+              ),
+              duration: const Duration(seconds: 5),
             ),
-            duration: const Duration(seconds: 5),
-          ),
-        );
+          );
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8),
