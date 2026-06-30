@@ -170,6 +170,10 @@ class ScannerNotifier extends Notifier<ScannerState> {
               completedJob: scanJob,
               progressEstimate: 1.0,
             );
+            
+            // Refresh quota and history
+            ref.invalidate(quotaProvider);
+
             final sim = scanJob.similarityPct?.round();
             pushAppNotification(
               ref,

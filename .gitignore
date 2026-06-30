@@ -48,3 +48,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Project report & personal documents — keep OUT of the public repo
+*.docx
+*.doc
+_report_extracted.md
+REPORT_REVIEW_AND_COMPLETION.md
+REPORT_UPDATE_INSTRUCTIONS.md

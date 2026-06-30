@@ -82,13 +82,37 @@ class HistoryRepository {
         continue;
       }
 
-      // Default: document-only entry
+      // Check for translation (document-based)
+      final trans = await _client
+          .from('translations')
+          .select('id, source_lang, target_lang')
+          .eq('document_id', docId)
+          .maybeSingle();
+
+      if (trans != null) {
+        items.add(HistoryItem(
+          id: trans['id'] as String,
+          documentId: docId,
+          name: doc['name'] as String,
+          type: doc['type'] as String,
+          action: 'translate',
+          status: 'done',
+          createdAt: DateTime.parse(doc['created_at'] as String),
+          sourceLang: trans['source_lang'] as String?,
+          targetLang: trans['target_lang'] as String?,
+        ));
+        continue;
+      }
+
+      // Default: check if it's an OCR or generic doc
+      final action = doc['type'] == 'image' ? 'ocr' : 'scan';
+
       items.add(HistoryItem(
         id: docId,
         documentId: docId,
         name: doc['name'] as String,
         type: doc['type'] as String,
-        action: 'scan',
+        action: action,
         status: 'done',
         createdAt: DateTime.parse(doc['created_at'] as String),
       ));
@@ -160,10 +184,15 @@ class HistoryRepository {
               documentId: doc.id,
               name: doc.name,
               type: doc.type,
-              action: 'scan',
+              action: actionForDoc(doc.type),
               status: 'done',
               createdAt: doc.createdAt,
             ))
         .toList());
+  }
+
+  String actionForDoc(String type) {
+    if (type == 'image') return 'ocr';
+    return 'scan';
   }
 }

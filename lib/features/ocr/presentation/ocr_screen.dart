@@ -87,11 +87,13 @@ class OcrScreen extends ConsumerWidget {
                   children: [
                     const Icon(Icons.lock, color: AppColors.vsSuccess, size: 16),
                     const SizedBox(width: 6),
-                    Text(
-                      isFrench
-                          ? 'Traitement sur l\'appareil — rien ne quitte votre téléphone'
-                          : 'On-device processing — nothing leaves your phone',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsSuccess),
+                    Expanded(
+                      child: Text(
+                        isFrench
+                            ? 'Traitement sur l\'appareil — rien ne quitte votre téléphone'
+                            : 'On-device processing — nothing leaves your phone',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.vsSuccess),
+                      ),
                     ),
                   ],
                 ),

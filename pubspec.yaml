@@ -51,6 +51,7 @@ dependencies:
   # UI
   fl_chart: ^0.68.0
   lottie: ^3.1.2
+  flutter_svg: ^2.0.10+1
   cached_network_image: ^3.3.1
   google_fonts: ^6.2.1
   share_plus: ^12.0.2
@@ -74,7 +75,7 @@ dependencies:
   pdf: ^3.10.8
   printing: ^5.13.1
   open_file: ^3.3.2
-  workmanager: ^0.5.2
+  workmanager: ^0.9.0
   crypto: ^3.0.3
   permission_handler: ^11.3.0
 
@@ -90,6 +91,18 @@ dev_dependencies:
   drift_dev: ^2.19.1
   mockito: ^5.4.4
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
+
+# App launcher icon generation:
+#   dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "icon/logo.png"
+  adaptive_icon_background: "#0F1E2D"
+  adaptive_icon_foreground: "icon/logo_foreground.png"
+  min_sdk_android: 21
 
 flutter:
   uses-material-design: true

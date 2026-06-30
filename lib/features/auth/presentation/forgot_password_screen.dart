@@ -171,36 +171,3 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     );
   }
 }
-
-class _AuthHeader extends StatelessWidget {
-  const _AuthHeader({required this.title, required this.subtitle});
-
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppColors.vsPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 50,
-          height: 3,
-          color: AppColors.vsAccent,
-        ),
-        const SizedBox(height: 32),
-        Text(
-          subtitle,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ],
-    );
-  }
-}

@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../cloud/data/drive_repository.dart';
 import '../../cloud/domain/drive_file.dart';
+import '../../home/data/quota_repository.dart';
 import '../../notifications/presentation/notifications_providers.dart';
 import '../data/translation_repository.dart';
 
@@ -190,6 +191,9 @@ class DocumentTranslatorNotifier extends Notifier<DocumentTranslatorState> {
         detectedSourceLang: result.detectedSourceLang,
         mimeType: result.mimeType,
       );
+
+      // Refresh monthly usage UI
+      ref.invalidate(quotaProvider);
 
       await pushAppNotification(
         ref,

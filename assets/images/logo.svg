@@ -1,0 +1,61 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VeriScript logo">
+  <title>VeriScript — Document Integrity Suite</title>
+  <defs>
+    <!-- Badge background: deep navy to dark navy -->
+    <linearGradient id="vsBg" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1A3C5E"/>
+      <stop offset="1" stop-color="#0F1E2D"/>
+    </linearGradient>
+    <!-- Verify check badge: teal accent -->
+    <linearGradient id="vsCheck" x1="288" y1="300" x2="392" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#34D6BF"/>
+      <stop offset="1" stop-color="#2BBFAA"/>
+    </linearGradient>
+    <!-- Scan beam glow -->
+    <linearGradient id="vsBeam" x1="146" y1="0" x2="366" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4A300" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#F4A300" stop-opacity="1"/>
+      <stop offset="1" stop-color="#F4A300" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="vsShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded badge backdrop (doubles as app-icon) -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#vsBg)"/>
+
+  <!-- Subtle corner accent arc -->
+  <path d="M512 256 A256 256 0 0 1 256 512" stroke="#2BBFAA" stroke-opacity="0.12" stroke-width="36" fill="none"/>
+
+  <!-- Document page with folded corner (the "Script") -->
+  <g filter="url(#vsShadow)">
+    <path d="M170 116
+             H316
+             L372 172
+             V372
+             Q372 396 348 396
+             H170
+             Q146 396 146 372
+             V140
+             Q146 116 170 116 Z"
+          fill="#FFFFFF"/>
+    <!-- Folded corner -->
+    <path d="M316 116 L372 172 H328 Q316 172 316 160 Z" fill="#D6E2EE"/>
+  </g>
+
+  <!-- Script lines -->
+  <rect x="180" y="170" width="116" height="16" rx="8" fill="#F4A300"/>
+  <rect x="180" y="208" width="156" height="13" rx="6.5" fill="#C3D2E0"/>
+  <rect x="180" y="238" width="156" height="13" rx="6.5" fill="#C3D2E0"/>
+  <rect x="180" y="268" width="120" height="13" rx="6.5" fill="#C3D2E0"/>
+
+  <!-- Scan beam sweeping the document -->
+  <rect x="146" y="298" width="226" height="4" fill="url(#vsBeam)"/>
+
+  <!-- Verification check badge -->
+  <circle cx="340" cy="356" r="60" fill="#0F1E2D"/>
+  <circle cx="340" cy="356" r="52" fill="url(#vsCheck)"/>
+  <path d="M316 357 l16 17 l34 -38"
+        stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

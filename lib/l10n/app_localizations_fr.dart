@@ -75,6 +75,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get registerConfirm => 'Confirmer le mot de passe';
 
   @override
+  String get registerReferralCode => 'Code de parrainage (optionnel)';
+
+  @override
+  String get registerReferralCodeHint => 'Entrez le code d\'un ami';
+
+  @override
   String get registerButton => 'Créer un compte';
 
   @override
@@ -168,6 +174,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeUpgradeNudge => 'Mettre à niveau — accès illimité';
 
   @override
+  String homeBonusScans(int count) {
+    return '$count scans bonus disponibles';
+  }
+
+  @override
   String get converterTitle => 'Convertisseur de fichiers';
 
   @override
@@ -210,6 +221,292 @@ class AppLocalizationsFr extends AppLocalizations {
   String get converterAnother => 'Convertir un autre';
 
   @override
+  String get scannerTitle => 'Vérification de plagiat';
+
+  @override
+  String get scannerSelectFile => 'Appuyez pour sélectionner un document';
+
+  @override
+  String get scannerMimeTypes => 'PDF, DOCX, TXT · Max 20 Mo';
+
+  @override
+  String get scannerDataWarning =>
+      'Fichier volumineux — cela peut consommer beaucoup de données mobiles';
+
+  @override
+  String get scannerScanButton => 'Lancer l\'analyse';
+
+  @override
+  String get scannerScanning => 'Analyse de votre document...';
+
+  @override
+  String get scannerDone => 'Analyse terminée!';
+
+  @override
+  String get scannerQuotaExceeded => 'Limite mensuelle d\'analyses atteinte';
+
+  @override
+  String get scannerQuotaUpgrade => 'Passez à Pro pour des analyses illimitées';
+
+  @override
+  String get scanResultTitle => 'Rapport d\'analyse';
+
+  @override
+  String get scanResultSimilarity => 'Similarité';
+
+  @override
+  String get scanResultOriginal => 'Original';
+
+  @override
+  String get scanResultSources => 'Sources correspondantes';
+
+  @override
+  String get scanResultNoSources => 'Aucune source correspondante trouvée';
+
+  @override
+  String get scanResultExportPdf => 'Exporter PDF';
+
+  @override
+  String get scanResultShare => 'Partager';
+
+  @override
+  String get scanResultLow => 'Faible similarité — le contenu semble original';
+
+  @override
+  String get scanResultMedium => 'Similarité modérée — vérifiez les sources';
+
+  @override
+  String get scanResultHigh => 'Similarité élevée — plagiat potentiel détecté';
+
+  @override
+  String get ocrTitle => 'Numériseur OCR';
+
+  @override
+  String get ocrSelectSource => 'Choisir la source d\'image';
+
+  @override
+  String get ocrCamera => 'Prendre une photo';
+
+  @override
+  String get ocrGallery => 'Choisir dans la galerie';
+
+  @override
+  String get ocrProcessing => 'Extraction du texte...';
+
+  @override
+  String get ocrNoText => 'Aucun texte trouvé dans l\'image';
+
+  @override
+  String get ocrCopy => 'Copier le texte';
+
+  @override
+  String get ocrScanForPlagiarism => 'Analyser le plagiat';
+
+  @override
+  String get ocrTranslate => 'Traduire';
+
+  @override
+  String get ocrScanAgain => 'Numériser un autre';
+
+  @override
+  String get ocrEditText => 'Modifier le texte';
+
+  @override
+  String get translatorTitle => 'Traducteur';
+
+  @override
+  String get translatorInputHint => 'Entrez le texte à traduire...';
+
+  @override
+  String get translatorSwap => 'Inverser les langues';
+
+  @override
+  String get translatorAuto => 'Détecter la langue';
+
+  @override
+  String get translatorFrom => 'De';
+
+  @override
+  String get translatorTo => 'Vers';
+
+  @override
+  String get translatorCopy => 'Copier la traduction';
+
+  @override
+  String translatorCharsUsed(int used, int limit) {
+    return '$used / $limit caractères utilisés ce mois-ci';
+  }
+
+  @override
+  String get translatorQuotaExceeded =>
+      'Limite mensuelle de traduction atteinte';
+
+  @override
+  String get translatorSelectLanguage => 'Sélectionner une langue';
+
+  @override
+  String get translatorSearch => 'Rechercher des langues...';
+
+  @override
+  String get translatorPrioritySection => 'Suggérées';
+
+  @override
+  String get translatorAllSection => 'Toutes les langues';
+
+  @override
+  String get historyTitle => 'Historique';
+
+  @override
+  String get historySearch => 'Rechercher des documents...';
+
+  @override
+  String get historyEmpty => 'Aucun historique';
+
+  @override
+  String get historyEmptySubtitle =>
+      'Vos documents analysés et convertis apparaîtront ici';
+
+  @override
+  String get historyFilterAll => 'Tout';
+
+  @override
+  String get historyFilterScans => 'Analyses';
+
+  @override
+  String get historyFilterConversions => 'Conversions';
+
+  @override
+  String get historyFilterTranslations => 'Traductions';
+
+  @override
+  String get historyFilterOcr => 'OCR';
+
+  @override
+  String get historySort => 'Trier';
+
+  @override
+  String get historySortNewest => 'Plus récent';
+
+  @override
+  String get historySortOldest => 'Plus ancien';
+
+  @override
+  String get historyStatusDone => 'Terminé';
+
+  @override
+  String get historyStatusFailed => 'Échoué';
+
+  @override
+  String get historyStatusPending => 'En attente';
+
+  @override
+  String get historyDeleteConfirm => 'Supprimer ce document?';
+
+  @override
+  String get historyDeleteBody =>
+      'Cela supprimera le fichier et toutes les données associées. Cette action est irréversible.';
+
+  @override
+  String get historyCancel => 'Annuler';
+
+  @override
+  String get historyDelete => 'Supprimer';
+
+  @override
+  String get historyDeletedMessage => 'Document supprimé';
+
+  @override
+  String get historyUndo => 'Annuler';
+
+  @override
+  String get driveTitle => 'Google Drive';
+
+  @override
+  String get driveConnectDesc =>
+      'Importez et exportez des documents depuis votre Google Drive';
+
+  @override
+  String get driveConnect => 'Connecter avec Google';
+
+  @override
+  String get driveSignOut => 'Déconnecter';
+
+  @override
+  String get driveImport => 'Importer';
+
+  @override
+  String get driveEmpty => 'Aucun document trouvé';
+
+  @override
+  String get driveEmptySubtitle =>
+      'Les fichiers PDF, DOCX et TXT de votre Drive apparaîtront ici';
+
+  @override
+  String get settingsTitle => 'Paramètres';
+
+  @override
+  String get settingsLanguage => 'Language / Langue';
+
+  @override
+  String get settingsGoogleDrive => 'Google Drive';
+
+  @override
+  String get settingsGoogleDriveDesc => 'Importer et exporter des documents';
+
+  @override
+  String get settingsReferralTitle => 'Parrainer un ami';
+
+  @override
+  String get settingsReferralDesc =>
+      'Partagez votre code et obtenez tous les deux 2 scans bonus!';
+
+  @override
+  String get settingsReferralCode => 'Votre code de parrainage';
+
+  @override
+  String get settingsCopyCode => 'Copier le code';
+
+  @override
+  String get settingsCodeCopied => 'Code copié!';
+
+  @override
+  String get settingsReferralShare => 'Partager sur WhatsApp';
+
+  @override
+  String settingsReferralFriends(int count) {
+    return '$count ami(s) inscrit(s)';
+  }
+
+  @override
+  String settingsBonusScans(int count) {
+    return '+$count scans bonus';
+  }
+
+  @override
+  String get notifScanCompleteTitle => 'Analyse terminée';
+
+  @override
+  String get notifScanCompleteBody => 'Votre rapport de plagiat est prêt';
+
+  @override
+  String get notifConversionCompleteTitle => 'Conversion terminée';
+
+  @override
+  String get notifConversionCompleteBody =>
+      'Votre fichier est prêt à télécharger';
+
+  @override
+  String get notifTranslationCompleteTitle => 'Traduction terminée';
+
+  @override
+  String get notifSyncCompleteTitle => 'Synchronisation terminée';
+
+  @override
+  String notifSyncCompleteBody(int count) {
+    return '$count éléments synchronisés';
+  }
+
+  @override
   String get errorNetworkTitle => 'Pas de connexion';
 
   @override
@@ -224,12 +521,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get offlineBanner =>
       'Vous êtes hors ligne — affichage des données en cache';
-
-  @override
-  String get settingsTitle => 'Paramètres';
-
-  @override
-  String get settingsLanguage => 'Language / Langue';
 
   @override
   String get stubComingSoon => 'Disponible en Phase 2';

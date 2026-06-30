@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../home/data/quota_repository.dart';
 import '../data/translation_repository.dart';
 
 final translatorNotifierProvider =
@@ -150,6 +151,11 @@ class TranslatorNotifier extends Notifier<TranslatorState> {
         detectedSourceLang: result.detectedSourceLang,
         fromCache: result.fromCache,
       );
+
+      // Refresh quota if it wasn't from cache
+      if (!result.fromCache) {
+        ref.invalidate(quotaProvider);
+      }
     } catch (e) {
       state = state.copyWith(translatorStatus: 'failed', errorMessage: e.toString());
     }

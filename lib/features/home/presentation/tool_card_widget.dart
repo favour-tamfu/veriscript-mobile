@@ -39,13 +39,18 @@ class ToolCardWidget extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.vsDark,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Text(
                 description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.vsGray,
                     ),

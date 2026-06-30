@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../home/data/quota_repository.dart';
 import '../data/ocr_service.dart';
 
 final ocrNotifierProvider =
@@ -78,9 +80,12 @@ class OcrNotifier extends Notifier<OcrState> {
     try {
       final text = await ref.read(ocrServiceProvider).recogniseFromCameraImage(xFile);
       state = state.copyWith(
-        ocrStatus: text.isEmpty ? 'done' : 'done',
+        ocrStatus: 'done',
         recognisedText: text,
       );
+      
+      // Record in history and update quota
+      await _recordOcrActivity(xFile.name, text.length);
     } catch (e) {
       state = state.copyWith(ocrStatus: 'failed', errorMessage: e.toString());
     }
@@ -93,6 +98,7 @@ class OcrNotifier extends Notifier<OcrState> {
 
     // Crop image (fall back to the original if cropping is unavailable).
     File file;
+    String fileName = xFile.name;
     try {
       final cropped = await ImageCropper().cropImage(
         sourcePath: xFile.path,
@@ -103,7 +109,12 @@ class OcrNotifier extends Notifier<OcrState> {
           ),
         ],
       );
-      file = File(cropped?.path ?? xFile.path);
+      if (cropped != null) {
+        file = File(cropped.path);
+        fileName = cropped.path.split('/').last.split('\\').last;
+      } else {
+        file = File(xFile.path);
+      }
     } catch (_) {
       file = File(xFile.path);
     }
@@ -117,8 +128,37 @@ class OcrNotifier extends Notifier<OcrState> {
     try {
       final text = await ref.read(ocrServiceProvider).recogniseText(file);
       state = state.copyWith(ocrStatus: 'done', recognisedText: text);
+      
+      // Record in history and update quota
+      await _recordOcrActivity(fileName, text.length);
     } catch (e) {
       state = state.copyWith(ocrStatus: 'failed', errorMessage: e.toString());
+    }
+  }
+
+  Future<void> _recordOcrActivity(String fileName, int charCount) async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      // 1. Create a document entry so it shows in history
+      await Supabase.instance.client.from('documents').insert({
+        'user_id': user.id,
+        'name': fileName,
+        'type': 'image',
+        'storage_path': '', // Local OCR doesn't upload by default
+      });
+
+      // 2. Increment OCR usage count
+      await Supabase.instance.client.rpc('increment_ocr_used', params: {
+        'p_user_id': user.id,
+      });
+
+      // 3. Refresh quota UI
+      ref.invalidate(quotaProvider);
+    } catch (e) {
+      // Silently fail history recording for OCR to not block the user
+      print('Failed to record OCR activity: $e');
     }
   }
 

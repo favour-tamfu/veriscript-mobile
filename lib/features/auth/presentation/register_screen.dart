@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
@@ -28,6 +30,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  final _termsRecognizer = TapGestureRecognizer();
+  final _privacyRecognizer = TapGestureRecognizer();
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -35,6 +40,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _passwordController.dispose();
     _confirmController.dispose();
     _referralController.dispose();
+    _termsRecognizer.dispose();
+    _privacyRecognizer.dispose();
     super.dispose();
   }
 
@@ -246,20 +253,67 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               ),
                             ),
                             const SizedBox(height: 12),
-                            CheckboxListTile(
-                              value: _acceptTerms,
-                              controlAffinity: ListTileControlAffinity.leading,
-                              contentPadding: EdgeInsets.zero,
-                              onChanged: (value) {
-                                setState(() {
-                                  _acceptTerms = value ?? false;
-                                });
-                              },
-                              title: Text(
-                                isFrench
-                                    ? 'J\'accepte les conditions d\'utilisation'
-                                    : 'I agree to the Terms of Service',
-                              ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Checkbox(
+                                  value: _acceptTerms,
+                                  visualDensity: VisualDensity.compact,
+                                  onChanged: (value) =>
+                                      setState(() => _acceptTerms = value ?? false),
+                                ),
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(
+                                          text: isFrench
+                                              ? 'J\'accepte les '
+                                              : 'I agree to the ',
+                                        ),
+                                        TextSpan(
+                                          text: isFrench
+                                              ? 'Conditions d\'utilisation'
+                                              : 'Terms & Conditions',
+                                          style: const TextStyle(
+                                            color: AppColors.vsAccent,
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: AppColors.vsAccent,
+                                          ),
+                                          recognizer: _termsRecognizer
+                                            ..onTap = () => launchUrl(
+                                                  Uri.parse(
+                                                    'https://favour-tamfu.github.io/Veriscript-legal/terms-and-conditions',
+                                                  ),
+                                                  mode: LaunchMode.externalApplication,
+                                                ),
+                                        ),
+                                        TextSpan(
+                                          text: isFrench ? ' et la ' : ' and ',
+                                        ),
+                                        TextSpan(
+                                          text: isFrench
+                                              ? 'Politique de confidentialité'
+                                              : 'Privacy Policy',
+                                          style: const TextStyle(
+                                            color: AppColors.vsAccent,
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: AppColors.vsAccent,
+                                          ),
+                                          recognizer: _privacyRecognizer
+                                            ..onTap = () => launchUrl(
+                                                  Uri.parse(
+                                                    'https://favour-tamfu.github.io/Veriscript-legal/privacy-policy',
+                                                  ),
+                                                  mode: LaunchMode.externalApplication,
+                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
                             SizedBox(

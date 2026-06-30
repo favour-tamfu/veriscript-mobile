@@ -13,6 +13,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS set_referral_code ON public.profiles;
 CREATE TRIGGER set_referral_code
 BEFORE INSERT ON public.profiles
 FOR EACH ROW EXECUTE PROCEDURE public.generate_referral_code();
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS public.referrals (
 );
 
 ALTER TABLE public.referrals ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users read own referrals" ON public.referrals;
 CREATE POLICY "Users read own referrals" ON public.referrals
   FOR SELECT USING (auth.uid() = referrer_id);
 

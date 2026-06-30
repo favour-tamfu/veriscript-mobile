@@ -224,6 +224,18 @@ abstract class AppLocalizations {
   /// **'Confirm password'**
   String get registerConfirm;
 
+  /// No description provided for @registerReferralCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral code (optional)'**
+  String get registerReferralCode;
+
+  /// No description provided for @registerReferralCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a friend\'s referral code'**
+  String get registerReferralCodeHint;
+
   /// No description provided for @registerButton.
   ///
   /// In en, this message translates to:
@@ -404,6 +416,12 @@ abstract class AppLocalizations {
   /// **'Upgrade — unlimited access'**
   String get homeUpgradeNudge;
 
+  /// No description provided for @homeBonusScans.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} bonus scans available'**
+  String homeBonusScans(int count);
+
   /// No description provided for @converterTitle.
   ///
   /// In en, this message translates to:
@@ -482,6 +500,546 @@ abstract class AppLocalizations {
   /// **'Convert Another'**
   String get converterAnother;
 
+  /// No description provided for @scannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plagiarism Check'**
+  String get scannerTitle;
+
+  /// No description provided for @scannerSelectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select a document'**
+  String get scannerSelectFile;
+
+  /// No description provided for @scannerMimeTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF, DOCX, TXT · Max 20MB'**
+  String get scannerMimeTypes;
+
+  /// No description provided for @scannerDataWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Large file — this may use significant mobile data'**
+  String get scannerDataWarning;
+
+  /// No description provided for @scannerScanButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Scan'**
+  String get scannerScanButton;
+
+  /// No description provided for @scannerScanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning your document...'**
+  String get scannerScanning;
+
+  /// No description provided for @scannerDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan complete!'**
+  String get scannerDone;
+
+  /// No description provided for @scannerQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly scan limit reached'**
+  String get scannerQuotaExceeded;
+
+  /// No description provided for @scannerQuotaUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro for unlimited scans'**
+  String get scannerQuotaUpgrade;
+
+  /// No description provided for @scanResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Report'**
+  String get scanResultTitle;
+
+  /// No description provided for @scanResultSimilarity.
+  ///
+  /// In en, this message translates to:
+  /// **'Similarity'**
+  String get scanResultSimilarity;
+
+  /// No description provided for @scanResultOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get scanResultOriginal;
+
+  /// No description provided for @scanResultSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching Sources'**
+  String get scanResultSources;
+
+  /// No description provided for @scanResultNoSources.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching sources found'**
+  String get scanResultNoSources;
+
+  /// No description provided for @scanResultExportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get scanResultExportPdf;
+
+  /// No description provided for @scanResultShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get scanResultShare;
+
+  /// No description provided for @scanResultLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low similarity — content appears original'**
+  String get scanResultLow;
+
+  /// No description provided for @scanResultMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate similarity — review matching sources'**
+  String get scanResultMedium;
+
+  /// No description provided for @scanResultHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High similarity — potential plagiarism detected'**
+  String get scanResultHigh;
+
+  /// No description provided for @ocrTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'OCR Scanner'**
+  String get ocrTitle;
+
+  /// No description provided for @ocrSelectSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image source'**
+  String get ocrSelectSource;
+
+  /// No description provided for @ocrCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get ocrCamera;
+
+  /// No description provided for @ocrGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get ocrGallery;
+
+  /// No description provided for @ocrProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting text...'**
+  String get ocrProcessing;
+
+  /// No description provided for @ocrNoText.
+  ///
+  /// In en, this message translates to:
+  /// **'No text found in image'**
+  String get ocrNoText;
+
+  /// No description provided for @ocrCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Text'**
+  String get ocrCopy;
+
+  /// No description provided for @ocrScanForPlagiarism.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan for Plagiarism'**
+  String get ocrScanForPlagiarism;
+
+  /// No description provided for @ocrTranslate.
+  ///
+  /// In en, this message translates to:
+  /// **'Translate'**
+  String get ocrTranslate;
+
+  /// No description provided for @ocrScanAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Another'**
+  String get ocrScanAgain;
+
+  /// No description provided for @ocrEditText.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit text'**
+  String get ocrEditText;
+
+  /// No description provided for @translatorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Translator'**
+  String get translatorTitle;
+
+  /// No description provided for @translatorInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter text to translate...'**
+  String get translatorInputHint;
+
+  /// No description provided for @translatorSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap languages'**
+  String get translatorSwap;
+
+  /// No description provided for @translatorAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Detect language'**
+  String get translatorAuto;
+
+  /// No description provided for @translatorFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get translatorFrom;
+
+  /// No description provided for @translatorTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get translatorTo;
+
+  /// No description provided for @translatorCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy translation'**
+  String get translatorCopy;
+
+  /// No description provided for @translatorCharsUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} / {limit} characters used this month'**
+  String translatorCharsUsed(int used, int limit);
+
+  /// No description provided for @translatorQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly translation limit reached'**
+  String get translatorQuotaExceeded;
+
+  /// No description provided for @translatorSelectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select language'**
+  String get translatorSelectLanguage;
+
+  /// No description provided for @translatorSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search languages...'**
+  String get translatorSearch;
+
+  /// No description provided for @translatorPrioritySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested'**
+  String get translatorPrioritySection;
+
+  /// No description provided for @translatorAllSection.
+  ///
+  /// In en, this message translates to:
+  /// **'All languages'**
+  String get translatorAllSection;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyTitle;
+
+  /// No description provided for @historySearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search documents...'**
+  String get historySearch;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet'**
+  String get historyEmpty;
+
+  /// No description provided for @historyEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your scanned and converted documents will appear here'**
+  String get historyEmptySubtitle;
+
+  /// No description provided for @historyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get historyFilterAll;
+
+  /// No description provided for @historyFilterScans.
+  ///
+  /// In en, this message translates to:
+  /// **'Scans'**
+  String get historyFilterScans;
+
+  /// No description provided for @historyFilterConversions.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversions'**
+  String get historyFilterConversions;
+
+  /// No description provided for @historyFilterTranslations.
+  ///
+  /// In en, this message translates to:
+  /// **'Translations'**
+  String get historyFilterTranslations;
+
+  /// No description provided for @historyFilterOcr.
+  ///
+  /// In en, this message translates to:
+  /// **'OCR'**
+  String get historyFilterOcr;
+
+  /// No description provided for @historySort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get historySort;
+
+  /// No description provided for @historySortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest first'**
+  String get historySortNewest;
+
+  /// No description provided for @historySortOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get historySortOldest;
+
+  /// No description provided for @historyStatusDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get historyStatusDone;
+
+  /// No description provided for @historyStatusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get historyStatusFailed;
+
+  /// No description provided for @historyStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get historyStatusPending;
+
+  /// No description provided for @historyDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this document?'**
+  String get historyDeleteConfirm;
+
+  /// No description provided for @historyDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove the file and all associated data. This cannot be undone.'**
+  String get historyDeleteBody;
+
+  /// No description provided for @historyCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get historyCancel;
+
+  /// No description provided for @historyDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get historyDelete;
+
+  /// No description provided for @historyDeletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Document deleted'**
+  String get historyDeletedMessage;
+
+  /// No description provided for @historyUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get historyUndo;
+
+  /// No description provided for @driveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Drive'**
+  String get driveTitle;
+
+  /// No description provided for @driveConnectDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Import and export documents from your Google Drive'**
+  String get driveConnectDesc;
+
+  /// No description provided for @driveConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with Google'**
+  String get driveConnect;
+
+  /// No description provided for @driveSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect'**
+  String get driveSignOut;
+
+  /// No description provided for @driveImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get driveImport;
+
+  /// No description provided for @driveEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents found'**
+  String get driveEmpty;
+
+  /// No description provided for @driveEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF, DOCX, and TXT files from your Drive will appear here'**
+  String get driveEmptySubtitle;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language / Langue'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsGoogleDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Drive'**
+  String get settingsGoogleDrive;
+
+  /// No description provided for @settingsGoogleDriveDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Import & export documents'**
+  String get settingsGoogleDriveDesc;
+
+  /// No description provided for @settingsReferralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refer a Friend'**
+  String get settingsReferralTitle;
+
+  /// No description provided for @settingsReferralDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your code and both of you get 2 bonus scans!'**
+  String get settingsReferralDesc;
+
+  /// No description provided for @settingsReferralCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your referral code'**
+  String get settingsReferralCode;
+
+  /// No description provided for @settingsCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get settingsCopyCode;
+
+  /// No description provided for @settingsCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied!'**
+  String get settingsCodeCopied;
+
+  /// No description provided for @settingsReferralShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get settingsReferralShare;
+
+  /// No description provided for @settingsReferralFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} friends joined'**
+  String settingsReferralFriends(int count);
+
+  /// No description provided for @settingsBonusScans.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} bonus scans'**
+  String settingsBonusScans(int count);
+
+  /// No description provided for @notifScanCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan complete'**
+  String get notifScanCompleteTitle;
+
+  /// No description provided for @notifScanCompleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plagiarism report is ready'**
+  String get notifScanCompleteBody;
+
+  /// No description provided for @notifConversionCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversion complete'**
+  String get notifConversionCompleteTitle;
+
+  /// No description provided for @notifConversionCompleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your file is ready to download'**
+  String get notifConversionCompleteBody;
+
+  /// No description provided for @notifTranslationCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation complete'**
+  String get notifTranslationCompleteTitle;
+
+  /// No description provided for @notifSyncCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get notifSyncCompleteTitle;
+
+  /// No description provided for @notifSyncCompleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items synced'**
+  String notifSyncCompleteBody(int count);
+
   /// No description provided for @errorNetworkTitle.
   ///
   /// In en, this message translates to:
@@ -511,18 +1069,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You are offline — showing cached data'**
   String get offlineBanner;
-
-  /// No description provided for @settingsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settingsTitle;
-
-  /// No description provided for @settingsLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Language / Langue'**
-  String get settingsLanguage;
 
   /// No description provided for @stubComingSoon.
   ///

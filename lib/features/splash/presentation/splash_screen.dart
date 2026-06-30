@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -17,13 +17,22 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
+  late final Animation<double> _fade;
+  late final Animation<double> _scale;
 
   static const _splashDuration = Duration(seconds: 5);
+  static const _entranceDuration = Duration(milliseconds: 1100);
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: _splashDuration);
+    _controller =
+        AnimationController(vsync: this, duration: _entranceDuration);
+    _fade = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+    _scale = Tween<double>(begin: 0.82, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    );
+    _controller.forward();
     _redirectAfterDelay();
   }
 
@@ -73,18 +82,17 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Lottie.asset(
-              'assets/animations/splash.json',
-              width: 200,
-              height: 200,
-              controller: _controller,
-              onLoaded: (composition) {
-                // Stretch the animation to span the full 5s splash, regardless
-                // of its native length.
-                _controller
-                  ..duration = _splashDuration
-                  ..forward(from: 0);
-              },
+            FadeTransition(
+              opacity: _fade,
+              child: ScaleTransition(
+                scale: _scale,
+                child: SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: 168,
+                  height: 168,
+                  semanticsLabel: 'VeriScript logo',
+                ),
+              ),
             ),
             const SizedBox(height: 24),
             Text(

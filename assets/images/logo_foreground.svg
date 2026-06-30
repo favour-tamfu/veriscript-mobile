@@ -1,0 +1,50 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VeriScript icon foreground">
+  <title>VeriScript adaptive-icon foreground</title>
+  <defs>
+    <linearGradient id="vsCheckFg" x1="288" y1="300" x2="392" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#34D6BF"/>
+      <stop offset="1" stop-color="#2BBFAA"/>
+    </linearGradient>
+    <linearGradient id="vsBeamFg" x1="146" y1="0" x2="372" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4A300" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#F4A300" stop-opacity="1"/>
+      <stop offset="1" stop-color="#F4A300" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="vsShadowFg" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.30"/>
+    </filter>
+  </defs>
+
+  <!-- Content scaled into the adaptive-icon safe zone (centered ~66%) -->
+  <g transform="translate(256 256) scale(0.80) translate(-259 -256)">
+    <!-- Document page with folded corner -->
+    <g filter="url(#vsShadowFg)">
+      <path d="M170 116
+               H316
+               L372 172
+               V372
+               Q372 396 348 396
+               H170
+               Q146 396 146 372
+               V140
+               Q146 116 170 116 Z"
+            fill="#FFFFFF"/>
+      <path d="M316 116 L372 172 H328 Q316 172 316 160 Z" fill="#D6E2EE"/>
+    </g>
+
+    <!-- Script lines -->
+    <rect x="180" y="170" width="116" height="16" rx="8" fill="#F4A300"/>
+    <rect x="180" y="208" width="156" height="13" rx="6.5" fill="#C3D2E0"/>
+    <rect x="180" y="238" width="156" height="13" rx="6.5" fill="#C3D2E0"/>
+    <rect x="180" y="268" width="120" height="13" rx="6.5" fill="#C3D2E0"/>
+
+    <!-- Scan beam -->
+    <rect x="146" y="298" width="226" height="4" fill="url(#vsBeamFg)"/>
+
+    <!-- Verification check badge -->
+    <circle cx="340" cy="356" r="60" fill="#0F1E2D"/>
+    <circle cx="340" cy="356" r="52" fill="url(#vsCheckFg)"/>
+    <path d="M316 357 l16 17 l34 -38"
+          stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>

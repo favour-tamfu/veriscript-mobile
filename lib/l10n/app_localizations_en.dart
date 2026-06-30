@@ -75,6 +75,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerConfirm => 'Confirm password';
 
   @override
+  String get registerReferralCode => 'Referral code (optional)';
+
+  @override
+  String get registerReferralCodeHint => 'Enter a friend\'s referral code';
+
+  @override
   String get registerButton => 'Create Account';
 
   @override
@@ -166,6 +172,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeUpgradeNudge => 'Upgrade — unlimited access';
 
   @override
+  String homeBonusScans(int count) {
+    return '$count bonus scans available';
+  }
+
+  @override
   String get converterTitle => 'File Converter';
 
   @override
@@ -208,6 +219,292 @@ class AppLocalizationsEn extends AppLocalizations {
   String get converterAnother => 'Convert Another';
 
   @override
+  String get scannerTitle => 'Plagiarism Check';
+
+  @override
+  String get scannerSelectFile => 'Tap to select a document';
+
+  @override
+  String get scannerMimeTypes => 'PDF, DOCX, TXT · Max 20MB';
+
+  @override
+  String get scannerDataWarning =>
+      'Large file — this may use significant mobile data';
+
+  @override
+  String get scannerScanButton => 'Start Scan';
+
+  @override
+  String get scannerScanning => 'Scanning your document...';
+
+  @override
+  String get scannerDone => 'Scan complete!';
+
+  @override
+  String get scannerQuotaExceeded => 'Monthly scan limit reached';
+
+  @override
+  String get scannerQuotaUpgrade => 'Upgrade to Pro for unlimited scans';
+
+  @override
+  String get scanResultTitle => 'Scan Report';
+
+  @override
+  String get scanResultSimilarity => 'Similarity';
+
+  @override
+  String get scanResultOriginal => 'Original';
+
+  @override
+  String get scanResultSources => 'Matching Sources';
+
+  @override
+  String get scanResultNoSources => 'No matching sources found';
+
+  @override
+  String get scanResultExportPdf => 'Export PDF';
+
+  @override
+  String get scanResultShare => 'Share';
+
+  @override
+  String get scanResultLow => 'Low similarity — content appears original';
+
+  @override
+  String get scanResultMedium =>
+      'Moderate similarity — review matching sources';
+
+  @override
+  String get scanResultHigh =>
+      'High similarity — potential plagiarism detected';
+
+  @override
+  String get ocrTitle => 'OCR Scanner';
+
+  @override
+  String get ocrSelectSource => 'Choose image source';
+
+  @override
+  String get ocrCamera => 'Take Photo';
+
+  @override
+  String get ocrGallery => 'Choose from Gallery';
+
+  @override
+  String get ocrProcessing => 'Extracting text...';
+
+  @override
+  String get ocrNoText => 'No text found in image';
+
+  @override
+  String get ocrCopy => 'Copy Text';
+
+  @override
+  String get ocrScanForPlagiarism => 'Scan for Plagiarism';
+
+  @override
+  String get ocrTranslate => 'Translate';
+
+  @override
+  String get ocrScanAgain => 'Scan Another';
+
+  @override
+  String get ocrEditText => 'Edit text';
+
+  @override
+  String get translatorTitle => 'Translator';
+
+  @override
+  String get translatorInputHint => 'Enter text to translate...';
+
+  @override
+  String get translatorSwap => 'Swap languages';
+
+  @override
+  String get translatorAuto => 'Detect language';
+
+  @override
+  String get translatorFrom => 'From';
+
+  @override
+  String get translatorTo => 'To';
+
+  @override
+  String get translatorCopy => 'Copy translation';
+
+  @override
+  String translatorCharsUsed(int used, int limit) {
+    return '$used / $limit characters used this month';
+  }
+
+  @override
+  String get translatorQuotaExceeded => 'Monthly translation limit reached';
+
+  @override
+  String get translatorSelectLanguage => 'Select language';
+
+  @override
+  String get translatorSearch => 'Search languages...';
+
+  @override
+  String get translatorPrioritySection => 'Suggested';
+
+  @override
+  String get translatorAllSection => 'All languages';
+
+  @override
+  String get historyTitle => 'History';
+
+  @override
+  String get historySearch => 'Search documents...';
+
+  @override
+  String get historyEmpty => 'No history yet';
+
+  @override
+  String get historyEmptySubtitle =>
+      'Your scanned and converted documents will appear here';
+
+  @override
+  String get historyFilterAll => 'All';
+
+  @override
+  String get historyFilterScans => 'Scans';
+
+  @override
+  String get historyFilterConversions => 'Conversions';
+
+  @override
+  String get historyFilterTranslations => 'Translations';
+
+  @override
+  String get historyFilterOcr => 'OCR';
+
+  @override
+  String get historySort => 'Sort';
+
+  @override
+  String get historySortNewest => 'Newest first';
+
+  @override
+  String get historySortOldest => 'Oldest first';
+
+  @override
+  String get historyStatusDone => 'Done';
+
+  @override
+  String get historyStatusFailed => 'Failed';
+
+  @override
+  String get historyStatusPending => 'Pending';
+
+  @override
+  String get historyDeleteConfirm => 'Delete this document?';
+
+  @override
+  String get historyDeleteBody =>
+      'This will remove the file and all associated data. This cannot be undone.';
+
+  @override
+  String get historyCancel => 'Cancel';
+
+  @override
+  String get historyDelete => 'Delete';
+
+  @override
+  String get historyDeletedMessage => 'Document deleted';
+
+  @override
+  String get historyUndo => 'Undo';
+
+  @override
+  String get driveTitle => 'Google Drive';
+
+  @override
+  String get driveConnectDesc =>
+      'Import and export documents from your Google Drive';
+
+  @override
+  String get driveConnect => 'Connect with Google';
+
+  @override
+  String get driveSignOut => 'Disconnect';
+
+  @override
+  String get driveImport => 'Import';
+
+  @override
+  String get driveEmpty => 'No documents found';
+
+  @override
+  String get driveEmptySubtitle =>
+      'PDF, DOCX, and TXT files from your Drive will appear here';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsLanguage => 'Language / Langue';
+
+  @override
+  String get settingsGoogleDrive => 'Google Drive';
+
+  @override
+  String get settingsGoogleDriveDesc => 'Import & export documents';
+
+  @override
+  String get settingsReferralTitle => 'Refer a Friend';
+
+  @override
+  String get settingsReferralDesc =>
+      'Share your code and both of you get 2 bonus scans!';
+
+  @override
+  String get settingsReferralCode => 'Your referral code';
+
+  @override
+  String get settingsCopyCode => 'Copy code';
+
+  @override
+  String get settingsCodeCopied => 'Code copied!';
+
+  @override
+  String get settingsReferralShare => 'Share on WhatsApp';
+
+  @override
+  String settingsReferralFriends(int count) {
+    return '$count friends joined';
+  }
+
+  @override
+  String settingsBonusScans(int count) {
+    return '+$count bonus scans';
+  }
+
+  @override
+  String get notifScanCompleteTitle => 'Scan complete';
+
+  @override
+  String get notifScanCompleteBody => 'Your plagiarism report is ready';
+
+  @override
+  String get notifConversionCompleteTitle => 'Conversion complete';
+
+  @override
+  String get notifConversionCompleteBody => 'Your file is ready to download';
+
+  @override
+  String get notifTranslationCompleteTitle => 'Translation complete';
+
+  @override
+  String get notifSyncCompleteTitle => 'Sync complete';
+
+  @override
+  String notifSyncCompleteBody(int count) {
+    return '$count items synced';
+  }
+
+  @override
   String get errorNetworkTitle => 'No connection';
 
   @override
@@ -221,12 +518,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineBanner => 'You are offline — showing cached data';
-
-  @override
-  String get settingsTitle => 'Settings';
-
-  @override
-  String get settingsLanguage => 'Language / Langue';
 
   @override
   String get stubComingSoon => 'Coming in Phase 2';

@@ -38,9 +38,6 @@ void main() {
       await tester.pumpWidget(_buildApp(isOffline: false));
       await tester.pump();
 
-      final container = tester.widget<AnimatedContainer>(
-        find.byType(AnimatedContainer),
-      );
       // When online the height constraint is 0
       final box = tester.renderObject<RenderBox>(find.byType(AnimatedContainer));
       expect(box.size.height, 0.0);
