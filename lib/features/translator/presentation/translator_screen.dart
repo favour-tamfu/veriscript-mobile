@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/friendly_error.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../domain/language.dart';
 import 'translator_notifier.dart';
@@ -362,7 +363,7 @@ class _TranslatorScreenState extends ConsumerState<TranslatorScreen> {
 
       case 'failed':
         return Text(
-          state.errorMessage ?? 'Translation failed. Try again.',
+          friendlyError(state.errorMessage, isFrench: isFrench),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.vsError),
         );
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/file_download.dart';
+import '../../../core/utils/friendly_error.dart';
 import '../../../core/widgets/vs_error_view.dart';
 import '../../home/data/quota_repository.dart';
 import '../data/conversion_repository.dart';
@@ -301,7 +302,7 @@ class ConverterScreen extends ConsumerWidget {
 
     if (state.jobStatus == 'failed') {
       return VsErrorView(
-        message: state.errorMessage ?? '',
+        message: friendlyError(state.errorMessage, isFrench: isFrench),
         onRetry: notifier.startConversion,
       );
     }

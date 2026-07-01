@@ -7,10 +7,11 @@ import 'package:go_router/go_router.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/friendly_error.dart';
+import '../../../core/utils/url_launcher_helper.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_card.dart';
 import '../../../core/widgets/vs_error_view.dart';
@@ -36,7 +37,7 @@ class ScanResultScreen extends ConsumerWidget {
       body: reportAsync.when(
         data: (job) => _buildContent(context, ref, job, isFrench),
         error: (e, _) => VsErrorView(
-          message: e.toString(),
+          message: friendlyError(e, isFrench: isFrench),
           onRetry: () => ref.invalidate(scanResultProvider(reportId)),
         ),
         loading: () => const Center(child: CircularProgressIndicator(color: AppColors.vsAccent)),
@@ -246,7 +247,9 @@ class ScanResultScreen extends ConsumerWidget {
                 icon: const Icon(Icons.open_in_new, size: 20),
                 onPressed: () async {
                   final uri = Uri.tryParse(source.url);
-                  if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  if (uri != null) {
+                    await openExternalUrl(context, uri, isFrench: isFrench);
+                  }
                 },
               ),
               const Icon(Icons.expand_more),

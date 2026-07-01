@@ -29,9 +29,15 @@ class NotificationService {
       importance: Importance.high,
     );
 
-    await _plugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(androidChannel);
+    final androidImpl = _plugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+
+    await androidImpl?.createNotificationChannel(androidChannel);
+
+    // Android 13+ (API 33) requires an explicit runtime request; without it the
+    // POST_NOTIFICATIONS permission stays denied and notifications are silently
+    // suppressed even though it is declared in the manifest.
+    await androidImpl?.requestNotificationsPermission();
   }
 
   void _onNotificationTapped(NotificationResponse response) {

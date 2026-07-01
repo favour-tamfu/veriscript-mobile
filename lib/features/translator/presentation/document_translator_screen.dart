@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/file_download.dart';
+import '../../../core/utils/friendly_error.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../cloud/presentation/drive_file_picker.dart';
 import '../domain/language.dart';
@@ -257,7 +258,7 @@ class _PickView extends StatelessWidget {
           if (errorMessage != null) ...[
             const SizedBox(height: 16),
             Text(
-              errorMessage!,
+              friendlyError(errorMessage, isFrench: isFrench),
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium

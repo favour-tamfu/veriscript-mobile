@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/url_launcher_helper.dart';
 import '../domain/auth_failure.dart';
 import '../../referral/data/referral_repository.dart';
 import 'auth_notifier.dart';
@@ -282,11 +282,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                             decorationColor: AppColors.vsAccent,
                                           ),
                                           recognizer: _termsRecognizer
-                                            ..onTap = () => launchUrl(
+                                            ..onTap = () => openExternalUrl(
+                                                  context,
                                                   Uri.parse(
                                                     'https://favour-tamfu.github.io/Veriscript-legal/terms-and-conditions',
                                                   ),
-                                                  mode: LaunchMode.externalApplication,
+                                                  isFrench: isFrench,
                                                 ),
                                         ),
                                         TextSpan(
@@ -302,11 +303,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                             decorationColor: AppColors.vsAccent,
                                           ),
                                           recognizer: _privacyRecognizer
-                                            ..onTap = () => launchUrl(
+                                            ..onTap = () => openExternalUrl(
+                                                  context,
                                                   Uri.parse(
                                                     'https://favour-tamfu.github.io/Veriscript-legal/privacy-policy',
                                                   ),
-                                                  mode: LaunchMode.externalApplication,
+                                                  isFrench: isFrench,
                                                 ),
                                         ),
                                       ],

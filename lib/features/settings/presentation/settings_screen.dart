@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/providers/locale_provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/url_launcher_helper.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../referral/data/referral_repository.dart';
 
@@ -200,7 +200,7 @@ class SettingsScreen extends ConsumerWidget {
                                   final uri = Uri.parse(
                                     'https://wa.me/681848500?text=${Uri.encodeComponent(shareText)}',
                                   );
-                                  launchUrl(uri, mode: LaunchMode.externalApplication);
+                                  openExternalUrl(context, uri, isFrench: isFrench);
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF25D366),
@@ -246,11 +246,12 @@ class SettingsScreen extends ConsumerWidget {
               isFrench ? 'Conditions d\'utilisation' : 'Terms & Conditions',
             ),
             trailing: const Icon(Icons.open_in_new_rounded, size: 18),
-            onTap: () => launchUrl(
+            onTap: () => openExternalUrl(
+              context,
               Uri.parse(
                 'https://favour-tamfu.github.io/Veriscript-legal/terms-and-conditions',
               ),
-              mode: LaunchMode.externalApplication,
+              isFrench: isFrench,
             ),
           ),
           const Divider(height: 1),
@@ -260,11 +261,12 @@ class SettingsScreen extends ConsumerWidget {
               isFrench ? 'Politique de confidentialité' : 'Privacy Policy',
             ),
             trailing: const Icon(Icons.open_in_new_rounded, size: 18),
-            onTap: () => launchUrl(
+            onTap: () => openExternalUrl(
+              context,
               Uri.parse(
                 'https://favour-tamfu.github.io/Veriscript-legal/privacy-policy',
               ),
-              mode: LaunchMode.externalApplication,
+              isFrench: isFrench,
             ),
           ),
           const SizedBox(height: 24),

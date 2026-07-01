@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../home/data/quota_repository.dart';
 import '../../notifications/presentation/notifications_providers.dart';
 import '../data/scan_repository.dart';
 import '../domain/scan_job.dart';

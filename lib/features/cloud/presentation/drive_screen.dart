@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/friendly_error.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_button.dart';
 import '../../../core/widgets/vs_card.dart';
@@ -55,11 +56,16 @@ class _DriveScreenState extends ConsumerState<DriveScreen> {
       ),
       body: state.isSignedIn
           ? _buildFileList(context, state, notifier, isFrench)
-          : _buildSignIn(context, notifier, isFrench),
+          : _buildSignIn(context, state, notifier, isFrench),
     );
   }
 
-  Widget _buildSignIn(BuildContext context, DriveNotifier notifier, bool isFrench) {
+  Widget _buildSignIn(
+    BuildContext context,
+    DriveState state,
+    DriveNotifier notifier,
+    bool isFrench,
+  ) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -86,6 +92,17 @@ class _DriveScreenState extends ConsumerState<DriveScreen> {
               label: isFrench ? 'Connecter avec Google' : 'Connect with Google',
               onPressed: notifier.signIn,
             ),
+            if (state.errorMessage != null) ...[
+              const SizedBox(height: 16),
+              Text(
+                friendlyError(state.errorMessage, isFrench: isFrench),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.vsError),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ],
         ),
       ),
@@ -100,6 +117,31 @@ class _DriveScreenState extends ConsumerState<DriveScreen> {
   ) {
     if (state.isLoading && state.files.isEmpty) {
       return _buildShimmer();
+    }
+
+    if (state.files.isEmpty && state.errorMessage != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, size: 56, color: AppColors.vsError),
+              const SizedBox(height: 16),
+              Text(
+                friendlyError(state.errorMessage, isFrench: isFrench),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.vsGray),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              VsButton.primary(
+                label: isFrench ? 'Réessayer' : 'Try again',
+                onPressed: () => notifier.loadFiles(),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     if (state.files.isEmpty) {

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/friendly_error.dart';
 import '../../../core/widgets/vs_app_bar.dart';
 import '../../../core/widgets/vs_button.dart';
 import '../../../core/widgets/vs_error_view.dart';
@@ -33,7 +34,7 @@ class OcrScreen extends ConsumerWidget {
   ) {
     if (state.ocrStatus == 'failed') {
       return VsErrorView(
-        message: state.errorMessage ?? 'An error occurred',
+        message: friendlyError(state.errorMessage, isFrench: isFrench),
         onRetry: notifier.reset,
       );
     }

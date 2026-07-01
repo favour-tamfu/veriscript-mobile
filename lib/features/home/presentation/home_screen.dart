@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/local_db/app_database.dart';
 import '../../../core/providers/connectivity_provider.dart';
 import '../../../core/router/app_routes.dart';
+import '../../../core/utils/url_launcher_helper.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/vs_empty_state.dart';
 import '../../../core/widgets/vs_offline_banner.dart';
@@ -267,7 +267,7 @@ class HomeScreen extends ConsumerWidget {
                             final uri = Uri.parse(
                               'https://wa.me/681848500?text=${Uri.encodeComponent(message)}',
                             );
-                            launchUrl(uri, mode: LaunchMode.externalApplication);
+                            openExternalUrl(context, uri, isFrench: isFrench);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF25D366),
