@@ -21,7 +21,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0' # Matches your environment
+          flutter-version: '3.41.5' # Matches local dev environment (ships intl 0.20.x)
           channel: 'stable'
 
       - name: Install dependencies
