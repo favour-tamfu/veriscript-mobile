@@ -27,11 +27,13 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
 .env.local
-.env
+.env.*.local
+*.env
 /build/
 /coverage/
 supabase/.temp/
@@ -46,3 +48,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Project report & personal documents — keep OUT of the public repo
+*.docx
+*.doc
+_report_extracted.md
+REPORT_REVIEW_AND_COMPLETION.md
+REPORT_UPDATE_INSTRUCTIONS.md

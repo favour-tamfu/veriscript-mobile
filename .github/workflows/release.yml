@@ -1,0 +1,57 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+# The default GITHUB_TOKEN is read-only on this repo; creating a release needs
+# write access to repository contents.
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.5' # Matches local dev environment (ships intl 0.20.x)
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate files (Build Runner)
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # This creates a dummy .env.local for the build process.
+      # In a real scenario, you should use GitHub Secrets to populate these.
+      - name: Create .env.local
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > .env.local
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.local
+
+      - name: Build APK
+        run: flutter build apk --release --dart-define-from-file=.env.local
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/app/outputs/flutter-apk/app-release.apk
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

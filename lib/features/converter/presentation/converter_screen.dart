@@ -1,111 +1,382 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../core/providers/app_providers.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_shell.dart';
-import '../../../l10n/app_localizations.dart';
-import '../application/converter_controller.dart';
+import '../../../core/utils/file_download.dart';
+import '../../../core/utils/friendly_error.dart';
+import '../../../core/widgets/vs_error_view.dart';
+import '../../home/data/quota_repository.dart';
+import '../data/conversion_repository.dart';
+import '../domain/conversion_formats.dart';
+import '../presentation/converter_notifier.dart';
 
-class ConverterScreen extends ConsumerStatefulWidget {
+class ConverterScreen extends ConsumerWidget {
   const ConverterScreen({super.key});
 
-  static const routeName = 'converter';
-  static const routePath = '/converter';
-
   @override
-  ConsumerState<ConverterScreen> createState() => _ConverterScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(converterNotifierProvider);
+    final notifier = ref.read(converterNotifierProvider.notifier);
+    final isFrench = Localizations.localeOf(context).languageCode == 'fr';
 
-class _ConverterScreenState extends ConsumerState<ConverterScreen> {
-  String _targetFormat = 'pdf';
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final actionState = ref.watch(converterControllerProvider);
-    final config = ref.watch(appConfigProvider);
-
-    return AppShell(
-      header: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.converterTitle,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.converterBody,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.slate),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(isFrench ? 'Convertisseur de fichiers' : 'File Converter'),
       ),
-      child: ListView(
-        children: [
-          if (!config.hasConverterEndpoint)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF6E5),
-                borderRadius: BorderRadius.circular(20),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: _buildBody(context, ref, state, notifier, isFrench),
+      ),
+    );
+  }
+
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    ConverterState state,
+    ConverterNotifier notifier,
+    bool isFrench,
+  ) {
+    if (state.jobStatus == 'quota_exceeded') {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.block, color: AppColors.vsError, size: 48),
+              const SizedBox(height: 16),
+              Text(
+                isFrench
+                    ? 'Limite de conversions atteinte'
+                    : 'Conversion limit reached',
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
               ),
-              child: Text(
-                l10n.converterSetupNotice,
-                style: Theme.of(context).textTheme.bodyMedium,
+              const SizedBox(height: 8),
+              Text(
+                isFrench
+                    ? 'Passez à VeriScript Plus pour des conversions illimitées.'
+                    : 'Upgrade to VeriScript Plus for unlimited conversions.',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AppColors.vsGray),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: notifier.reset,
+                child: Text(isFrench ? 'Retour' : 'Back'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (state.jobStatus == 'idle' && state.selectedFile == null) {
+      return Center(
+        child: InkWell(
+          onTap: () async {
+            final file = await notifier.pickFile();
+            if (file == null || !context.mounted) {
+              return;
+            }
+
+            final isLargeFile = await file.length() > 5 * 1024 * 1024;
+            if (!context.mounted) return;
+            if (isLargeFile) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    isFrench
+                        ? 'Fichier volumineux — cela peut consommer beaucoup de données mobiles'
+                        : 'Large file — this may use significant mobile data',
+                  ),
+                ),
+              );
+            }
+          },
+          child: CustomPaint(
+            painter: _DashedBorderPainter(),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.upload_file_rounded,
+                    size: 64,
+                    color: AppColors.vsAccent,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    isFrench
+                        ? 'Appuyez pour sélectionner un fichier'
+                        : 'Tap to select a file',
+                    style: Theme.of(context).textTheme.titleLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    isFrench
+                        ? 'PDF, Word, images, tableurs et plus · Max 10 Mo'
+                        : 'PDF, Word, images, spreadsheets & more · Max 10MB',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AppColors.vsGray),
+                  ),
+                ],
               ),
             ),
-          const SizedBox(height: 20),
+          ),
+        ),
+      );
+    }
+
+    if (state.selectedFile != null && state.jobStatus == 'idle') {
+      final file = state.selectedFile!;
+      final availableFormats = targetFormatsFor(state.fromFormat ?? '');
+      final conversionsUsed =
+          ref.watch(quotaProvider).asData?.value.conversionsUsed ?? 0;
+      final remaining =
+          (kFreeConversionLimit - conversionsUsed).clamp(0, kFreeConversionLimit);
+
+      return ListView(
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(
+                    _iconForFormat(state.fromFormat ?? ''),
+                    color: AppColors.vsAccent,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(file.path.split(Platform.pathSeparator).last),
+                        const SizedBox(height: 4),
+                        Text(
+                          _formatSize(file.lengthSync()),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: AppColors.vsGray),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Chip(label: Text((state.fromFormat ?? '').toUpperCase())),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           Text(
-            l10n.converterTargetFormat,
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            isFrench ? 'Convertir en:' : 'Convert to:',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
           ),
           const SizedBox(height: 12),
-          SegmentedButton<String>(
-            segments: const [
-              ButtonSegment(value: 'pdf', label: Text('PDF')),
-              ButtonSegment(value: 'docx', label: Text('DOCX')),
-              ButtonSegment(value: 'txt', label: Text('TXT')),
-            ],
-            selected: {_targetFormat},
-            onSelectionChanged: (value) {
-              setState(() {
-                _targetFormat = value.first;
-              });
-            },
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: availableFormats
+                .map(
+                  (format) => FilterChip(
+                    selected: state.toFormat == format,
+                    selectedColor: AppColors.vsAccent,
+                    labelStyle: TextStyle(
+                      color: state.toFormat == format
+                          ? Colors.white
+                          : AppColors.vsDark,
+                    ),
+                    backgroundColor: AppColors.vsBackground,
+                    label: Text(format.toUpperCase()),
+                    onSelected: (_) => notifier.setTargetFormat(format),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            isFrench
+                ? '$remaining sur $kFreeConversionLimit conversions gratuites restantes'
+                : '$remaining of $kFreeConversionLimit free conversions remaining',
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: AppColors.vsGray),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: state.toFormat.isEmpty ? null : notifier.startConversion,
+              child: Text(
+                isFrench ? 'Convertir maintenant' : 'Convert Now',
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.center,
+            child: TextButton(
+              onPressed: notifier.reset,
+              child: Text(
+                isFrench
+                    ? 'Choisir un autre fichier'
+                    : 'Choose different file',
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (state.jobStatus == 'done') {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.check_circle_rounded,
+              color: AppColors.vsSuccess,
+              size: 80,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              isFrench ? 'Conversion terminée!' : 'Conversion complete!',
+              style: Theme.of(context).textTheme.headlineMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: state.downloadUrl == null
+                    ? null
+                    : () async {
+                        final messenger = ScaffoldMessenger.of(context);
+                        final err = await downloadAndOpenFile(
+                          state.downloadUrl!,
+                          'converted.${state.toFormat}',
+                        );
+                        if (err != null) {
+                          messenger.showSnackBar(SnackBar(
+                            content: Text(isFrench
+                                ? 'Téléchargement échoué.'
+                                : 'Download failed.'),
+                            backgroundColor: AppColors.vsError,
+                          ));
+                        }
+                      },
+                child: Text(
+                  isFrench ? 'Télécharger le fichier' : 'Download File',
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: notifier.reset,
+                child: Text(
+                  isFrench ? 'Convertir un autre' : 'Convert Another',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (state.jobStatus == 'failed') {
+      return VsErrorView(
+        message: friendlyError(state.errorMessage, isFrench: isFrench),
+        onRetry: notifier.startConversion,
+      );
+    }
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            width: 64,
+            height: 64,
+            child: CircularProgressIndicator(color: AppColors.vsAccent),
           ),
           const SizedBox(height: 24),
-          FilledButton.icon(
-            onPressed: actionState.isLoading
-                ? null
-                : () async {
-                    final messenger = ScaffoldMessenger.of(context);
-                    final message = await ref
-                        .read(converterControllerProvider.notifier)
-                        .pickAndConvert(_targetFormat);
-                    if (!mounted || message == null) {
-                      return;
-                    }
-
-                    messenger.showSnackBar(SnackBar(content: Text(message)));
-                  },
-            icon: actionState.isLoading
-                ? const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.upload_file_rounded),
-            label: Text(l10n.converterPickFile),
+          Text(
+            state.jobStatus == 'uploading'
+                ? (isFrench
+                    ? 'Téléchargement de votre fichier...'
+                    : 'Uploading your file...')
+                : (isFrench
+                    ? 'Conversion de votre document...'
+                    : 'Converting your document...'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),
     );
   }
+}
+
+class _DashedBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    const dashWidth = 8.0;
+    const dashSpace = 6.0;
+    final paint = Paint()
+      ..color = AppColors.vsGray
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+    final rect = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      const Radius.circular(16),
+    );
+
+    final path = Path()..addRRect(rect);
+    for (final metric in path.computeMetrics()) {
+      double distance = 0;
+      while (distance < metric.length) {
+        final next = distance + dashWidth;
+        canvas.drawPath(metric.extractPath(distance, next), paint);
+        distance += dashWidth + dashSpace;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+IconData _iconForFormat(String format) {
+  switch (format) {
+    case 'pdf':
+      return Icons.picture_as_pdf;
+    case 'docx':
+      return Icons.description;
+    default:
+      return Icons.article;
+  }
+}
+
+String _formatSize(int bytes) {
+  if (bytes >= 1024 * 1024) {
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+  }
+  return '${(bytes / 1024).toStringAsFixed(1)} KB';
 }
